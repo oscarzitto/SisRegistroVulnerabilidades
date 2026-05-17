@@ -2,24 +2,38 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+// Base de datos
 require("./database/db");
 
-const authRoutes = require("./routes/authRoutes");
-
+// App
 const app = express();
 
+// Middlewares globales
 app.use(cors());
 app.use(express.json());
 
-// Rutas de autenticación
-app.use(authRoutes);
+// Rutas API
+const authRoutes=require("./routes/authRoutes");
+const testRoutes=require("./routes/testRoutes");
 
-app.get("/", (req,res)=>{
+app.use(authRoutes);
+app.use(testRoutes);
+
+// Ruta principal
+app.get("/",(req,res)=>{
+
     res.send("API funcionando SIII");
+
 });
 
-const PORT = process.env.PORT || 3000;
+// Puerto
+const PORT=process.env.PORT || 3000;
 
-app.listen(PORT, ()=>{
-    console.log(`Servidor corriendo en puerto ${PORT}`);
+// Iniciar servidor
+app.listen(PORT,()=>{
+
+    console.log(
+        `Servidor corriendo en puerto ${PORT}`
+    );
+
 });
