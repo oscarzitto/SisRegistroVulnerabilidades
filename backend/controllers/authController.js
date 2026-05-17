@@ -1,5 +1,7 @@
 const db = require("../database/db");
+
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const register = async (req,res)=>{
 
@@ -46,4 +48,56 @@ const register = async (req,res)=>{
 
 };
 
-module.exports={register};
+const login = (req,res)=>{
+
+    const {correo,password}=req.body;
+
+    db.get(
+        "SELECT * FROM usuarios WHERE correo=?",
+        [correo],
+
+        async(err,usuario)=>{
+
+            if(err || !usuario){
+
+                return res.status(401).json({
+                    mensaje:"Usuario no encontrado"
+                });
+
+            }
+
+            const valido = await bcrypt.compare(
+                password,
+                usuario.password_hash
+            );
+
+            if(!valido){
+
+                return res.status(401).json({
+                    mensaje:"Contraseña incorrecta"
+                });
+
+            }
+
+            const token = jwt.sign(
+            {
+                id:usuario.id,
+                rol:usuario.rol
+            },
+
+            process.env.JWT_SECRET,
+
+            {
+                expiresIn:"1h"
+            });
+
+            res.json({
+                mensaje:"Login correcto",
+                token
+            });
+
+        });
+
+};
+
+module.exports={register,login};
