@@ -1,53 +1,53 @@
-import {useState} from "react";
+import { useState } from "react";
 import api from "../services/api";
 
-function Login(){
+function Login() {
 
-const[correo,setCorreo]=useState("");
-const[password,setPassword]=useState("");
+    const [correo, setCorreo] = useState("");
+    const [password, setPassword] = useState("");
 
-const enviar=async()=>{
+    const enviar = async () => {
 
-const res=await api.post(
-"/login",
-{
-correo,
-password
-});
+        const res = await api.post(
+            "/login",
+            {
+                correo,
+                password
+            });
 
-localStorage.setItem(
-"token",
-res.data.token
-);
+        localStorage.setItem(
+            "token",
+            res.data.token
+        );
 
-alert("Login correcto");
+        window.location="/dashboard";
 
-};
+    };
 
-return(
+    return (
 
-<div>
+        <div>
 
-<h1>Login</h1>
+            <h1>Login</h1>
 
-<input
-placeholder="correo"
-onChange={(e)=>setCorreo(e.target.value)}
-/>
+            <input
+                placeholder="correo"
+                onChange={(e) => setCorreo(e.target.value)}
+            />
 
-<input
-type="password"
-placeholder="contraseña"
-onChange={(e)=>setPassword(e.target.value)}
-/>
+            <input
+                type="password"
+                placeholder="contraseña"
+                onChange={(e) => setPassword(e.target.value)}
+            />
 
-<button onClick={enviar}>
-Entrar
-</button>
+            <button onClick={enviar}>
+                Entrar
+            </button>
 
-</div>
+        </div>
 
-);
+    );
 
 }
 
