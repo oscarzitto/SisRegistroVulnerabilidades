@@ -11,7 +11,8 @@ require("../middleware/rolesMiddleware");
 const{
 crearHallazgo,
 listarHallazgos,
-editarHallazgo
+editarHallazgo,
+eliminarHallazgo
 }
 =
 require("../controllers/hallazgosController");
@@ -33,6 +34,12 @@ router.put(
 verificarToken,
 verificarRol("admin"),
 editarHallazgo
+);
+
+router.delete(
+"/hallazgos/:id",
+verificarToken,
+eliminarHallazgo
 );
  
 module.exports=router;

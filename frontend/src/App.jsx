@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Hallazgos from "./pages/Hallazgos";
 import CrearHallazgo from "./pages/CrearHallazgo";
+import EditarHallazgo from "./pages/EditarHallazgo";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
@@ -44,6 +45,11 @@ function App() {
                             <CrearHallazgo />
                         </ProtectedRoute>
                     }
+                />
+                
+                <Route
+                    path="/editar-hallazgo/:id"
+                    element={<EditarHallazgo />}
                 />
 
             </Routes>

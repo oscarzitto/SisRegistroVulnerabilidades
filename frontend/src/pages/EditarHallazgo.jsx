@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-function CrearHallazgo() {
+function EditarHallazgo() {
 
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const [form, setForm] = useState({
-
         fecha: "",
         activo_afectado: "",
         tipo: "",
@@ -17,91 +17,104 @@ function CrearHallazgo() {
         recomendacion: "",
         estado: "Nuevo",
         responsable: ""
-
     });
 
+    // 🟡 CARGAR DATOS DEL HALLAZGO
+    useEffect(() => {
+
+        fetch(`http://localhost:3000/hallazgos`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                const hallazgo = data.find(h => h.id == id);
+                if (hallazgo) {
+                    setForm(hallazgo);
+                }
+            });
+
+    }, []);
+
     function cambiar(e) {
-
         setForm({
-
             ...form,
             [e.target.name]: e.target.value
-
         });
-
     }
 
+    // 🟢 GUARDAR EDICIÓN
     async function enviar(e) {
-
         e.preventDefault();
 
         const res = await fetch(
-            "http://localhost:3000/hallazgos",
+            `http://localhost:3000/hallazgos/${id}`,
             {
-                method: "POST",
-
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
                 },
-
                 body: JSON.stringify(form)
-
-            });
+            }
+        );
 
         const data = await res.json();
 
         alert(data.mensaje);
 
+        navigate("/hallazgos");
     }
 
     return (
 
         <div>
 
-            <h1>Crear Hallazgo</h1>
+            <h1>Editar Hallazgo</h1>
 
             <form onSubmit={enviar}>
 
                 <input
                     name="fecha"
                     type="date"
+                    value={form.fecha}
                     onChange={cambiar}
                 />
 
                 <input
                     name="activo_afectado"
-                    placeholder="Activo"
+                    value={form.activo_afectado}
                     onChange={cambiar}
                 />
 
                 <input
                     name="tipo"
-                    placeholder="Tipo"
+                    value={form.tipo}
                     onChange={cambiar}
                 />
 
                 <input
                     name="severidad"
-                    placeholder="Severidad"
+                    value={form.severidad}
                     onChange={cambiar}
                 />
 
                 <input
                     name="descripcion"
-                    placeholder="Descripción"
+                    value={form.descripcion}
                     onChange={cambiar}
                 />
 
                 <input
                     name="evidencia"
-                    placeholder="Evidencia"
+                    value={form.evidencia}
                     onChange={cambiar}
                 />
 
                 <input
                     name="recomendacion"
-                    placeholder="Recomendación"
+                    value={form.recomendacion}
                     onChange={cambiar}
                 />
 
@@ -119,12 +132,12 @@ function CrearHallazgo() {
 
                 <input
                     name="responsable"
-                    placeholder="Responsable"
+                    value={form.responsable}
                     onChange={cambiar}
                 />
 
                 <button>
-                    Guardar
+                    Guardar cambios
                 </button>
 
                 <button
@@ -142,4 +155,4 @@ function CrearHallazgo() {
 
 }
 
-export default CrearHallazgo;
+export default EditarHallazgo;

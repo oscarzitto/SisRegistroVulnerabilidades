@@ -34,10 +34,9 @@ function Hallazgos() {
 
     async function editar(h) {
 
-        const nuevoEstado =
-            prompt(
-                "Nuevo estado:"
-            );
+        const nuevoEstado = window.prompt(
+            "Escribe el estado:\nNuevo\nEn análisis\nEn remediación\nMitigado\nCerrado"
+        );
 
         if (!nuevoEstado) return;
 
@@ -111,6 +110,32 @@ function Hallazgos() {
 
     }
 
+    async function eliminar(id) {
+
+        const token = localStorage.getItem("token");
+
+        const confirmacion = confirm("¿Seguro que quieres eliminar este hallazgo?");
+
+        if (!confirmacion) return;
+
+        const res = await fetch(
+            `http://localhost:3000/hallazgos/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await res.json();
+
+        alert(data.mensaje);
+
+        window.location.reload();
+
+    }
+
     return (
 
         <div>
@@ -127,10 +152,10 @@ function Hallazgos() {
             </button>
 
             <button onClick={exportar}>
-            Exportar CSV
+                Exportar CSV
             </button>
 
-            <button onClick={() => navigate(-1)}>
+            <button onClick={() => navigate("/dashboard")}>
                 Volver
             </button>
 
@@ -173,12 +198,15 @@ function Hallazgos() {
 
                         <p><b>Responsable:</b> {h.responsable}</p>
 
+                        <button onClick={() => navigate(`/editar-hallazgo/${h.id}`)}>
+                            Editar
+                        </button>
+
                         <button
-                            onClick={() => editar(h)}
+                            onClick={() => eliminar(h.id)}
+                            style={{ backgroundColor: "red", color: "white" }}
                         >
-
-                            Cambiar estado
-
+                            Eliminar
                         </button>
 
                         <hr />

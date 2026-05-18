@@ -69,9 +69,9 @@ const crearHallazgo = (req, res) => {
                 VALUES(?,?,datetime('now'))`,
 
                 [
-                req.usuario.nombre,
-                `Creó hallazgo ${tipo}`
-            ]
+                    req.usuario.nombre,
+                    `Creó hallazgo ${tipo}`
+                ]
 
             );
 
@@ -181,27 +181,19 @@ const editarHallazgo = (req, res) => {
                 [
                     id,
                     req.usuario.nombre,
-                    `Cambio estado a ${estado}`
+                    `Editó hallazgo ID ${id} - Tipo: ${tipo} - Estado: ${estado}`
                 ]
 
             );
 
             db.run(
-
                 `INSERT INTO auditoria
-                (
-                usuario,
-                evento,
-                fecha
-                )
-
-                VALUES(?,?,datetime('now'))`,
-
+                (usuario, evento, fecha)
+                VALUES (?,?,datetime('now'))`,
                 [
-                req.usuario.nombre,
-                `Cambió estado a ${estado}`
+                    req.usuario.nombre,
+                    `Editó hallazgo ID ${id} - Tipo: ${tipo} - Estado: ${estado}`
                 ]
-
             );
 
             res.json({
@@ -214,8 +206,43 @@ const editarHallazgo = (req, res) => {
 
 };
 
+const eliminarHallazgo = (req, res) => {
+
+    const { id } = req.params;
+
+    db.run(
+        `DELETE FROM hallazgos WHERE id=?`,
+        [id],
+        function (err) {
+
+            if (err) {
+                return res.status(500).json({
+                    mensaje: "Error al eliminar"
+                });
+            }
+
+            db.run(
+                `INSERT INTO auditoria
+            (usuario, evento, fecha)
+            VALUES (?,?,datetime('now'))`,
+                [
+                    req.usuario.nombre,
+                    `Eliminó hallazgo ID ${id}`
+                ]
+            );
+
+            res.json({
+                mensaje: "Hallazgo eliminado"
+            });
+
+        }
+    );
+
+};
+
 module.exports = {
     crearHallazgo,
     listarHallazgos,
-    editarHallazgo
+    editarHallazgo,
+    eliminarHallazgo
 };
