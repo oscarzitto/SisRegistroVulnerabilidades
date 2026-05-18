@@ -1,94 +1,94 @@
 const db = require("../database/db");
 
-const crearHallazgo=(req,res)=>{
+const crearHallazgo = (req, res) => {
 
-console.log(req.body);
+    console.log(req.body);
 
-const{
-fecha,
-activo_afectado,
-tipo,
-severidad,
-descripcion,
-evidencia,
-recomendacion,
-estado,
-responsable
-}=req.body;
+    const {
+        fecha,
+        activo_afectado,
+        tipo,
+        severidad,
+        descripcion,
+        evidencia,
+        recomendacion,
+        estado,
+        responsable
+    } = req.body;
 
-db.run(
+    db.run(
 
-`INSERT INTO hallazgos
-(
-fecha,
-activo_afectado,
-tipo,
-severidad,
-descripcion,
-evidencia,
-recomendacion,
-estado,
-responsable
-)
-VALUES(?,?,?,?,?,?,?,?,?)`,
+        `INSERT INTO hallazgos
+        (
+        fecha,
+        activo_afectado,
+        tipo,
+        severidad,
+        descripcion,
+        evidencia,
+        recomendacion,
+        estado,
+        responsable
+        )
+        VALUES(?,?,?,?,?,?,?,?,?)`,
 
-[
-fecha,
-activo_afectado,
-tipo,
-severidad,
-descripcion,
-evidencia,
-recomendacion,
-estado,
-responsable
-],
+        [
+            fecha,
+            activo_afectado,
+            tipo,
+            severidad,
+            descripcion,
+            evidencia,
+            recomendacion,
+            estado,
+            responsable
+        ],
 
-function(err){
+        function (err) {
 
-if(err){
+            if (err) {
 
-console.log(err);
+                console.log(err);
 
-return res.status(500).json({
-mensaje:"Error",
-detalle:err.message
-});
+                return res.status(500).json({
+                    mensaje: "Error",
+                    detalle: err.message
+                });
 
-}
+            }
 
-res.json({
-mensaje:"Hallazgo creado"
-});
+            res.json({
+                mensaje: "Hallazgo creado"
+            });
 
-}
+        }
 
-);
-
-};
-
-const listarHallazgos=(req,res)=>{
-
-db.all(
-"SELECT * FROM hallazgos",
-[],
-(err,rows)=>{
-
-if(err){
-
-return res.status(500).json({
-mensaje:"Error"
-});
-
-}
-
-res.json(rows);
-
-});
+    );
 
 };
 
-module.exports={
-crearHallazgo,
-listarHallazgos
+const listarHallazgos = (req, res) => {
+
+    db.all(
+        "SELECT * FROM hallazgos",
+        [],
+        (err, rows) => {
+
+            if (err) {
+
+                return res.status(500).json({
+                    mensaje: "Error"
+                });
+
+            }
+
+            res.json(rows);
+
+        });
+
+};
+
+module.exports = {
+    crearHallazgo,
+    listarHallazgos
 };
