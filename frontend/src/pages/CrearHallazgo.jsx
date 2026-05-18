@@ -81,11 +81,16 @@ function CrearHallazgo() {
                     onChange={cambiar}
                 />
 
-                <input
+                <select
                     name="severidad"
-                    placeholder="Severidad"
+                    value={form.severidad}
                     onChange={cambiar}
-                />
+                >
+                    <option value="Baja">Baja</option>
+                    <option value="Media">Media</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Crítica">Crítica</option>
+                </select>
 
                 <input
                     name="descripcion"

@@ -11,6 +11,21 @@ function Hallazgos() {
 
     const navigate = useNavigate();
 
+    const [filtros, setFiltros] = useState({
+        estado: "",
+        severidad: "",
+        activo: "",
+        desde: "",
+        hasta: ""
+    });
+
+    function cambiarFiltro(e) {
+        setFiltros({
+            ...filtros,
+            [e.target.name]: e.target.value
+        });
+    }
+
     useEffect(() => {
 
         fetch(
@@ -142,6 +157,45 @@ function Hallazgos() {
 
             <h1>Hallazgos</h1>
 
+            <div style={{ marginBottom: "20px" }}>
+
+                <select name="estado" onChange={cambiarFiltro}>
+                    <option value="">Estado</option>
+                    <option>Nuevo</option>
+                    <option>En análisis</option>
+                    <option>En remediación</option>
+                    <option>Mitigado</option>
+                    <option>Cerrado</option>
+                </select>
+
+                <select name="severidad" onChange={cambiarFiltro}>
+                    <option value="">Severidad</option>
+                    <option>Baja</option>
+                    <option>Media</option>
+                    <option>Alta</option>
+                    <option>Crítica</option>
+                </select>
+
+                <input
+                    name="activo"
+                    placeholder="Activo"
+                    onChange={cambiarFiltro}
+                />
+
+                <input
+                    type="date"
+                    name="desde"
+                    onChange={cambiarFiltro}
+                />
+
+                <input
+                    type="date"
+                    name="hasta"
+                    onChange={cambiarFiltro}
+                />
+
+            </div>
+
             <input
                 placeholder="Buscar por tipo..."
                 onChange={(e) => setFiltro(e.target.value)}
@@ -161,15 +215,33 @@ function Hallazgos() {
 
             {hallazgos
 
-                .filter(h =>
+                .filter(h => {
 
-                    h.tipo
-                        .toLowerCase()
-                        .includes(
-                            filtro.toLowerCase()
-                        )
+                    const cumpleEstado =
+                        !filtros.estado || h.estado === filtros.estado;
 
-                )
+                    const cumpleSeveridad =
+                        !filtros.severidad || h.severidad === filtros.severidad;
+
+                    const cumpleActivo =
+                        !filtros.activo ||
+                        h.activo_afectado.toLowerCase().includes(filtros.activo.toLowerCase());
+
+                    const cumpleFechaDesde =
+                        !filtros.desde || h.fecha >= filtros.desde;
+
+                    const cumpleFechaHasta =
+                        !filtros.hasta || h.fecha <= filtros.hasta;
+
+                    return (
+                        cumpleEstado &&
+                        cumpleSeveridad &&
+                        cumpleActivo &&
+                        cumpleFechaDesde &&
+                        cumpleFechaHasta
+                    );
+
+                })
 
                 .map(h => (
 
