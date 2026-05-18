@@ -82,7 +82,7 @@ const login = (req, res) => {
             const token = jwt.sign(
                 {
                     id: usuario.id,
-                    nombre:usuario.nombre,
+                    nombre: usuario.nombre,
                     rol: usuario.rol
                 },
 
@@ -102,12 +102,12 @@ const login = (req, res) => {
 
                     VALUES(?,?,datetime('now'))`,
 
-                    [
-                        usuario.nombre,
-                        "Inicio sesión"
-                    ]
+                [
+                    usuario.nombre,
+                    "Inicio sesión"
+                ]
 
-                );
+            );
 
             res.json({
                 mensaje: "Login correcto",
@@ -118,4 +118,22 @@ const login = (req, res) => {
 
 };
 
-module.exports = { register, login };
+const logout = (req, res) => {
+
+    db.run(
+        `INSERT INTO auditoria
+        (usuario, evento, fecha)
+        VALUES (?, ?, datetime('now'))`,
+        [
+            req.usuario.nombre,
+            "Cierre sesión"
+        ]
+    );
+
+    res.json({
+        mensaje: "Logout registrado"
+    });
+
+};
+
+module.exports = { register, login, logout };

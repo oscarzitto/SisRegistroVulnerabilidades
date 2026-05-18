@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Hallazgos() {
 
@@ -7,6 +8,8 @@ function Hallazgos() {
     );
 
     const [hallazgos, setHallazgos] = useState([]);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -119,8 +122,16 @@ function Hallazgos() {
                 onChange={(e) => setFiltro(e.target.value)}
             />
 
+            <button onClick={() => navigate("/crear-hallazgo")}>
+                Crear Hallazgo
+            </button>
+
             <button onClick={exportar}>
             Exportar CSV
+            </button>
+
+            <button onClick={() => navigate(-1)}>
+                Volver
             </button>
 
             {hallazgos

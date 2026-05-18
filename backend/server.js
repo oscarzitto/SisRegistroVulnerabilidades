@@ -15,7 +15,6 @@ app.use(express.json());
 // Rutas API
 const authRoutes = require("./routes/authRoutes");
 const testRoutes = require("./routes/testRoutes");
-const verificarToken = require("./middleware/authMiddleware");
 const hallazgosRoutes = require("./routes/hallazgosRoutes");
 const reportesRoutes = require("./routes/reportesRoutes");
 
@@ -31,22 +30,6 @@ app.get("/",(req,res)=>{
 
 });
 
-// Ruta protegida
-app.get(
-"/protegida",
-verificarToken,
-
-(req,res)=>{
-
-res.json({
-
-mensaje:"Ruta protegida funcionando",
-
-usuario:req.usuario
-
-});
-
-});
 
 // Puerto
 const PORT=process.env.PORT || 3000;

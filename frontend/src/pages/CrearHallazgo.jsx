@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CrearHallazgo() {
 
     const token = localStorage.getItem("token");
+    const navigate = useNavigate();
 
     const [form, setForm] = useState({
 
@@ -111,6 +113,13 @@ function CrearHallazgo() {
 
                 <button>
                     Guardar
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => navigate(-1)}
+                >
+                    Atrás
                 </button>
 
             </form>

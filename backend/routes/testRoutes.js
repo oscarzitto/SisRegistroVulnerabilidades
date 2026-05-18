@@ -1,24 +1,45 @@
-const express=require("express");
+const express = require("express");
 
-const router=express.Router();
+const router = express.Router();
 
-const verificarToken=
-require("../middleware/authMiddleware");
+const verificarToken =
+    require("../middleware/authMiddleware");
+
+const db = require("../database/db");
 
 router.get(
-"/perfil",
-verificarToken,
+    "/perfil",
+    verificarToken,
+    (req, res) => {
 
-(req,res)=>{
+        db.get(
 
-    res.json({
+            "SELECT id,nombre,correo,rol FROM usuarios WHERE id=?",
 
-        mensaje:"Ruta protegida funcionando",
+            [req.usuario.id],
 
-        usuario:req.usuario
+            (err, user) => {
+
+                if (err || !user) {
+
+                    return res.status(500).json({
+
+                        mensaje: "Error al obtener usuario"
+
+                    });
+
+                }
+
+                res.json({
+
+                    usuario: user
+
+                });
+
+            }
+
+        );
 
     });
 
-});
-
-module.exports=router;
+module.exports = router;

@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Hallazgos from "./pages/Hallazgos";
 import CrearHallazgo from "./pages/CrearHallazgo";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
 
@@ -20,17 +21,29 @@ function App() {
 
                 <Route
                     path="/dashboard"
-                    element={<Dashboard />}
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/hallazgos"
-                    element={<Hallazgos />}
+                    element={
+                        <ProtectedRoute>
+                            <Hallazgos />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/crear-hallazgo"
-                    element={<CrearHallazgo />}
+                    element={
+                        <ProtectedRoute>
+                            <CrearHallazgo />
+                        </ProtectedRoute>
+                    }
                 />
 
             </Routes>

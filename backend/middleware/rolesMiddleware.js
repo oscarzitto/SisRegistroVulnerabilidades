@@ -1,25 +1,25 @@
-function verificarRol(...rolesPermitidos){
+function verificarRol(...rolesPermitidos) {
 
-return(req,res,next)=>{
+    return (req, res, next) => {
 
-if(
-!rolesPermitidos.includes(
-req.usuario.rol
-)
-){
+        if (
+            !rolesPermitidos.includes(
+                req.usuario.rol
+            )
+        ) {
 
-return res.status(403).json({
+            return res.status(403).json({
 
-mensaje:"Sin permisos"
+                mensaje: "Sin permisos"
 
-});
+            });
+
+        }
+
+        next();
+
+    };
 
 }
 
-next();
-
-};
-
-}
-
-module.exports=verificarRol;
+module.exports = verificarRol;
