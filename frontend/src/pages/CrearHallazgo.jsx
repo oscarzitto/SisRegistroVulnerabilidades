@@ -128,7 +128,7 @@ function CrearHallazgo() {
                     onChange={cambiar}
                 />
 
-                <button>
+                <button onClick={() => navigate("/hallazgos")}>
                     Guardar
                 </button>
 

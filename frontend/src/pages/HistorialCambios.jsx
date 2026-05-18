@@ -40,6 +40,7 @@ function HistorialCambios() {
 
                     <p><b>Usuario:</b> {h.usuario}</p>
                     <p><b>Acción:</b> {h.accion}</p>
+                    <p><b>Detalle:</b> {h.detalle}</p>
                     <p><b>Fecha:</b> {h.fecha}</p>
                     <p><b>ID Hallazgo:</b> {h.hallazgo_id}</p>
 

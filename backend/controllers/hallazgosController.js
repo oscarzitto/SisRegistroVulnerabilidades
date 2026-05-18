@@ -170,20 +170,14 @@ const editarHallazgo = (req, res) => {
 
             db.run(
                 `INSERT INTO historial
-                (
-                hallazgo_id,
-                usuario,
-                accion,
-                fecha
-                )
-                VALUES(?,?,?,datetime('now'))`,
-
+                (hallazgo_id, usuario, accion, detalle, fecha)
+                VALUES (?,?,?,?,datetime('now'))`,
                 [
                     id,
                     req.usuario.nombre,
-                    `Editó hallazgo ID ${id} - Tipo: ${tipo} - Estado: ${estado}`
+                    "UPDATE",
+                    `Hallazgo "${tipo}" en activo "${activo_afectado}" → Estado: ${estado}`
                 ]
-
             );
 
             db.run(
@@ -210,34 +204,61 @@ const eliminarHallazgo = (req, res) => {
 
     const { id } = req.params;
 
-    db.run(
-        `DELETE FROM hallazgos WHERE id=?`,
+    db.get(
+        "SELECT * FROM hallazgos WHERE id=?",
         [id],
-        function (err) {
+        (err, hallazgo) => {
 
-            if (err) {
+            if (err || !hallazgo) {
                 return res.status(500).json({
-                    mensaje: "Error al eliminar"
+                    mensaje: "Error al obtener hallazgo"
                 });
             }
 
             db.run(
-                `INSERT INTO auditoria
-            (usuario, evento, fecha)
-            VALUES (?,?,datetime('now'))`,
-                [
-                    req.usuario.nombre,
-                    `Eliminó hallazgo ID ${id}`
-                ]
-            );
+                `DELETE FROM hallazgos WHERE id=?`,
+                [id],
+                function (err) {
 
-            res.json({
-                mensaje: "Hallazgo eliminado"
-            });
+                    if (err) {
+                        return res.status(500).json({
+                            mensaje: "Error al eliminar"
+                        });
+                    }
+
+                    // AUDITORÍA
+                    db.run(
+                        `INSERT INTO auditoria
+                        (usuario, evento, fecha)
+                        VALUES (?,?,datetime('now'))`,
+                        [
+                            req.usuario.nombre,
+                            `DELETE - Activo: ${hallazgo.activo_afectado} | ID: ${id}`
+                        ]
+                    );
+
+                    // HISTORIAL
+                    db.run(
+                        `INSERT INTO historial
+                        (hallazgo_id, usuario, accion, detalle, fecha)
+                        VALUES (?,?,?,?,datetime('now'))`,
+                        [
+                            id,
+                            req.usuario.nombre,
+                            "DELETE",
+                            `Se eliminó hallazgo del activo "${hallazgo.activo_afectado}" (${hallazgo.tipo})`
+                        ]
+                    );
+
+                    res.json({
+                        mensaje: "Hallazgo eliminado"
+                    });
+
+                }
+            );
 
         }
     );
-
 };
 
 module.exports = {

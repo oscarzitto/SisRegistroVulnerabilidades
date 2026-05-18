@@ -39,6 +39,7 @@ const db = new sqlite3.Database("./database/database.db", (err) => {
             hallazgo_id INTEGER,
             usuario TEXT,
             accion TEXT,
+            detalle TEXT,
             fecha TEXT
         )
         `);
@@ -48,10 +49,15 @@ const db = new sqlite3.Database("./database/database.db", (err) => {
         CREATE TABLE IF NOT EXISTS auditoria(
 
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             usuario TEXT,
+
             evento TEXT,
+
             fecha TEXT
+
         )
+
         `);
 
     }
