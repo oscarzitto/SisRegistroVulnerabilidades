@@ -9,6 +9,10 @@ function Hallazgos() {
 
     const [hallazgos, setHallazgos] = useState([]);
 
+    const activosUnicos = [
+        ...new Set(hallazgos.map(h => h.activo_afectado))
+    ];
+
     const navigate = useNavigate();
 
     const [filtros, setFiltros] = useState({
@@ -23,6 +27,16 @@ function Hallazgos() {
         setFiltros({
             ...filtros,
             [e.target.name]: e.target.value
+        });
+    }
+
+    function limpiarFiltros() {
+        setFiltros({
+            estado: "",
+            severidad: "",
+            activo: "",
+            desde: "",
+            hasta: ""
         });
     }
 
@@ -159,7 +173,11 @@ function Hallazgos() {
 
             <div style={{ marginBottom: "20px" }}>
 
-                <select name="estado" onChange={cambiarFiltro}>
+                <select
+                    name="estado"
+                    value={filtros.estado}
+                    onChange={cambiarFiltro}
+                >
                     <option value="">Estado</option>
                     <option>Nuevo</option>
                     <option>En análisis</option>
@@ -168,7 +186,11 @@ function Hallazgos() {
                     <option>Cerrado</option>
                 </select>
 
-                <select name="severidad" onChange={cambiarFiltro}>
+                <select
+                    name="severidad"
+                    value={filtros.severidad}
+                    onChange={cambiarFiltro}
+                >
                     <option value="">Severidad</option>
                     <option>Baja</option>
                     <option>Media</option>
@@ -176,30 +198,40 @@ function Hallazgos() {
                     <option>Crítica</option>
                 </select>
 
-                <input
+                <select
                     name="activo"
-                    placeholder="Activo"
+                    value={filtros.activo}
                     onChange={cambiarFiltro}
-                />
+                >
+                    <option value="">Todos los activos</option>
+
+                    {activosUnicos.map((a, i) => (
+                        <option key={i} value={a}>
+                            {a}
+                        </option>
+                    ))}
+                </select>
 
                 <input
                     type="date"
                     name="desde"
+                    value={filtros.desde}
                     onChange={cambiarFiltro}
                 />
 
                 <input
                     type="date"
                     name="hasta"
+                    value={filtros.hasta}
                     onChange={cambiarFiltro}
                 />
 
             </div>
 
-            <input
-                placeholder="Buscar por tipo..."
-                onChange={(e) => setFiltro(e.target.value)}
-            />
+            <button onClick={limpiarFiltros}>
+                Limpiar filtros
+            </button>
+
 
             <button onClick={() => navigate("/crear-hallazgo")}>
                 Crear Hallazgo
@@ -232,6 +264,7 @@ function Hallazgos() {
 
                     const cumpleFechaHasta =
                         !filtros.hasta || h.fecha <= filtros.hasta;
+                        
 
                     return (
                         cumpleEstado &&
@@ -242,6 +275,7 @@ function Hallazgos() {
                     );
 
                 })
+                .sort((a, b) => new Date(b.fecha) - new Date(a.fecha)) // 🔥 NUEVO
 
                 .map(h => (
 
@@ -253,6 +287,13 @@ function Hallazgos() {
                             margin: "10px"
                         }}
                     >
+
+                        <button
+                            onClick={() => eliminar(h.id)}
+                            style={{ backgroundColor: "red", color: "white" }}
+                        >
+                            Eliminar
+                        </button>
 
                         <p><b>ID:</b> {h.id}</p>
 
@@ -270,16 +311,12 @@ function Hallazgos() {
 
                         <p><b>Responsable:</b> {h.responsable}</p>
 
+                        <p><b>Fecha de hallazgo:</b> {h.fecha}</p>
+
                         <button onClick={() => navigate(`/editar-hallazgo/${h.id}`)}>
                             Editar
                         </button>
 
-                        <button
-                            onClick={() => eliminar(h.id)}
-                            style={{ backgroundColor: "red", color: "white" }}
-                        >
-                            Eliminar
-                        </button>
 
                         <hr />
 
