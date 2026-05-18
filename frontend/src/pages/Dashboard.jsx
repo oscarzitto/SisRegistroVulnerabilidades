@@ -76,6 +76,14 @@ function Dashboard() {
                 Historial de cambios
             </button>
 
+            <button
+                onClick={() =>
+                    navigate("/auditoria")
+                }
+            >
+                Auditoría
+            </button>
+
             <button onClick={logout}>
                 Cerrar sesión
             </button>

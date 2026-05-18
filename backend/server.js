@@ -18,12 +18,14 @@ const testRoutes = require("./routes/testRoutes");
 const hallazgosRoutes = require("./routes/hallazgosRoutes");
 const reportesRoutes = require("./routes/reportesRoutes");
 const historialRoutes = require("./routes/historialRoutes");
+const auditoriaRoutes = require("./routes/auditoriaRoutes");
 
 app.use(authRoutes);
 app.use(testRoutes);
 app.use(hallazgosRoutes);
 app.use(reportesRoutes);
 app.use("/historial", historialRoutes);
+app.use(auditoriaRoutes);
 
 
 // Ruta principal

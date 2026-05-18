@@ -7,6 +7,7 @@ import CrearHallazgo from "./pages/CrearHallazgo";
 import EditarHallazgo from "./pages/EditarHallazgo";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import HistorialCambios from "./pages/HistorialCambios";
+import Auditoria from "./pages/Auditoria";
 
 function App() {
 
@@ -58,6 +59,11 @@ function App() {
                     element={<HistorialCambios />
 
                     }
+                />
+
+                <Route
+                    path="/auditoria"
+                    element={<Auditoria />}
                 />
 
             </Routes>
