@@ -57,6 +57,24 @@ const crearHallazgo = (req, res) => {
 
             }
 
+            db.run(
+
+                `INSERT INTO auditoria
+                (
+                usuario,
+                evento,
+                fecha
+                )
+
+                VALUES(?,?,datetime('now'))`,
+
+                [
+                req.usuario.nombre,
+                `Creó hallazgo ${tipo}`
+            ]
+
+            );
+
             res.json({
                 mensaje: "Hallazgo creado"
             });
@@ -88,7 +106,116 @@ const listarHallazgos = (req, res) => {
 
 };
 
+const editarHallazgo = (req, res) => {
+
+    console.log(req.body);
+
+    const { id } = req.params;
+
+    const {
+        fecha,
+        activo_afectado,
+        tipo,
+        severidad,
+        descripcion,
+        evidencia,
+        recomendacion,
+        estado,
+        responsable
+    } = req.body;
+
+    db.run(
+
+        `UPDATE hallazgos
+            SET
+
+            fecha=?,
+            activo_afectado=?,
+            tipo=?,
+            severidad=?,
+            descripcion=?,
+            evidencia=?,
+            recomendacion=?,
+            estado=?,
+            responsable=?
+
+            WHERE id=?`,
+
+        [
+            fecha,
+            activo_afectado,
+            tipo,
+            severidad,
+            descripcion,
+            evidencia,
+            recomendacion,
+            estado,
+            responsable,
+            id
+        ],
+
+        function (err) {
+
+            if (err) {
+
+                console.log(err);
+
+                return res.status(500).json({
+
+                    mensaje: "Error"
+
+                });
+
+            }
+
+            db.run(
+                `INSERT INTO historial
+                (
+                hallazgo_id,
+                usuario,
+                accion,
+                fecha
+                )
+                VALUES(?,?,?,datetime('now'))`,
+
+                [
+                    id,
+                    req.usuario.nombre,
+                    `Cambio estado a ${estado}`
+                ]
+
+            );
+
+            db.run(
+
+                `INSERT INTO auditoria
+                (
+                usuario,
+                evento,
+                fecha
+                )
+
+                VALUES(?,?,datetime('now'))`,
+
+                [
+                req.usuario.nombre,
+                `Cambió estado a ${estado}`
+                ]
+
+            );
+
+            res.json({
+                mensaje: "Hallazgo actualizado"
+            });
+
+        }
+
+    );
+
+};
+
 module.exports = {
     crearHallazgo,
-    listarHallazgos
+    listarHallazgos,
+    editarHallazgo
 };

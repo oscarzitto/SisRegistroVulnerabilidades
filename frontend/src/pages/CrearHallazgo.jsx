@@ -1,0 +1,124 @@
+import { useState } from "react";
+
+function CrearHallazgo() {
+
+    const token = localStorage.getItem("token");
+
+    const [form, setForm] = useState({
+
+        fecha: "",
+        activo_afectado: "",
+        tipo: "",
+        severidad: "",
+        descripcion: "",
+        evidencia: "",
+        recomendacion: "",
+        estado: "Nuevo",
+        responsable: ""
+
+    });
+
+    function cambiar(e) {
+
+        setForm({
+
+            ...form,
+            [e.target.name]: e.target.value
+
+        });
+
+    }
+
+    async function enviar(e) {
+
+        e.preventDefault();
+
+        const res = await fetch(
+            "http://localhost:3000/hallazgos",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+
+                body: JSON.stringify(form)
+
+            });
+
+        const data = await res.json();
+
+        alert(data.mensaje);
+
+    }
+
+    return (
+
+        <div>
+
+            <h1>Crear Hallazgo</h1>
+
+            <form onSubmit={enviar}>
+
+                <input
+                    name="fecha"
+                    type="date"
+                    onChange={cambiar}
+                />
+
+                <input
+                    name="activo_afectado"
+                    placeholder="Activo"
+                    onChange={cambiar}
+                />
+
+                <input
+                    name="tipo"
+                    placeholder="Tipo"
+                    onChange={cambiar}
+                />
+
+                <input
+                    name="severidad"
+                    placeholder="Severidad"
+                    onChange={cambiar}
+                />
+
+                <input
+                    name="descripcion"
+                    placeholder="Descripción"
+                    onChange={cambiar}
+                />
+
+                <input
+                    name="evidencia"
+                    placeholder="Evidencia"
+                    onChange={cambiar}
+                />
+
+                <input
+                    name="recomendacion"
+                    placeholder="Recomendación"
+                    onChange={cambiar}
+                />
+
+                <input
+                    name="responsable"
+                    placeholder="Responsable"
+                    onChange={cambiar}
+                />
+
+                <button>
+                    Guardar
+                </button>
+
+            </form>
+
+        </div>
+
+    );
+
+}
+
+export default CrearHallazgo;

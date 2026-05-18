@@ -48,6 +48,8 @@ function Dashboard() {
 
                     <p>Rol: {usuario.rol}</p>
 
+                    <p>Correo: {usuario.correo}</p>
+
                 </div>
 
             )}

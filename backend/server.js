@@ -17,10 +17,12 @@ const authRoutes = require("./routes/authRoutes");
 const testRoutes = require("./routes/testRoutes");
 const verificarToken = require("./middleware/authMiddleware");
 const hallazgosRoutes = require("./routes/hallazgosRoutes");
+const reportesRoutes = require("./routes/reportesRoutes");
 
 app.use(authRoutes);
 app.use(testRoutes);
 app.use(hallazgosRoutes);
+app.use(reportesRoutes);
 
 // Ruta principal
 app.get("/",(req,res)=>{
@@ -29,7 +31,7 @@ app.get("/",(req,res)=>{
 
 });
 
-// Ruta protegida
+// Ruta protegida*
 app.get(
 "/protegida",
 verificarToken,

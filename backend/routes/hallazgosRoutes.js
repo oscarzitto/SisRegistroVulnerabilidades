@@ -5,9 +5,13 @@ const router=express.Router();
 const verificarToken=
 require("../middleware/authMiddleware");
 
+const verificarRol=
+require("../middleware/rolesMiddleware");
+
 const{
 crearHallazgo,
-listarHallazgos
+listarHallazgos,
+editarHallazgo
 }
 =
 require("../controllers/hallazgosController");
@@ -24,4 +28,11 @@ verificarToken,
 listarHallazgos
 );
 
+router.put(
+"/hallazgos/:id",
+verificarToken,
+verificarRol("admin"),
+editarHallazgo
+);
+ 
 module.exports=router;

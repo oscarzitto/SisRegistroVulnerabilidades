@@ -3,65 +3,65 @@ const db = require("../database/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const register = async (req,res)=>{
+const register = async (req, res) => {
 
-    const {nombre,correo,password,rol}=req.body;
+    const { nombre, correo, password, rol } = req.body;
 
-    if(!nombre || !correo || !password || !rol){
+    if (!nombre || !correo || !password || !rol) {
         return res.status(400).json({
-            mensaje:"Faltan campos"
+            mensaje: "Faltan campos"
         });
     }
 
-    try{
+    try {
 
-        const hash = await bcrypt.hash(password,10);
+        const hash = await bcrypt.hash(password, 10);
 
         db.run(
-        `INSERT INTO usuarios
+            `INSERT INTO usuarios
         (nombre,correo,password_hash,rol)
         VALUES(?,?,?,?)`,
-        [nombre,correo,hash,rol],
+            [nombre, correo, hash, rol],
 
-        function(err){
+            function (err) {
 
-            if(err){
+                if (err) {
 
-                return res.status(500).json({
-                    mensaje:"Error al registrar"
+                    return res.status(500).json({
+                        mensaje: "Error al registrar"
+                    });
+                }
+
+                res.json({
+                    mensaje: "Usuario creado"
                 });
-            }
 
-            res.json({
-                mensaje:"Usuario creado"
             });
 
-        });
-
-    }catch(error){
+    } catch (error) {
 
         res.status(500).json({
-            mensaje:"Error"
+            mensaje: "Error"
         });
 
     }
 
 };
 
-const login = (req,res)=>{
+const login = (req, res) => {
 
-    const {correo,password}=req.body;
+    const { correo, password } = req.body;
 
     db.get(
         "SELECT * FROM usuarios WHERE correo=?",
         [correo],
 
-        async(err,usuario)=>{
+        async (err, usuario) => {
 
-            if(err || !usuario){
+            if (err || !usuario) {
 
                 return res.status(401).json({
-                    mensaje:"Usuario no encontrado"
+                    mensaje: "Usuario no encontrado"
                 });
 
             }
@@ -71,28 +71,46 @@ const login = (req,res)=>{
                 usuario.password_hash
             );
 
-            if(!valido){
+            if (!valido) {
 
                 return res.status(401).json({
-                    mensaje:"Contraseña incorrecta"
+                    mensaje: "Contraseña incorrecta"
                 });
 
             }
 
             const token = jwt.sign(
-            {
-                id:usuario.id,
-                rol:usuario.rol
-            },
+                {
+                    id: usuario.id,
+                    nombre:usuario.nombre,
+                    rol: usuario.rol
+                },
 
-            process.env.JWT_SECRET,
+                process.env.JWT_SECRET,
 
-            {
-                expiresIn:"1h"
-            });
+                {
+                    expiresIn: "1h"
+                });
+
+            db.run(
+                `INSERT INTO auditoria
+                    (
+                    usuario,
+                    evento,
+                    fecha
+                    )
+
+                    VALUES(?,?,datetime('now'))`,
+
+                    [
+                        usuario.nombre,
+                        "Inicio sesión"
+                    ]
+
+                );
 
             res.json({
-                mensaje:"Login correcto",
+                mensaje: "Login correcto",
                 token
             });
 
@@ -100,4 +118,4 @@ const login = (req,res)=>{
 
 };
 
-module.exports={register,login};
+module.exports = { register, login };
