@@ -8,6 +8,7 @@ import EditarHallazgo from "./pages/EditarHallazgo";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import HistorialCambios from "./pages/HistorialCambios";
 import Auditoria from "./pages/Auditoria";
+import CrearUsuario from "./pages/CrearUsuario";
 
 function App() {
 
@@ -64,6 +65,11 @@ function App() {
                 <Route
                     path="/auditoria"
                     element={<Auditoria />}
+                />
+
+                <Route
+                    path="/crear-usuario"
+                    element={<CrearUsuario />}
                 />
 
             </Routes>

@@ -68,21 +68,36 @@ function Dashboard() {
                 Crear Hallazgo
             </button>
 
-            <button onClick={""}>
-                Registrar un usuario
-            </button>
-
             <button onClick={() => navigate("/historial-cambios")}>
                 Historial de cambios
             </button>
 
-            <button
-                onClick={() =>
-                    navigate("/auditoria")
-                }
-            >
-                Auditoría
+            {usuario?.rol === "admin" && (
+            <button onClick={() => navigate("/crear-usuario")}>
+                Registrar un usuario
             </button>
+            )}
+
+            {usuario?.rol === "admin" && (
+                <button
+                    onClick={() =>
+                        navigate("/auditoria")
+                    }
+                >
+                    Auditoría
+                </button>
+            )}
+
+            {usuario?.rol === "admin" && (
+                <button
+                    onClick={() =>
+                        navigate(
+                            "/crear-usuario"
+                        )}
+                >
+                    Crear usuarios
+                </button>
+            )}
 
             <button onClick={logout}>
                 Cerrar sesión
