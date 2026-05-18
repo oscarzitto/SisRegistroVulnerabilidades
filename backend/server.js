@@ -16,9 +16,11 @@ app.use(express.json());
 const authRoutes = require("./routes/authRoutes");
 const testRoutes = require("./routes/testRoutes");
 const verificarToken = require("./middleware/authMiddleware");
+const hallazgosRoutes = require("./routes/hallazgosRoutes");
 
 app.use(authRoutes);
 app.use(testRoutes);
+app.use(hallazgosRoutes);
 
 // Ruta principal
 app.get("/",(req,res)=>{
