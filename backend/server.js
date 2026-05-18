@@ -31,7 +31,7 @@ app.get("/",(req,res)=>{
 
 });
 
-// Ruta protegida*
+// Ruta protegida
 app.get(
 "/protegida",
 verificarToken,
