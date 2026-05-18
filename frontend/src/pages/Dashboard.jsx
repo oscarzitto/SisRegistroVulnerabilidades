@@ -72,6 +72,10 @@ function Dashboard() {
                 Registrar un usuario
             </button>
 
+            <button onClick={() => navigate("/historial-cambios")}>
+                Historial de cambios
+            </button>
+
             <button onClick={logout}>
                 Cerrar sesión
             </button>

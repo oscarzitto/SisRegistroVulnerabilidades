@@ -237,6 +237,10 @@ function Hallazgos() {
                 Crear Hallazgo
             </button>
 
+            <button onClick={() => navigate("/historial-cambios")}>
+                Historial de cambios
+            </button>
+
             <button onClick={exportar}>
                 Exportar CSV
             </button>

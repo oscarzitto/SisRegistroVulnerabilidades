@@ -6,6 +6,7 @@ import Hallazgos from "./pages/Hallazgos";
 import CrearHallazgo from "./pages/CrearHallazgo";
 import EditarHallazgo from "./pages/EditarHallazgo";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import HistorialCambios from "./pages/HistorialCambios";
 
 function App() {
 
@@ -46,10 +47,17 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
-                
+
                 <Route
                     path="/editar-hallazgo/:id"
                     element={<EditarHallazgo />}
+                />
+
+                <Route
+                    path="/historial-cambios"
+                    element={<HistorialCambios />
+
+                    }
                 />
 
             </Routes>
