@@ -73,9 +73,9 @@ function Dashboard() {
             </button>
 
             {usuario?.rol === "admin" && (
-            <button onClick={() => navigate("/crear-usuario")}>
-                Registrar un usuario
-            </button>
+                <button onClick={() => navigate("/crear-usuario")}>
+                    Registrar un usuario
+                </button>
             )}
 
             {usuario?.rol === "admin" && (
@@ -88,17 +88,6 @@ function Dashboard() {
                 </button>
             )}
 
-            {usuario?.rol === "admin" && (
-                <button
-                    onClick={() =>
-                        navigate(
-                            "/crear-usuario"
-                        )}
-                >
-                    Crear usuarios
-                </button>
-            )}
-
             <button onClick={logout}>
                 Cerrar sesión
             </button>
@@ -106,6 +95,10 @@ function Dashboard() {
             {usuario && (
 
                 <div>
+
+                    <h3>
+                        Bienvenido, {usuario.nombre}
+                    </h3>
 
                     <p>ID: {usuario.id}</p>
 
