@@ -8,19 +8,40 @@ function Login() {
 
     const enviar = async () => {
 
-        const res = await api.post(
-            "/login",
-            {
-                correo,
-                password
-            });
+        try {
 
-        localStorage.setItem(
-            "token",
-            res.data.token
-        );
+            const res = await api.post(
+                "/login",
+                {
+                    correo,
+                    password
+                }
+            );
 
-        window.location="/dashboard";
+            localStorage.setItem(
+                "token",
+                res.data.token
+            );
+
+            localStorage.setItem(
+                "usuario",
+                JSON.stringify(
+                    res.data.usuario
+                )
+            );
+
+            window.location = "/dashboard";
+
+        }
+
+        catch (error) {
+
+            alert(
+                error.response?.data?.mensaje ||
+                "Error al iniciar sesión"
+            );
+
+        }
 
     };
 
@@ -32,13 +53,17 @@ function Login() {
 
             <input
                 placeholder="correo"
-                onChange={(e) => setCorreo(e.target.value)}
+                onChange={(e) =>
+                    setCorreo(e.target.value)
+                }
             />
 
             <input
                 type="password"
                 placeholder="contraseña"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) =>
+                    setPassword(e.target.value)
+                }
             />
 
             <button onClick={enviar}>

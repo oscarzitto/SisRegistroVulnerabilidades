@@ -20,26 +20,29 @@ require("../controllers/hallazgosController");
 router.post(
 "/hallazgos",
 verificarToken,
+verificarRol("admin","analista"),
 crearHallazgo
 );
 
 router.get(
 "/hallazgos",
 verificarToken,
+verificarRol("admin","analista"),
 listarHallazgos
 );
 
 router.put(
 "/hallazgos/:id",
 verificarToken,
-verificarRol("admin"),
+verificarRol("admin","analista"),
 editarHallazgo
 );
 
 router.delete(
 "/hallazgos/:id",
 verificarToken,
+verificarRol("admin"), // solo admin
 eliminarHallazgo
 );
- 
+
 module.exports=router;

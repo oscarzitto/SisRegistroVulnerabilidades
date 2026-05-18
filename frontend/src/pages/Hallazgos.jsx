@@ -13,6 +13,11 @@ function Hallazgos() {
         ...new Set(hallazgos.map(h => h.activo_afectado))
     ];
 
+    const usuario =
+        JSON.parse(
+            localStorage.getItem("usuario")
+        );
+
     const navigate = useNavigate();
 
     const [filtros, setFiltros] = useState({
@@ -268,7 +273,7 @@ function Hallazgos() {
 
                     const cumpleFechaHasta =
                         !filtros.hasta || h.fecha <= filtros.hasta;
-                        
+
 
                     return (
                         cumpleEstado &&
@@ -292,12 +297,19 @@ function Hallazgos() {
                         }}
                     >
 
-                        <button
-                            onClick={() => eliminar(h.id)}
-                            style={{ backgroundColor: "red", color: "white" }}
-                        >
-                            Eliminar
-                        </button>
+                        {usuario?.rol === "admin" && (
+
+                            <button
+                                onClick={() => eliminar(h.id)}
+                                style={{
+                                    backgroundColor: "red",
+                                    color: "white"
+                                }}
+                            >
+                                Eliminar
+                            </button>
+
+                        )}
 
                         <p><b>ID:</b> {h.id}</p>
 

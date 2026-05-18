@@ -111,7 +111,12 @@ const login = (req, res) => {
 
             res.json({
                 mensaje: "Login correcto",
-                token
+                token,
+
+                usuario: {
+                    nombre: usuario.nombre,
+                    rol: usuario.rol
+                }
             });
 
         });
