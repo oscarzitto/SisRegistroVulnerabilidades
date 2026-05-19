@@ -13,6 +13,12 @@ function Hallazgos() {
         ...new Set(hallazgos.map(h => h.activo_afectado))
     ];
 
+    const responsablesUnicos = [
+        ...new Set(
+            hallazgos.map(h => h.responsable)
+        )
+    ];
+
     const usuario =
         JSON.parse(
             localStorage.getItem("usuario")
@@ -24,6 +30,7 @@ function Hallazgos() {
         estado: "",
         severidad: "",
         activo: "",
+        responsable: "",
         desde: "",
         hasta: ""
     });
@@ -40,6 +47,7 @@ function Hallazgos() {
             estado: "",
             severidad: "",
             activo: "",
+            responsable: "",
             desde: "",
             hasta: ""
         });
@@ -217,6 +225,27 @@ function Hallazgos() {
                     ))}
                 </select>
 
+                <select
+                    name="responsable"
+                    value={filtros.responsable}
+                    onChange={cambiarFiltro}
+                >
+                    <option value="">
+                        Todos responsables
+                    </option>
+
+                    {responsablesUnicos.map((r, i) => (
+
+                        <option
+                            key={i}
+                            value={r}
+                        >
+                            {r}
+                        </option>
+
+                    ))}
+                </select>
+
                 <input
                     type="date"
                     name="desde"
@@ -268,6 +297,12 @@ function Hallazgos() {
                         !filtros.activo ||
                         h.activo_afectado.toLowerCase().includes(filtros.activo.toLowerCase());
 
+                    const cumpleResponsable =
+
+                        !filtros.responsable ||
+
+                        h.responsable === filtros.responsable;
+
                     const cumpleFechaDesde =
                         !filtros.desde || h.fecha >= filtros.desde;
 
@@ -279,6 +314,7 @@ function Hallazgos() {
                         cumpleEstado &&
                         cumpleSeveridad &&
                         cumpleActivo &&
+                        cumpleResponsable &&
                         cumpleFechaDesde &&
                         cumpleFechaHasta
                     );
