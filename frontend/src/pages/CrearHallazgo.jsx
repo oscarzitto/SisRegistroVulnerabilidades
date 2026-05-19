@@ -168,13 +168,15 @@ function CrearHallazgo() {
                 }
             );
 
-        const data =
-            await res.json();
+        const data = await res.json();
 
         alert(data.mensaje);
 
-        navigate("/hallazgos");
+        if (res.ok) {
 
+            navigate("/hallazgos");
+
+        }
     }
 
     return (

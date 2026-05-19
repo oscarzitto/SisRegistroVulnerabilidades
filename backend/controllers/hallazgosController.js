@@ -17,107 +17,131 @@ const crearHallazgo = (req, res) => {
     } = req.body;
 
     if (
-
         !fecha ||
         !activo_afectado?.trim() ||
         !tipo?.trim() ||
         !evidencia?.trim() ||
         !recomendacion?.trim() ||
         !responsable?.trim()
-
     ) {
 
         return res.status(400).json({
-
-            mensaje:
-                "Completa todos los campos"
-
+            mensaje: "Completa todos los campos"
         });
 
     }
 
     const regexTipo =
-
         /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\-_.()]+$/;
 
-
-    if (
-
-        !regexTipo.test(tipo)
-
-    ) {
+    if (!regexTipo.test(tipo)) {
 
         return res.status(400).json({
-
             mensaje:
                 "El tipo contiene caracteres no permitidos"
-
         });
 
     }
 
-    db.run(
+    db.get(
 
-        `INSERT INTO hallazgos
-        (
-        fecha,
-        activo_afectado,
-        tipo,
-        severidad,
-        descripcion,
-        evidencia,
-        recomendacion,
-        estado,
-        responsable
-        )
-        VALUES(?,?,?,?,?,?,?,?,?)`,
+        `SELECT id
+        FROM hallazgos
+        WHERE activo_afectado=?
+        AND tipo=?
+        AND fecha=?`,
 
         [
-            fecha,
             activo_afectado,
             tipo,
-            severidad,
-            descripcion,
-            evidencia,
-            recomendacion,
-            estado,
-            responsable
+            fecha
         ],
 
-        function (err) {
+        (err, row) => {
 
             if (err) {
 
-                console.log(err);
-
                 return res.status(500).json({
-                    mensaje: "Error",
-                    detalle: err.message
+                    mensaje: "Error"
+                });
+
+            }
+
+            if (row) {
+
+                return res.status(400).json({
+                    mensaje:
+                        "Ya existe un hallazgo similar"
                 });
 
             }
 
             db.run(
 
-                `INSERT INTO auditoria
+                `INSERT INTO hallazgos
                 (
-                usuario,
-                evento,
-                fecha
+                fecha,
+                activo_afectado,
+                tipo,
+                severidad,
+                descripcion,
+                evidencia,
+                recomendacion,
+                estado,
+                responsable
                 )
-
-                VALUES(?,?,datetime('now'))`,
+                VALUES(?,?,?,?,?,?,?,?,?)`,
 
                 [
-                    req.usuario.nombre,
-                    `Creó hallazgo ${tipo}`
-                ]
+                    fecha,
+                    activo_afectado,
+                    tipo,
+                    severidad,
+                    descripcion,
+                    evidencia,
+                    recomendacion,
+                    estado,
+                    responsable
+                ],
+
+                function (err) {
+
+                    if (err) {
+
+                        console.log(err);
+
+                        return res.status(500).json({
+                            mensaje: "Error",
+                            detalle: err.message
+                        });
+
+                    }
+
+                    db.run(
+
+                        `INSERT INTO auditoria
+                        (
+                        usuario,
+                        evento,
+                        fecha
+                        )
+                        VALUES(?,?,datetime('now'))`,
+
+                        [
+                            req.usuario.nombre,
+                            `Creó hallazgo ${tipo}`
+                        ]
+
+                    );
+
+                    res.json({
+                        mensaje:
+                            "Hallazgo creado"
+                    });
+
+                }
 
             );
-
-            res.json({
-                mensaje: "Hallazgo creado"
-            });
 
         }
 
@@ -204,9 +228,46 @@ const editarHallazgo = (req, res) => {
 
     }
 
-    db.run(
+    db.get(
 
-        `UPDATE hallazgos
+        `SELECT id
+    FROM hallazgos
+    WHERE activo_afectado=?
+    AND tipo=?
+    AND fecha=?
+    AND id != ?`,
+
+        [
+            activo_afectado,
+            tipo,
+            fecha,
+            id
+        ],
+
+        (err, row) => {
+
+            if (err) {
+
+                return res.status(500).json({
+                    mensaje: "Error"
+                });
+
+            }
+
+            if (row) {
+
+                return res.status(400).json({
+
+                    mensaje:
+                        "Ya existe un hallazgo similar"
+
+                });
+
+            }
+
+            db.run(
+
+                `UPDATE hallazgos
             SET
 
             fecha=?,
@@ -221,62 +282,64 @@ const editarHallazgo = (req, res) => {
 
             WHERE id=?`,
 
-        [
-            fecha,
-            activo_afectado,
-            tipo,
-            severidad,
-            descripcion,
-            evidencia,
-            recomendacion,
-            estado,
-            responsable,
-            id
-        ],
-
-        function (err) {
-
-            if (err) {
-
-                console.log(err);
-
-                return res.status(500).json({
-
-                    mensaje: "Error"
-
-                });
-
-            }
-
-            db.run(
-                `INSERT INTO historial
-                (hallazgo_id, usuario, accion, detalle, fecha)
-                VALUES (?,?,?,?,datetime('now'))`,
                 [
-                    id,
-                    req.usuario.nombre,
-                    "UPDATE",
-                    `Editó hallazgo "${tipo}" ID ${id} del activo "${activo_afectado}" a → Estado "${estado}"`
-                ]
-            );
+                    fecha,
+                    activo_afectado,
+                    tipo,
+                    severidad,
+                    descripcion,
+                    evidencia,
+                    recomendacion,
+                    estado,
+                    responsable,
+                    id
+                ],
 
-            db.run(
-                `INSERT INTO auditoria
-                (usuario, evento, fecha)
-                VALUES (?,?,datetime('now'))`,
-                [
-                    req.usuario.nombre,
-                    `Editó hallazgo "${tipo}" ID ${id} del activo "${activo_afectado}" a → Estado "${estado}"`
-                ]
-            );
+                function (err) {
 
-            res.json({
-                mensaje: "Hallazgo actualizado"
-            });
+                    if (err) {
+
+                        return res.status(500).json({
+                            mensaje: "Error"
+                        });
+
+                    }
+
+                    db.run(
+                        `INSERT INTO historial
+                    (hallazgo_id, usuario, accion, detalle, fecha)
+                    VALUES (?,?,?,?,datetime('now'))`,
+                        [
+                            id,
+                            req.usuario.nombre,
+                            "UPDATE",
+                            `Editó hallazgo "${tipo}" ID ${id} del activo "${activo_afectado}" a → Estado "${estado}"`
+                        ]
+                    );
+
+                    db.run(
+                        `INSERT INTO auditoria
+                    (usuario, evento, fecha)
+                    VALUES (?,?,datetime('now'))`,
+                        [
+                            req.usuario.nombre,
+                            `Editó hallazgo "${tipo}" ID ${id} del activo "${activo_afectado}" a → Estado "${estado}"`
+                        ]
+                    );
+
+                    res.json({
+                        mensaje: "Hallazgo actualizado"
+                    });
+
+                }
+
+            );
 
         }
 
     );
+
+
 
 };
 

@@ -186,16 +186,15 @@ function EditarHallazgo() {
             );
 
 
-        const data =
-            await res.json();
+        const data = await res.json();
 
-        alert(
-            data.mensaje
-        );
+        alert(data.mensaje);
 
-        navigate(
-            "/hallazgos"
-        );
+        if (res.ok) {
+
+            navigate("/hallazgos");
+
+        }
 
     }
 
