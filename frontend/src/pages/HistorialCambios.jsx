@@ -82,7 +82,7 @@ function HistorialCambios() {
                 {/* HEADER */}
                 <div className="historial-header">
 
-                    <h1>📜 Historial de Auditoría</h1>
+                    <h1>📜 Historial de Cambios</h1>
 
                     <button className="secondary" onClick={() => navigate(-1)}>
                         ⬅ Volver
