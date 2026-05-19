@@ -70,77 +70,82 @@ function Usuarios() {
     return (
         <div className="usuarios-container">
 
-            {/* HEADER */}
-            <div className="usuarios-header">
+            {/* PANEL CENTRAL */}
+            <div className="usuarios-panel">
 
-                <h1>👥 Gestión de Usuarios</h1>
+                {/* HEADER */}
+                <div className="usuarios-header">
 
-                <div className="usuarios-actions-top">
+                    <h1>👥 Gestión de Usuarios</h1> 
 
-                    <button
-                        className="secondary"
-                        onClick={() => navigate("/dashboard")}
-                    >
-                        ⬅ Dashboard
-                    </button>
+                    <div className="usuarios-actions-top">
 
-                    <button
-                        onClick={() => navigate("/crear-usuario")}
-                    >
-                        ➕ Nuevo Usuario
-                    </button>
+                        <button
+                            className="secondary"
+                            onClick={() => navigate("/dashboard")}
+                        >
+                            ⬅ Dashboard
+                        </button>
+
+                        <button
+                            onClick={() => navigate("/crear-usuario")}
+                        >
+                            ➕ Nuevo Usuario
+                        </button>
+
+                    </div>
 
                 </div>
 
-            </div>
+                {/* TABLA */}
+                <div className="usuarios-table-wrapper">
 
-            {/* TABLA */}
-            <div className="usuarios-table-wrapper">
+                    <table className="usuarios-table">
 
-                <table className="usuarios-table">
-
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Rol</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        {usuarios.map((u) => (
-
-                            <tr key={u.id}>
-
-                                <td className="user-name">
-                                    {u.nombre}
-                                </td>
-
-                                <td>
-                                    <span className={`role ${u.rol}`}>
-                                        {u.rol}
-                                    </span>
-                                </td>
-
-                                <td>
-
-                                    <button
-                                        className="danger"
-                                        onClick={() => eliminar(u.id)}
-                                    >
-                                        Eliminar
-                                    </button>
-
-                                </td>
-
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Rol</th>
+                                <th>Acciones</th>
                             </tr>
+                        </thead>
 
-                        ))}
+                        <tbody>
 
-                    </tbody>
+                            {usuarios.map((u) => (
 
-                </table>
+                                <tr key={u.id}>
+
+                                    <td className="user-name">
+                                        {u.nombre}
+                                    </td>
+
+                                    <td>
+                                        <span className={`role ${u.rol}`}>
+                                            {u.rol}
+                                        </span>
+                                    </td>
+
+                                    <td>
+
+                                        <button
+                                            className="danger"
+                                            onClick={() => eliminar(u.id)}
+                                        >
+                                            Eliminar
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+                            ))}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 

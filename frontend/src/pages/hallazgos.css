@@ -1,5 +1,17 @@
 .hallazgos-container {
     padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* PANEL CENTRAL */
+.hallazgos-panel {
+    width: 100%;
+    max-width: 1100px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 /* HEADER */
@@ -7,9 +19,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
 }
 
+.hallazgos-header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+/* ACTIONS */
 .hallazgos-actions {
     display: flex;
     gap: 10px;
@@ -19,9 +39,13 @@
 /* FILTROS */
 .hallazgos-filters {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    gap: 10px;
+
+    padding: 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
 }
 
 /* LISTA */
@@ -37,31 +61,14 @@
     border: 1px solid var(--border);
     padding: 15px;
     border-radius: 10px;
-    transition: 0.2s;
-}
-
-.hallazgo-card:hover {
-    transform: translateY(-2px);
 }
 
 /* TOP */
 .hallazgo-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
-
-/* BADGES */
-.badge {
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-size: 12px;
-}
-
-.badge.Alta { background: #ff6b6b33; color: #ff6b6b; }
-.badge.Media { background: #feca5733; color: #feca57; }
-.badge.Baja { background: #48dbfb33; color: #48dbfb; }
-.badge.Crítica { background: #ff475733; color: #ff4757; }
 
 /* META */
 .hallazgo-meta {

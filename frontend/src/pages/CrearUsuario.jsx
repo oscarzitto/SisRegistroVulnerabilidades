@@ -98,74 +98,81 @@ function CrearUsuario() {
     }
 
     return (
+        <div className="hallazgo-container">
 
-        <div>
+            <div className="hallazgo-card">
 
-            <h1>
-                Crear Usuario
-            </h1>
+                <h1>👤 Crear Usuario</h1>
 
-            <form
-                onSubmit={enviar}
-            >
+                <p style={{ opacity: 0.6, marginBottom: "15px" }}>
+                    Genera credenciales para un nuevo usuario del sistema
+                </p>
 
-                <input
-                    name="nombre"
-                    placeholder="Nombre"
-                    onChange={cambiar}
-                />
+                <form onSubmit={enviar} className="hallazgo-form">
 
-                <select
-                    name="rol"
-                    onChange={cambiar}
-                >
+                    {/* NOMBRE */}
+                    <div className="form-group">
+                        <label>Nombre completo</label>
+                        <input
+                            name="nombre"
+                            placeholder="Ej: Juan Pérez"
+                            onChange={cambiar}
+                        />
+                    </div>
 
-                    <option>
-                        analista
-                    </option>
+                    {/* ROL */}
+                    <div className="form-group">
+                        <label>Rol del usuario</label>
+                        <select
+                            name="rol"
+                            onChange={cambiar}
+                        >
+                            <option value="analista">Analista</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
 
-                    <option>
-                        admin
-                    </option>
+                    {/* BOTÓN CREAR */}
+                    <div className="form-actions">
 
-                </select>
+                        <button type="submit">
+                            ➕ Crear usuario
+                        </button>
 
+                        <button
+                            type="button"
+                            className="secondary"
+                            onClick={() => navigate("/usuarios")}
+                        >
+                            ↩ Volver
+                        </button>
+
+                    </div>
+
+                </form>
+
+                {/* RESULTADO */}
                 {resultado && (
-                    <div style={{
-                        marginTop: "20px",
-                        padding: "10px",
-                        border: "1px solid green",
-                        backgroundColor: "#eaffea"
-                    }}>
+                    <div className="success-box">
 
-                        <h3>Usuario creado correctamente</h3>
+                        <h3>✅ Usuario creado</h3>
 
-                        <p><b>Mensaje:</b> {resultado.mensaje}</p>
-                        <p><b>Correo:</b> {resultado.correo}</p>
-                        <p><b>Contraseña temporal:</b> {resultado.password}</p>
+                        <div className="cred-box">
+                            <p><b>Mensaje:</b> {resultado.mensaje}</p>
+                            <p><b>Correo:</b> {resultado.correo}</p>
+                            <p><b>Contraseña temporal:</b> {resultado.password}</p>
+                        </div>
 
-                        <p style={{ color: "red" }}>
-                            ⚠ Se recomienda cambiar la contraseña al iniciar sesión
+                        <p className="warning">
+                            ⚠ El usuario debe cambiar su contraseña al iniciar sesión
                         </p>
 
                     </div>
                 )}
 
-                <button type="submit">
-                    Crear
-                </button>
-
-            </form>
-
-            <button className="secondary"
-                type="button"
-                onClick={() => navigate(-1)}
-            >
-                Volver
-            </button>
+            </div>
 
         </div>
-
     );
 
 }

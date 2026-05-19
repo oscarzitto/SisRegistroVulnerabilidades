@@ -1,5 +1,16 @@
 .auditoria-container {
     padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.auditoria-panel {
+    width: 100%;
+    max-width: 1000px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 /* HEADER */
@@ -7,15 +18,26 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.auditoria-header h1 {
+    margin: 0;
+    font-size: 22px;
 }
 
 /* FILTROS */
 .auditoria-filters {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    gap: 12px;
+
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
 }
 
 /* LISTA */

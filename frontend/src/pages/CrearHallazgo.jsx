@@ -351,7 +351,7 @@ function CrearHallazgo() {
                         <button
                             type="button"
                             className="secondary"
-                            onClick={() => navigate("/hallazgos")}
+                            onClick={() => navigate(-1)}
                         >
                             ↩ Cancelar
                         </button>

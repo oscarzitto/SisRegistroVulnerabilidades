@@ -182,133 +182,131 @@ function Hallazgos() {
     return (
         <div className="hallazgos-container">
 
-            {/* HEADER */}
-            <div className="hallazgos-header">
+            <div className="hallazgos-panel">
 
-                <h1>🛡 Hallazgos de Vulnerabilidades</h1>
+                {/* HEADER */}
+                <div className="hallazgos-header">
 
-                <div className="hallazgos-actions">
+                    <h1>🛡 Hallazgos de Vulnerabilidades</h1>
 
+                    <div className="hallazgos-actions">
 
+                        <button onClick={() => navigate("/historial-cambios")}>
+                            📜 Historial
+                        </button>
 
-                    <button onClick={() => navigate("/historial-cambios")}>
-                        📜 Historial
+                        <button onClick={exportar}>
+                            📤 Exportar CSV
+                        </button>
+
+                        <button className="secondary" onClick={() => navigate("/dashboard")}>
+                            ⬅ Volver
+                        </button>
+
+                    </div>
+
+                </div>
+
+                {/* FILTROS */}
+                <div className="hallazgos-filters">
+
+                    <select name="estado" value={filtros.estado} onChange={cambiarFiltro}>
+                        <option value="">Estado</option>
+                        <option>Nuevo</option>
+                        <option>En análisis</option>
+                        <option>En remediación</option>
+                        <option>Mitigado</option>
+                        <option>Cerrado</option>
+                    </select>
+
+                    <select name="severidad" value={filtros.severidad} onChange={cambiarFiltro}>
+                        <option value="">Severidad</option>
+                        <option>Baja</option>
+                        <option>Media</option>
+                        <option>Alta</option>
+                        <option>Crítica</option>
+                    </select>
+
+                    <select name="activo" value={filtros.activo} onChange={cambiarFiltro}>
+                        <option value="">Activo</option>
+                        {activosUnicos.map((a, i) => (
+                            <option key={i}>{a}</option>
+                        ))}
+                    </select>
+
+                    <select name="responsable" value={filtros.responsable} onChange={cambiarFiltro}>
+                        <option value="">Responsable</option>
+                        {responsablesUnicos.map((r, i) => (
+                            <option key={i}>{r}</option>
+                        ))}
+                    </select>
+
+                    <input type="date" name="desde" value={filtros.desde} onChange={cambiarFiltro} />
+                    <input type="date" name="hasta" value={filtros.hasta} onChange={cambiarFiltro} />
+
+                    <button onClick={limpiarFiltros}>
+                        🧹 Limpiar filtros
                     </button>
 
-                    <button onClick={exportar}>
-                        📤 Exportar CSV
-                    </button>
-
-                    <button className="secondary" onClick={() => navigate("/dashboard")}>
-                        ⬅ Volver
+                    <button onClick={() => navigate("/crear-hallazgo")}>
+                        ➕ Crear
                     </button>
 
                 </div>
 
-            </div>
+                {/* LISTA */}
+                <div className="hallazgos-list">
 
-            {/* FILTROS */}
-            <div className="hallazgos-filters">
-
-                <select name="estado" value={filtros.estado} onChange={cambiarFiltro}>
-                    <option value="">Estado</option>
-                    <option>Nuevo</option>
-                    <option>En análisis</option>
-                    <option>En remediación</option>
-                    <option>Mitigado</option>
-                    <option>Cerrado</option>
-                </select>
-
-                <select name="severidad" value={filtros.severidad} onChange={cambiarFiltro}>
-                    <option value="">Severidad</option>
-                    <option>Baja</option>
-                    <option>Media</option>
-                    <option>Alta</option>
-                    <option>Crítica</option>
-                </select>
-
-                <select name="activo" value={filtros.activo} onChange={cambiarFiltro}>
-                    <option value="">Activo</option>
-                    {activosUnicos.map((a, i) => (
-                        <option key={i}>{a}</option>
-                    ))}
-                </select>
-
-                <select name="responsable" value={filtros.responsable} onChange={cambiarFiltro}>
-                    <option value="">Responsable</option>
-                    {responsablesUnicos.map((r, i) => (
-                        <option key={i}>{r}</option>
-                    ))}
-                </select>
-
-                <input type="date" name="desde" value={filtros.desde} onChange={cambiarFiltro} />
-                <input type="date" name="hasta" value={filtros.hasta} onChange={cambiarFiltro} />
-
-                <button onClick={limpiarFiltros}>
-                    🧹 Limpiar filtros
-                </button>
-
-                <button onClick={() => navigate("/crear-hallazgo")}>
-                    ➕ Crear
-                </button>
-
-            </div>
-
-            {/* LISTA */}
-            <div className="hallazgos-list">
-
-                {hallazgos
-                    .filter(h => {
-
-                        return (
+                    {hallazgos
+                        .filter(h => (
                             (!filtros.estado || h.estado === filtros.estado) &&
                             (!filtros.severidad || h.severidad === filtros.severidad) &&
                             (!filtros.activo || h.activo_afectado.toLowerCase().includes(filtros.activo.toLowerCase())) &&
                             (!filtros.responsable || h.responsable === filtros.responsable) &&
                             (!filtros.desde || h.fecha >= filtros.desde) &&
                             (!filtros.hasta || h.fecha <= filtros.hasta)
-                        );
+                        ))
+                        .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+                        .map(h => (
 
-                    })
-                    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-                    .map(h => (
+                            <div className="hallazgo-card" key={h.id}>
 
-                        <div className="hallazgo-card" key={h.id}>
+                                <div className="hallazgo-top">
 
-                            <div className="hallazgo-top">
+                                    <div>
+                                        <h3>#{h.id} - {h.activo_afectado}</h3>
+                                        <span className={`badge ${h.severidad}`}>
+                                            {h.severidad}
+                                        </span>
+                                    </div>
 
-                                <div>
-                                    <h3>#{h.id} - {h.activo_afectado}</h3>
-                                    <span className={`badge ${h.severidad}`}>
-                                        {h.severidad}
-                                    </span>
+                                    {usuario?.rol === "admin" && (
+                                        <button className="danger" onClick={() => eliminar(h.id)}>
+                                            🗑
+                                        </button>
+                                    )}
+
                                 </div>
 
-                                {usuario?.rol === "admin" && (
-                                    <button className="danger" onClick={() => eliminar(h.id)}>
-                                        🗑
-                                    </button>
-                                )}
+                                <p>{h.descripcion}</p>
+
+                                <div className="hallazgo-meta">
+
+                                    <span>📌 {h.estado}</span>
+                                    <span>👤 {h.responsable}</span>
+                                    <span>📅 {h.fecha}</span>
+
+                                </div>
+
+                                <button onClick={() => navigate(`/editar-hallazgo/${h.id}`)}>
+                                    ✏️ Editar
+                                </button>
 
                             </div>
 
-                            <p>{h.descripcion}</p>
+                        ))}
 
-                            <div className="hallazgo-meta">
-
-                                <span>📌 {h.estado}</span>
-                                <span>👤 {h.responsable}</span>
-                                <span>📅 {h.fecha}</span>
-
-                            </div>
-
-                            <button onClick={() => navigate(`/editar-hallazgo/${h.id}`)}>
-                                ✏️ Editar
-                            </button>
-
-                        </div>
-
-                    ))}
+                </div>
 
             </div>
 

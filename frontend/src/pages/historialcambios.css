@@ -1,5 +1,16 @@
 .historial-container {
     padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.historial-panel {
+    width: 100%;
+    max-width: 1000px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 /* HEADER */
@@ -7,15 +18,26 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.historial-header h1 {
+    margin: 0;
+    font-size: 22px;
 }
 
 /* FILTROS */
 .historial-filters {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    gap: 12px;
+
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
 }
 
 /* LISTA */
@@ -29,27 +51,30 @@
 .historial-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    padding: 15px;
-    border-radius: 10px;
+    padding: 16px;
+    border-radius: 12px;
+
     transition: 0.2s;
 }
 
 .historial-card:hover {
     transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(0, 150, 255, 0.08);
 }
 
 /* TOP */
 .historial-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 /* ACCIÓN BADGE */
 .badge-action {
     display: inline-block;
-    margin-top: 5px;
-    padding: 3px 8px;
+    margin-top: 6px;
+    padding: 4px 10px;
     font-size: 12px;
     border-radius: 6px;
     background: rgba(0, 150, 255, 0.1);
@@ -60,6 +85,7 @@
 .historial-detail {
     margin-top: 10px;
     opacity: 0.85;
+    line-height: 1.4;
 }
 
 /* FOOTER */

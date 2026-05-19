@@ -76,106 +76,108 @@ function HistorialCambios() {
     return (
         <div className="historial-container">
 
-            {/* HEADER */}
-            <div className="historial-header">
+            {/* PANEL CENTRAL */}
+            <div className="historial-panel">
 
-                <h1>📜 Historial de Auditoría</h1>
+                {/* HEADER */}
+                <div className="historial-header">
 
-                <button className="secondary" onClick={() => navigate(-1)}>
-                    ⬅ Volver
-                </button>
+                    <h1>📜 Historial de Auditoría</h1>
 
-            </div>
+                    <button className="secondary" onClick={() => navigate(-1)}>
+                        ⬅ Volver
+                    </button>
 
-            {/* FILTROS */}
-            <div className="historial-filters">
+                </div>
 
-                <select
-                    name="usuario"
-                    value={filtros.usuario}
-                    onChange={cambiarFiltro}
-                >
-                    <option value="">Todos los usuarios</option>
-                    {usuariosUnicos.map((u, i) => (
-                        <option key={i}>{u}</option>
-                    ))}
-                </select>
+                {/* FILTROS */}
+                <div className="historial-filters">
 
-                <select
-                    name="accion"
-                    value={filtros.accion}
-                    onChange={cambiarFiltro}
-                >
-                    <option value="">Todas las acciones</option>
-                    {accionesUnicas.map((a, i) => (
-                        <option key={i}>{a}</option>
-                    ))}
-                </select>
+                    <select
+                        name="usuario"
+                        value={filtros.usuario}
+                        onChange={cambiarFiltro}
+                    >
+                        <option value="">Todos los usuarios</option>
+                        {usuariosUnicos.map((u, i) => (
+                            <option key={i}>{u}</option>
+                        ))}
+                    </select>
 
-                <input
-                    type="date"
-                    name="desde"
-                    value={filtros.desde}
-                    onChange={cambiarFiltro}
-                />
+                    <select
+                        name="accion"
+                        value={filtros.accion}
+                        onChange={cambiarFiltro}
+                    >
+                        <option value="">Todas las acciones</option>
+                        {accionesUnicas.map((a, i) => (
+                            <option key={i}>{a}</option>
+                        ))}
+                    </select>
 
-                <input
-                    type="date"
-                    name="hasta"
-                    value={filtros.hasta}
-                    onChange={cambiarFiltro}
-                />
+                    <input
+                        type="date"
+                        name="desde"
+                        value={filtros.desde}
+                        onChange={cambiarFiltro}
+                    />
 
-                <button onClick={limpiarFiltros}>
-                    🧹 Limpiar
-                </button>
+                    <input
+                        type="date"
+                        name="hasta"
+                        value={filtros.hasta}
+                        onChange={cambiarFiltro}
+                    />
 
-            </div>
+                    <button onClick={limpiarFiltros}>
+                        🧹 Limpiar
+                    </button>
 
-            {/* LISTA */}
-            <div className="historial-list">
+                </div>
 
-                {historial
-                    .filter(h => {
+                {/* LISTA */}
+                <div className="historial-list">
 
-                        return (
+                    {historial
+                        .filter(h => (
                             (!filtros.usuario || h.usuario === filtros.usuario) &&
                             (!filtros.accion || h.accion === filtros.accion) &&
                             (!filtros.desde || h.fecha.substring(0, 10) >= filtros.desde) &&
                             (!filtros.hasta || h.fecha.substring(0, 10) <= filtros.hasta)
-                        );
+                        ))
+                        .map(h => (
 
-                    })
-                    .map(h => (
+                            <div className="historial-card" key={h.id}>
 
-                        <div className="historial-card" key={h.id}>
+                                <div className="historial-top">
 
-                            <div className="historial-top">
+                                    <div>
+                                        <h3>{h.usuario}</h3>
 
-                                <div>
-                                    <h3>{h.usuario}</h3>
-                                    <span className="badge-action">
-                                        {h.accion}
+                                        <span className="badge-action">
+                                            {h.accion}
+                                        </span>
+                                    </div>
+
+                                    <span className="historial-date">
+                                        {h.fecha}
                                     </span>
+
                                 </div>
 
-                                <span className="historial-date">
-                                    {h.fecha}
-                                </span>
+                                <p className="historial-detail">
+                                    {h.detalle}
+                                </p>
+
+                                <div className="historial-footer">
+                                    <span>ID Hallazgo: #{h.hallazgo_id}</span>
+                                </div>
 
                             </div>
 
-                            <p className="historial-detail">
-                                {h.detalle}
-                            </p>
+                        ))}
 
-                            <div className="historial-footer">
-                                <span>ID Hallazgo: #{h.hallazgo_id}</span>
-                            </div>
-
-                        </div>
-
-                    ))}
+                </div>
 
             </div>
 

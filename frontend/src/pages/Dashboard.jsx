@@ -73,10 +73,27 @@ function Dashboard() {
                 {usuario && (
                     <div className="sidebar-user">
 
-                        <h3>{usuario.nombre}</h3>
+                        <div className="user-avatar">
+                            {usuario.nombre?.charAt(0).toUpperCase()}
+                        </div>
 
-                        <p><b>Rol:</b> {usuario.rol}</p>
-                        <p><b>ID:</b> {usuario.id}</p>
+                        <div className="user-info">
+
+                            <h3>{usuario.nombre}</h3>
+
+                            <p className="user-email">
+                                📧 {usuario.correo}
+                            </p>
+
+                            <p>
+                                <b>Rol:</b> {usuario.rol}
+                            </p>
+
+                            <p>
+                                <b>ID:</b> {usuario.id}
+                            </p>
+
+                        </div>
 
                     </div>
                 )}

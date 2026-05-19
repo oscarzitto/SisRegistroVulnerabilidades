@@ -1,5 +1,16 @@
 .usuarios-container {
     padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* PANEL CENTRAL */
+.usuarios-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 /* HEADER */
@@ -8,6 +19,9 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+
+    /* 👇 esto ayuda mucho visualmente */
+    gap: 20px;
 }
 
 .usuarios-actions-top {

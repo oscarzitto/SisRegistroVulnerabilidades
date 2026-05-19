@@ -78,85 +78,90 @@ function Auditoria() {
     return (
         <div className="auditoria-container">
 
-            {/* HEADER */}
-            <div className="auditoria-header">
+            {/* PANEL CENTRAL */}
+            <div className="auditoria-panel">
 
-                <h1>📊 Auditoría del Sistema</h1>
+                {/* HEADER */}
+                <div className="auditoria-header">
 
-                <button className="secondary" onClick={() => navigate(-1)}>
-                    ⬅ Volver
-                </button>
+                    <h1>📊 Auditoría del Sistema</h1>
 
-            </div>
+                    <button className="secondary" onClick={() => navigate(-1)}>
+                        ⬅ Volver
+                    </button>
 
-            {/* FILTROS */}
-            <div className="auditoria-filters">
+                </div>
 
-                <select
-                    name="usuario"
-                    value={filtros.usuario}
-                    onChange={cambiarFiltro}
-                >
-                    <option value="">Todos los usuarios</option>
+                {/* FILTROS */}
+                <div className="auditoria-filters">
 
-                    {usuariosUnicos.map((u, i) => (
-                        <option key={i} value={u}>
-                            {u}
-                        </option>
-                    ))}
+                    <select
+                        name="usuario"
+                        value={filtros.usuario}
+                        onChange={cambiarFiltro}
+                    >
+                        <option value="">Todos los usuarios</option>
 
-                </select>
+                        {usuariosUnicos.map((u, i) => (
+                            <option key={i} value={u}>
+                                {u}
+                            </option>
+                        ))}
 
-                <input
-                    type="date"
-                    name="desde"
-                    value={filtros.desde}
-                    onChange={cambiarFiltro}
-                />
+                    </select>
 
-                <input
-                    type="date"
-                    name="hasta"
-                    value={filtros.hasta}
-                    onChange={cambiarFiltro}
-                />
+                    <input
+                        type="date"
+                        name="desde"
+                        value={filtros.desde}
+                        onChange={cambiarFiltro}
+                    />
 
-                <button onClick={limpiarFiltros}>
-                    🧹 Limpiar
-                </button>
+                    <input
+                        type="date"
+                        name="hasta"
+                        value={filtros.hasta}
+                        onChange={cambiarFiltro}
+                    />
 
-            </div>
+                    <button onClick={limpiarFiltros}>
+                        🧹 Limpiar
+                    </button>
 
-            {/* LISTA LOGS */}
-            <div className="auditoria-list">
+                </div>
 
-                {logs
-                    .filter(l => (
-                        (!filtros.usuario || l.usuario === filtros.usuario) &&
-                        (!filtros.desde || l.fecha.substring(0, 10) >= filtros.desde) &&
-                        (!filtros.hasta || l.fecha.substring(0, 10) <= filtros.hasta)
-                    ))
-                    .map(log => (
+                {/* LISTA LOGS */}
+                <div className="auditoria-list">
 
-                        <div className="audit-card" key={log.id}>
+                    {logs
+                        .filter(l => (
+                            (!filtros.usuario || l.usuario === filtros.usuario) &&
+                            (!filtros.desde || l.fecha.substring(0, 10) >= filtros.desde) &&
+                            (!filtros.hasta || l.fecha.substring(0, 10) <= filtros.hasta)
+                        ))
+                        .map(log => (
 
-                            <div className="audit-top">
+                            <div className="audit-card" key={log.id}>
 
-                                <h3>{log.usuario}</h3>
+                                <div className="audit-top">
 
-                                <span className="audit-event">
-                                    {log.evento}
-                                </span>
+                                    <h3>{log.usuario}</h3>
+
+                                    <span className="audit-event">
+                                        {log.evento}
+                                    </span>
+
+                                </div>
+
+                                <div className="audit-date">
+                                    {log.fecha}
+                                </div>
 
                             </div>
 
-                            <div className="audit-date">
-                                {log.fecha}
-                            </div>
+                        ))}
 
-                        </div>
-
-                    ))}
+                </div>
 
             </div>
 
