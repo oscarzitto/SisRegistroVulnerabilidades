@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import "./dashboard.css";
 
 function Dashboard() {
 
@@ -60,67 +61,106 @@ function Dashboard() {
     }
 
     return (
+        <div className="dashboard-layout">
 
-        <div>
+            {/* SIDEBAR */}
+            <aside className="dashboard-sidebar">
 
-            <h1>Panel</h1>
+                <div className="sidebar-title">
+                    🛡 Sistema Vulnerabilidades
+                </div>
 
-            <button onClick={() => navigate("/hallazgos")}>
-                Ver Hallazgos
-            </button>
+                {usuario && (
+                    <div className="sidebar-user">
 
-            <button onClick={() => navigate("/crear-hallazgo")}>
-                Crear Hallazgo
-            </button>
+                        <h3>{usuario.nombre}</h3>
 
-            {usuario?.rol === "admin" && (
-                <button onClick={() => navigate("/usuarios")}>
-                    Lista Usuarios
-                </button>
-            )}
+                        <p><b>Rol:</b> {usuario.rol}</p>
+                        <p><b>ID:</b> {usuario.id}</p>
 
-            {usuario?.rol === "admin" && (
-                <button
-                    onClick={() =>
-                        navigate("/auditoria")
-                    }
-                >
-                    Auditoría
-                </button>
-            )}
+                    </div>
+                )}
 
-            <div>
-                <h3>Acciones de usuario</h3>
+                <div className="sidebar-actions">
 
-                <button onClick={() => navigate("/cambiar-password")}>
-                    Cambiar contraseña
-                </button>
+                    <button onClick={() => navigate("/dashboard")}>
+                        🏠 Inicio
+                    </button>
 
-                <button onClick={logout} className="secondary">
-                    Cerrar sesión
-                </button>
-            </div>
+                    <button onClick={() => navigate("/hallazgos")}>
+                        🔎 Hallazgos
+                    </button>
 
-            {usuario && (
+                    <button onClick={() => navigate("/crear-hallazgo")}>
+                        ➕ Crear Hallazgo
+                    </button>
 
-                <div>
+                    {usuario?.rol === "admin" && (
+                        <>
+                            <button onClick={() => navigate("/usuarios")}>
+                                👥 Usuarios
+                            </button>
 
-                    <h3>
-                        Bienvenido, {usuario.nombre}
-                    </h3>
+                            <button onClick={() => navigate("/auditoria")}>
+                                📊 Auditoría
+                            </button>
+                        </>
+                    )}
 
-                    <p>ID: {usuario.id}</p>
-
-                    <p>Rol: {usuario.rol}</p>
-
-                    <p>Correo: {usuario.correo}</p>
+                    <button onClick={() => navigate("/cambiar-password")}>
+                        🔐 Cambiar contraseña
+                    </button>
 
                 </div>
 
-            )}
+                <button className="danger" onClick={logout}>
+                    🚪 Cerrar sesión
+                </button>
+
+            </aside>
+
+            {/* CONTENIDO */}
+            <main className="dashboard-main">
+
+                <h1>📊 Panel de Control</h1>
+
+                <p className="dashboard-subtitle">
+                    Gestión de vulnerabilidades del sistema
+                </p>
+
+                <div className="dashboard-cards">
+
+                    <div className="card">
+                        <h2>🔎 Hallazgos</h2>
+                        <p>Gestiona vulnerabilidades detectadas en el sistema.</p>
+                        <button onClick={() => navigate("/hallazgos")}>
+                            Ver módulo
+                        </button>
+                    </div>
+
+                    <div className="card">
+                        <h2>➕ Registro</h2>
+                        <p>Crear nuevos hallazgos de seguridad.</p>
+                        <button onClick={() => navigate("/crear-hallazgo")}>
+                            Crear hallazgo
+                        </button>
+                    </div>
+
+                    {usuario?.rol === "admin" && (
+                        <div className="card highlight">
+                            <h2>👑 Administración</h2>
+                            <p>Gestión de usuarios y auditoría del sistema.</p>
+                            <button onClick={() => navigate("/usuarios")}>
+                                Gestionar usuarios
+                            </button>
+                        </div>
+                    )}
+
+                </div>
+
+            </main>
 
         </div>
-
     );
 
 }
