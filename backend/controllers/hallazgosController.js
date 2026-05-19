@@ -176,7 +176,7 @@ const editarHallazgo = (req, res) => {
                     id,
                     req.usuario.nombre,
                     "UPDATE",
-                    `Hallazgo "${tipo}" en activo "${activo_afectado}" → Estado: ${estado}`
+                    `Editó hallazgo "${tipo}" ID ${id} del activo "${activo_afectado}" a → Estado "${estado}"`
                 ]
             );
 
@@ -186,7 +186,7 @@ const editarHallazgo = (req, res) => {
                 VALUES (?,?,datetime('now'))`,
                 [
                     req.usuario.nombre,
-                    `Editó hallazgo ID ${id} - Tipo: ${tipo} - Estado: ${estado}`
+                    `Editó hallazgo "${tipo}" ID ${id} del activo "${activo_afectado}" a → Estado "${estado}"`
                 ]
             );
 
