@@ -16,6 +16,46 @@ const crearHallazgo = (req, res) => {
         responsable
     } = req.body;
 
+    if (
+
+        !fecha ||
+        !activo_afectado?.trim() ||
+        !tipo?.trim() ||
+        !evidencia?.trim() ||
+        !recomendacion?.trim() ||
+        !responsable?.trim()
+
+    ) {
+
+        return res.status(400).json({
+
+            mensaje:
+                "Completa todos los campos"
+
+        });
+
+    }
+
+    const regexTipo =
+
+        /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\-_.()]+$/;
+
+
+    if (
+
+        !regexTipo.test(tipo)
+
+    ) {
+
+        return res.status(400).json({
+
+            mensaje:
+                "El tipo contiene caracteres no permitidos"
+
+        });
+
+    }
+
     db.run(
 
         `INSERT INTO hallazgos
@@ -123,6 +163,46 @@ const editarHallazgo = (req, res) => {
         estado,
         responsable
     } = req.body;
+
+    if (
+
+        !fecha ||
+        !activo_afectado?.trim() ||
+        !tipo?.trim() ||
+        !evidencia?.trim() ||
+        !recomendacion?.trim() ||
+        !responsable?.trim()
+
+    ) {
+
+        return res.status(400).json({
+
+            mensaje:
+                "Completa todos los campos"
+
+        });
+
+    }
+
+    const regexTipo =
+
+        /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\-_.()]+$/;
+
+
+    if (
+
+        !regexTipo.test(tipo)
+
+    ) {
+
+        return res.status(400).json({
+
+            mensaje:
+                "El tipo contiene caracteres no permitidos"
+
+        });
+
+    }
 
     db.run(
 
