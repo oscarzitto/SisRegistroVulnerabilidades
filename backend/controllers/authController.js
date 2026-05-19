@@ -78,15 +78,12 @@ const login = (req, res) => {
     db.get(
         "SELECT * FROM usuarios WHERE correo=?",
         [correo],
-
         async (err, usuario) => {
 
             if (err || !usuario) {
-
                 return res.status(401).json({
                     mensaje: "Usuario no encontrado"
                 });
-
             }
 
             const valido = await bcrypt.compare(
@@ -95,55 +92,43 @@ const login = (req, res) => {
             );
 
             if (!valido) {
-
                 return res.status(401).json({
                     mensaje: "Contraseña incorrecta"
                 });
-
             }
 
+            // 🔐 token SIEMPRE
             const token = jwt.sign(
                 {
                     id: usuario.id,
                     nombre: usuario.nombre,
                     rol: usuario.rol
                 },
-
                 process.env.JWT_SECRET,
-
-                {
-                    expiresIn: "1h"
-                });
-
-            db.run(
-                `INSERT INTO auditoria
-                    (
-                    usuario,
-                    evento,
-                    fecha
-                    )
-
-                    VALUES(?,?,datetime('now'))`,
-
-                [
-                    usuario.nombre,
-                    "Inicio sesión"
-                ]
-
+                { expiresIn: "1h" }
             );
 
+            // 📊 auditoría (NO BORRAR)
+            db.run(
+                `INSERT INTO auditoria (usuario, evento, fecha)
+                 VALUES (?,?,datetime('now'))`,
+                [usuario.nombre, "Inicio sesión"]
+            );
+
+            // 🚨 RESPUESTA IMPORTANTE
             res.json({
                 mensaje: "Login correcto",
                 token,
                 mustChangePassword: usuario.must_change_password === 1,
                 usuario: {
+                    id: usuario.id,
                     nombre: usuario.nombre,
                     rol: usuario.rol
                 }
             });
 
-        });
-
+        }
+    );
 };
 
 const logout = (req, res) => {

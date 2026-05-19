@@ -13,43 +13,26 @@ function Login() {
 
         try {
 
-            const res = await api.post(
-                "/login",
-                {
-                    correo,
-                    password
-                }
-            );
+            const res = await api.post("/login", {
+                correo,
+                password
+            });
 
             const data = res.data;
 
             // 🔴 SI DEBE CAMBIAR PASSWORD
             if (data.mustChangePassword) {
 
-                localStorage.setItem(
-                    "usuario",
-                    JSON.stringify(data.usuario)
-                );
-
-                localStorage.setItem(
-                    "token",
-                    data.token
-                );
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
                 navigate("/cambiar-password");
                 return;
             }
 
             // 🟢 LOGIN NORMAL
-            localStorage.setItem(
-                "token",
-                data.token
-            );
-
-            localStorage.setItem(
-                "usuario",
-                JSON.stringify(data.usuario)
-            );
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
             navigate("/dashboard");
 
