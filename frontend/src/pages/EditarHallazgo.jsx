@@ -121,22 +121,6 @@ function EditarHallazgo() {
 
         }
 
-
-        if (
-
-            datos.descripcion.length < 10
-
-        ) {
-
-            alert(
-                "La descripción debe tener mínimo 10 caracteres"
-            );
-
-            return;
-
-        }
-
-
         const fechaSeleccionada =
             new Date(datos.fecha);
 

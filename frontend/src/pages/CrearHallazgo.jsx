@@ -98,24 +98,6 @@ function CrearHallazgo() {
             return;
         }
 
-
-        // descripción mínima
-
-        if (
-
-            datos.descripcion.length < 10
-
-        ) {
-
-            alert(
-                "La descripción debe tener al menos 10 caracteres"
-            );
-
-            return;
-
-        }
-
-
         // validar fecha
 
         const fechaSeleccionada =
