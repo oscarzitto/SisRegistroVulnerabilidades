@@ -72,7 +72,7 @@ const db = new sqlite3.Database("./database/database.db", (err) => {
                     db.run(
                         `INSERT INTO usuarios
                         (nombre, correo, password_hash, rol, must_change_password)
-                        VALUES (?,?,?,?,0)`,
+                        VALUES (?,?,?,?,1)`,
                         [
                             "Admin Sistema",
                             "admin@admin.cl",
@@ -81,7 +81,8 @@ const db = new sqlite3.Database("./database/database.db", (err) => {
                         ]
                     );
 
-                    console.log("✔ Admin creado");
+                    console.log("✔ Admin creado\n\tNombre: admin@admin.cl\n\tPassword: admin\n\t/!/ Cambiar contraseña /!/");
+
                 });
             }
         });
