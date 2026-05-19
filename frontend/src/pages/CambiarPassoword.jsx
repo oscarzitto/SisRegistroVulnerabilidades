@@ -10,6 +10,10 @@ function CambiarPassword() {
     const [nueva, setNueva] = useState("");
     const [confirmar, setConfirmar] = useState("");
 
+    const [mostrarNueva, setMostrarNueva] = useState(false);
+    const [mostrarConfirmar, setMostrarConfirmar] = useState(false);
+    const [mostrarActual, setMostrarActual] = useState(false);
+
     const token = localStorage.getItem("token");
 
     async function enviar(e) {
@@ -81,6 +85,16 @@ function CambiarPassword() {
 
                 <h1>🔐 Cambiar contraseña</h1>
 
+                <p style={{
+                    fontSize: "12px",
+                    opacity: 0.7,
+                    marginBottom: "10px",
+                    textAlign: "center"
+                }}>
+                    La contraseña debe tener al menos <b>8 caracteres</b>,
+                    una <b>mayúscula</b> y un <b>número</b>.
+                </p>
+
                 <form onSubmit={enviar}>
 
                     <input
@@ -89,17 +103,59 @@ function CambiarPassword() {
                         onChange={(e) => setActual(e.target.value)}
                     />
 
-                    <input
-                        type="password"
-                        placeholder="Nueva contraseña"
-                        onChange={(e) => setNueva(e.target.value)}
-                    />
+                    <div style={{ position: "relative" }}>
 
-                    <input
-                        type="password"
-                        placeholder="Confirmar contraseña"
-                        onChange={(e) => setConfirmar(e.target.value)}
-                    />
+                        <input
+                            type={mostrarNueva ? "text" : "password"}
+                            placeholder="Nueva contraseña"
+                            onChange={(e) => setNueva(e.target.value)}
+                        />
+
+                        <button
+                            type="button"
+                            onClick={() => setMostrarNueva(!mostrarNueva)}
+                            style={{
+                                position: "absolute",
+                                right: "10px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                background: "transparent",
+                                border: "none",
+                                cursor: "pointer",
+                                color: "white"
+                            }}
+                        >
+                            {mostrarNueva ? "🙈" : "👁️"}
+                        </button>
+
+                    </div>
+
+                    <div style={{ position: "relative" }}>
+
+                        <input
+                            type={mostrarConfirmar ? "text" : "password"}
+                            placeholder="Confirmar contraseña"
+                            onChange={(e) => setConfirmar(e.target.value)}
+                        />
+
+                        <button
+                            type="button"
+                            onClick={() => setMostrarConfirmar(!mostrarConfirmar)}
+                            style={{
+                                position: "absolute",
+                                right: "10px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                background: "transparent",
+                                border: "none",
+                                cursor: "pointer",
+                                color: "white"
+                            }}
+                        >
+                            {mostrarConfirmar ? "🙈" : "👁️"}
+                        </button>
+
+                    </div>
 
                     <button type="submit">
                         Actualizar contraseña
@@ -107,8 +163,11 @@ function CambiarPassword() {
 
                 </form>
 
-                <button type="submit" onClick={() => navigate(-1)} className="secondary">
-                    Atras
+                <button
+                    onClick={() => navigate(-1)}
+                    className="secondary"
+                >
+                    Atrás
                 </button>
 
             </div>

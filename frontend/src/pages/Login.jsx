@@ -10,6 +10,7 @@ function Login() {
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
+    const [mostrar, setMostrar] = useState(false);
 
     const enviar = async () => {
 
@@ -65,11 +66,32 @@ function Login() {
                     onChange={(e) => setCorreo(e.target.value)}
                 />
 
-                <input
-                    type="password"
-                    placeholder="Contraseña"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <div style={{ position: "relative" }}>
+
+                    <input
+                        type={mostrar ? "text" : "password"}
+                        placeholder="Contraseña"
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    <button
+                        type="button"
+                        onClick={() => setMostrar(!mostrar)}
+                        style={{
+                            position: "absolute",
+                            right: "10px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            background: "transparent",
+                            border: "none",
+                            cursor: "pointer",
+                            color: "white"
+                        }}
+                    >
+                        {mostrar ? "🙈" : "👁️"}
+                    </button>
+
+                </div>
 
                 <button onClick={enviar}>
                     Entrar
