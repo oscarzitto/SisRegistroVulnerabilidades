@@ -9,6 +9,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import HistorialCambios from "./pages/HistorialCambios";
 import Auditoria from "./pages/Auditoria";
 import CrearUsuario from "./pages/CrearUsuario";
+import CambiarPassword from "./pages/CambiarPassoword";
 
 function App() {
 
@@ -70,6 +71,11 @@ function App() {
                 <Route
                     path="/crear-usuario"
                     element={<CrearUsuario />}
+                />
+
+                <Route
+                    path="/cambiar-password"
+                    element={<CambiarPassword />}
                 />
 
             </Routes>

@@ -88,9 +88,17 @@ function Dashboard() {
                 </button>
             )}
 
-            <button onClick={logout}>
-                Cerrar sesión
-            </button>
+            <div>
+                <h3>Acciones de usuario</h3>
+
+                <button onClick={() => navigate("/cambiar-password")}>
+                    Cambiar contraseña
+                </button>
+
+                <button onClick={logout}>
+                    Cerrar sesión
+                </button>
+            </div>
 
             {usuario && (
 
