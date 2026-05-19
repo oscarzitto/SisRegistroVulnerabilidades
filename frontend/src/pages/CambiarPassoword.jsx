@@ -110,7 +110,7 @@ function CambiarPassword() {
 
             </form>
 
-            <button type="submit" onClick={() => navigate("/dashboard")}>
+            <button type="submit" onClick={() => navigate(-1)} className="secondary">
                 Atras
             </button>
 

@@ -1,0 +1,82 @@
+:root {
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --text: #e2e8f0;
+    --border: #334155;
+}
+
+/* BASE GENERAL */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+/* 🔘 BOTÓN BASE GLOBAL */
+button {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+
+    background: var(--primary);
+    color: white;
+
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* hover interactivo */
+button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* click efecto */
+button:active {
+    transform: scale(0.97);
+}
+
+/* focus accesibilidad */
+button:focus {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+}
+
+/* 🔴 BOTÓN DE PELIGRO (DELETE) */
+button.danger {
+    background: var(--danger);
+}
+
+button.danger:hover {
+    background: var(--danger-hover);
+}
+
+/* 🧊 BOTÓN SECUNDARIO */
+button.secondary {
+    background: #334155;
+}
+
+button.secondary:hover {
+    background: #475569;
+}
+
+/* inputs también consistentes */
+input, select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #0b1220;
+    color: var(--text);
+}
+
+input:focus, select:focus {
+    outline: 2px solid var(--primary);
+}

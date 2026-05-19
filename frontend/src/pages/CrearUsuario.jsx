@@ -156,7 +156,7 @@ function CrearUsuario() {
 
             </form>
 
-            <button
+            <button className="secondary"
                 type="button"
                 onClick={() => navigate(-1)}
             >

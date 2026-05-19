@@ -82,7 +82,7 @@ function Auditoria() {
                 Auditoría
             </h1>
 
-            <button
+            <button className="secondary"
                 onClick={() => navigate(-1)}
             >
                 Volver

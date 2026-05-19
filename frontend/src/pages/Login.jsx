@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
+import "./login.css";
+
 function Login() {
 
     const [correo, setCorreo] = useState("");

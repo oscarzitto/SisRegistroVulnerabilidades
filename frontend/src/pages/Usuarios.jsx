@@ -74,7 +74,7 @@ function Usuarios() {
 
             <div style={{ marginBottom: "20px" }}>
 
-                <button onClick={() => navigate("/dashboard")}>
+                <button onClick={() => navigate("/dashboard")} className="secondary">
                     ⬅ Volver al Dashboard
                 </button>
 

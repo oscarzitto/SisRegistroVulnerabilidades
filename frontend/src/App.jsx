@@ -12,6 +12,8 @@ import CrearUsuario from "./pages/CrearUsuario";
 import CambiarPassword from "./pages/CambiarPassoword";
 import Usuarios from "./pages/Usuarios";
 
+import "./styles/theme.css";
+
 function App() {
 
     return (

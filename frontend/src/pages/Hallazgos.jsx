@@ -279,7 +279,7 @@ function Hallazgos() {
                 Exportar CSV
             </button>
 
-            <button onClick={() => navigate("/dashboard")}>
+            <button onClick={() => navigate("/dashboard")} className="secondary">
                 Volver
             </button>
 
@@ -335,7 +335,7 @@ function Hallazgos() {
 
                         {usuario?.rol === "admin" && (
 
-                            <button
+                            <button className="danger"
                                 onClick={() => eliminar(h.id)}
                                 style={{
                                     backgroundColor: "red",

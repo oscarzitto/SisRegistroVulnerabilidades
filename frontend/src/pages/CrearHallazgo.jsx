@@ -309,7 +309,7 @@ function CrearHallazgo() {
                     Guardar
                 </button>
 
-                <button
+                <button className="secondary"
                     type="button"
                     onClick={() => navigate(-1)}
                 >
