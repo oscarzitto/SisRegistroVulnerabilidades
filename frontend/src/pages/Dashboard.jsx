@@ -73,8 +73,8 @@ function Dashboard() {
             </button>
 
             {usuario?.rol === "admin" && (
-                <button onClick={() => navigate("/crear-usuario")}>
-                    Registrar un usuario
+                <button onClick={() => navigate("/usuarios")}>
+                    Lista Usuarios
                 </button>
             )}
 

@@ -10,6 +10,7 @@ import HistorialCambios from "./pages/HistorialCambios";
 import Auditoria from "./pages/Auditoria";
 import CrearUsuario from "./pages/CrearUsuario";
 import CambiarPassword from "./pages/CambiarPassoword";
+import Usuarios from "./pages/Usuarios";
 
 function App() {
 
@@ -76,6 +77,15 @@ function App() {
                 <Route
                     path="/cambiar-password"
                     element={<CambiarPassword />}
+                />
+
+                <Route
+                    path="/usuarios"
+                    element={
+                        <ProtectedRoute>
+                            <Usuarios />
+                        </ProtectedRoute>
+                    }
                 />
 
             </Routes>

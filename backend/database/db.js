@@ -34,6 +34,17 @@ const db = new sqlite3.Database("./database/database.db", (err) => {
             responsable TEXT
         )`);
 
+        db.run(`
+        CREATE TABLE IF NOT EXISTS historial(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            hallazgo_id INTEGER,
+            usuario TEXT,
+            accion TEXT,
+            detalle TEXT,
+            fecha TEXT
+        )
+        `);
+
         db.run(`CREATE TABLE IF NOT EXISTS auditoria(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             usuario TEXT,

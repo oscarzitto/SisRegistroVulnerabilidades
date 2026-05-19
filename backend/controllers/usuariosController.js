@@ -31,6 +31,26 @@ const listarUsuarios = (req, res) => {
 
 };
 
-module.exports = {
-    listarUsuarios
+const eliminarUsuario = (req, res) => {
+
+    const { id } = req.params;
+
+    db.run(
+        "DELETE FROM usuarios WHERE id=?",
+        [id],
+        function (err) {
+
+            if (err) {
+                return res.status(500).json({
+                    mensaje: "Error al eliminar usuario"
+                });
+            }
+
+            res.json({
+                mensaje: "Usuario eliminado"
+            });
+        }
+    );
 };
+
+module.exports = { listarUsuarios, eliminarUsuario };

@@ -1,20 +1,25 @@
-const express=require("express");
+const express = require("express");
+const router = express.Router();
 
-const router=express.Router();
-
-const verificarToken=
-require("../middleware/authMiddleware");
+const verificarToken = require("../middleware/authMiddleware");
 
 const {
-listarUsuarios
-}
-=
-require("../controllers/usuariosController");
+    listarUsuarios,
+    eliminarUsuario
+} = require("../controllers/usuariosController");
 
+// 📌 LISTAR USUARIOS
 router.get(
-"/usuarios",
-verificarToken,
-listarUsuarios
+    "/usuarios",
+    verificarToken,
+    listarUsuarios
 );
 
-module.exports=router;
+// 📌 ELIMINAR USUARIO 👈 AQUÍ VA LO QUE PREGUNTAS
+router.delete(
+    "/usuarios/:id",
+    verificarToken,
+    eliminarUsuario
+);
+
+module.exports = router;

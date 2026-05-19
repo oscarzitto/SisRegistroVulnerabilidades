@@ -16,6 +16,8 @@ function CrearUsuario() {
 
     });
 
+    const [resultado, setResultado] = useState(null);
+
     function cambiar(e) {
 
         setForm({
@@ -83,17 +85,14 @@ function CrearUsuario() {
 
         const data = await res.json();
 
-        alert(
-            `${data.mensaje}
-
-            Correo: ${correo}
-            Contraseña temporal: ${password}
-
-            ⚠ Se recomienda cambiar la contraseña al iniciar sesión`
-        );
+        setResultado({
+            mensaje: data.mensaje,
+            correo,
+            password
+        });
 
         if (res.ok) {
-            navigate("/usuarios");
+            setForm({ nombre: "", rol: "analista" });
         }
     }
 
@@ -129,6 +128,27 @@ function CrearUsuario() {
                     </option>
 
                 </select>
+
+                {resultado && (
+                    <div style={{
+                        marginTop: "20px",
+                        padding: "10px",
+                        border: "1px solid green",
+                        backgroundColor: "#eaffea"
+                    }}>
+
+                        <h3>Usuario creado correctamente</h3>
+
+                        <p><b>Mensaje:</b> {resultado.mensaje}</p>
+                        <p><b>Correo:</b> {resultado.correo}</p>
+                        <p><b>Contraseña temporal:</b> {resultado.password}</p>
+
+                        <p style={{ color: "red" }}>
+                            ⚠ Se recomienda cambiar la contraseña al iniciar sesión
+                        </p>
+
+                    </div>
+                )}
 
                 <button type="submit">
                     Crear
