@@ -35,6 +35,13 @@ const eliminarUsuario = (req, res) => {
 
     const { id } = req.params;
 
+    // 🚨 NO permitir auto-eliminación
+    if (req.usuario.id == id) {
+        return res.status(400).json({
+            mensaje: "No puedes eliminar tu propio usuario"
+        });
+    }
+
     db.run(
         "DELETE FROM usuarios WHERE id=?",
         [id],
@@ -42,13 +49,14 @@ const eliminarUsuario = (req, res) => {
 
             if (err) {
                 return res.status(500).json({
-                    mensaje: "Error al eliminar usuario"
+                    mensaje: "Error al eliminar"
                 });
             }
 
             res.json({
                 mensaje: "Usuario eliminado"
             });
+
         }
     );
 };

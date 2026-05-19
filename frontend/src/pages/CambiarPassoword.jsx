@@ -110,6 +110,10 @@ function CambiarPassword() {
 
             </form>
 
+            <button type="submit" onClick={() => navigate("/dashboard")}>
+                Atras
+            </button>
+
         </div>
 
     );

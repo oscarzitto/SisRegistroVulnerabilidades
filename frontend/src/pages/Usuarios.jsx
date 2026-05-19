@@ -34,6 +34,11 @@ function Usuarios() {
     // 🗑 eliminar usuario
     const eliminar = async (id) => {
 
+        if (id === usuario.id) {
+            alert("No puedes eliminar tu propio usuario");
+            return;
+        }
+
         if (!window.confirm("¿Eliminar usuario?")) return;
 
         try {
@@ -45,13 +50,10 @@ function Usuarios() {
             });
 
             alert("Usuario eliminado");
-
             cargarUsuarios();
 
         } catch (error) {
-
             alert("Error al eliminar usuario");
-
         }
     };
 
