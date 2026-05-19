@@ -30,13 +30,55 @@ function CrearUsuario() {
 
     async function enviar(e) {
 
+        const nombreLimpio =
+            form.nombre
+                .trim()
+                .replace(/\s+/g, " ");
+
+
+        const regexNombre =
+            /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+\s[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$/;
+
+
+        if (
+
+            !regexNombre.test(
+                nombreLimpio
+            )
+
+        ) {
+
+            alert(
+                `Debe ingresar:
+
+                Nombre Apellido
+
+                Solo letras y separados por un espacio`
+            );
+
+            return;
+
+        }
+
         e.preventDefault();
 
+        const correoBase =
+
+            nombreLimpio
+                .toLowerCase()
+                .replace(" ", ".");
+
         const correo =
-            `${form.nombre.toLowerCase()}@${form.rol}.cl`;
+
+            `${correoBase}@${form.rol}.cl`;
 
         const password =
-            `${form.nombre}123`;
+
+            `pass${Math.floor(
+                10 +
+                Math.random() * 90
+            )
+            }`;
 
         const res =
             await fetch(
@@ -75,13 +117,15 @@ function CrearUsuario() {
             await res.json();
 
         alert(
+
             `${data.mensaje}
+            Correo:
+            ${correo}
 
-Correo:
-${correo}
+            Contraseña temporal:
+            ${password}
 
-Contraseña:
-${password}`
+            Se recomienda cambiar la contraseña al iniciar sesión.`
         );
 
     }

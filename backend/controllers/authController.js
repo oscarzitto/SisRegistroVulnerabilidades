@@ -5,46 +5,92 @@ const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
 
-    const { nombre, correo, password, rol } = req.body;
+    let {
+        nombre,
+        password,
+        rol
+    } = req.body;
 
-    if (!nombre || !correo || !password || !rol) {
-        return res.status(400).json({
-            mensaje: "Faltan campos"
-        });
-    }
+    // limpiar espacios extra
+    nombre = nombre.trim();
 
-    try {
+    // obtener solo primer nombre
+    let nombreBase =
+        nombre
+            .split(" ")[0]
+            .toLowerCase();
 
-        const hash = await bcrypt.hash(password, 10);
+    let dominio =
+        `${rol}.cl`;
 
-        db.run(
-            `INSERT INTO usuarios
-        (nombre,correo,password_hash,rol)
-        VALUES(?,?,?,?)`,
-            [nombre, correo, hash, rol],
+    let correo =
+        `${nombreBase}@${dominio}`;
 
-            function (err) {
+    // buscar correos repetidos
+    db.all(
 
-                if (err) {
+        `SELECT correo
+        FROM usuarios
+        WHERE correo LIKE ?`,
 
-                    return res.status(500).json({
-                        mensaje: "Error al registrar"
-                    });
-                }
+        [`${nombreBase}%@${dominio}`],
 
-                res.json({
-                    mensaje: "Usuario creado"
+        async (err, rows) => {
+
+            if (err) {
+
+                return res.status(500).json({
+                    mensaje: "Error"
                 });
 
-            });
+            }
 
-    } catch (error) {
+            // si existen correos repetidos
+            if (rows.length > 0) {
 
-        res.status(500).json({
-            mensaje: "Error"
-        });
+                correo =
+                    `${nombreBase}${rows.length}@${dominio}`;
 
-    }
+            }
+
+            const hash =
+                await bcrypt.hash(
+                    password,
+                    10
+                );
+
+            db.run(
+                `INSERT INTO usuarios
+                (nombre,correo,password_hash,rol)
+                VALUES(?,?,?,?)`,
+                [nombre, correo, hash, rol],
+
+                function (err) {
+
+                    if (err) {
+
+                        // 👇 ESTE ES EL ERROR DE DUPLICADO
+                        if (err.message.includes("UNIQUE")) {
+                            return res.status(400).json({
+                                mensaje: "El correo ya está en uso"
+                            });
+                        }
+
+                        return res.status(500).json({
+                            mensaje: "Error al registrar"
+                        });
+                    }
+
+                    res.json({
+                        mensaje: "Usuario creado"
+                    });
+
+                }
+            );
+
+        }
+
+    );
 
 };
 
