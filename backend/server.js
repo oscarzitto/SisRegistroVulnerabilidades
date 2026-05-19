@@ -1,9 +1,38 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const bcrypt = require("bcrypt");
 
 // Base de datos
-require("./database/db");
+const db = require("./database/db");
+
+db.get("SELECT COUNT(*) as total FROM usuarios", (err, row) => {
+
+    if (err) {
+        console.log("Error verificando usuarios");
+        return;
+    }
+
+    if (row.total === 0) {
+
+        bcrypt.hash("admin", 10, (err, hash) => {
+
+            db.run(
+                `INSERT INTO usuarios
+                (nombre, correo, password_hash, rol, must_change_password)
+                VALUES (?,?,?,?,0)`,
+                [
+                    "Admin Sistema",
+                    "admin@admin.cl",
+                    hash,
+                    "admin"
+                ]
+            );
+
+            console.log("✔ Admin creado");
+        });
+    }
+});
 
 // App
 const app = express();
@@ -33,7 +62,7 @@ app.use(
 
 
 // Ruta principal
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
 
     res.send("API funcionando SIII");
 
@@ -41,10 +70,10 @@ app.get("/",(req,res)=>{
 
 
 // Puerto
-const PORT=process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // Iniciar servidor
-app.listen(PORT,()=>{
+app.listen(PORT, () => {
 
     console.log(
         `Servidor corriendo en puerto ${PORT}`

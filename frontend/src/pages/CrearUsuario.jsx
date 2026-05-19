@@ -32,41 +32,37 @@ function CrearUsuario() {
         e.preventDefault();
 
         const nombreLimpio = form.nombre.trim();
-        const partes = nombreLimpio.split(" ");
 
+        // 1. validar caracteres (solo letras y espacios)
         const regexNombre =
             /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 
-        // 1. validar caracteres
         if (!regexNombre.test(nombreLimpio)) {
             alert("El nombre contiene caracteres no válidos");
             return;
         }
 
-        // 2. validar solo nombre y apellido (máx 2 palabras)
-        if (partes.length > 2) {
-            alert("Ingresa solo nombre y apellido");
+        // 2. validar 1 o 2 palabras
+        const partes = nombreLimpio.split(" ").filter(p => p);
+
+        if (partes.length < 1 || partes.length > 2) {
+            alert("Solo nombre y apellido (máx 2 palabras)");
             return;
         }
 
-        // 3. validar que no esté vacío
-        if (partes.length < 1 || nombreLimpio.length === 0) {
-            alert("El nombre no puede estar vacío");
-            return;
-        }
-
-        // 🔹 generar correo
-        const correoBase =
-            nombreLimpio
-                .toLowerCase()
-                .replace(/\s+/g, "."); // mejor que replace(" ", ".")
+        // 3. correo base (minúscula)
+        const baseCorreo =
+            partes
+                .slice(0, 2)
+                .join(".")
+                .toLowerCase();
 
         const correo =
-            `${correoBase}@${form.rol}.cl`;
+            `${baseCorreo}@${form.rol}.cl`;
 
-        // 🔹 password temporal
+        // 4. password temporal segura
         const password =
-            `pass${Math.floor(10 + Math.random() * 900)}`;
+            `pass${Math.floor(100 + Math.random() * 9000)}`;
 
         const res = await fetch(
             "http://localhost:3000/register",
@@ -90,14 +86,15 @@ function CrearUsuario() {
         alert(
             `${data.mensaje}
 
-                Correo:
-                ${correo}
+            Correo: ${correo}
+            Contraseña temporal: ${password}
 
-                Contraseña temporal:
-                ${password}
-
-                Se recomienda cambiar la contraseña al iniciar sesión.`
+            ⚠ Se recomienda cambiar la contraseña al iniciar sesión`
         );
+
+        if (res.ok) {
+            navigate("/usuarios");
+        }
     }
 
     return (
@@ -133,7 +130,7 @@ function CrearUsuario() {
 
                 </select>
 
-                <button onClick={() => navigate(-1)}>
+                <button type="submit">
                     Crear
                 </button>
 

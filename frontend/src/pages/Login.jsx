@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 function Login() {
 
     const [correo, setCorreo] = useState("");
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
 
     const enviar = async () => {
 
@@ -18,19 +21,37 @@ function Login() {
                 }
             );
 
+            const data = res.data;
+
+            // 🔴 SI DEBE CAMBIAR PASSWORD
+            if (data.mustChangePassword) {
+
+                localStorage.setItem(
+                    "usuario",
+                    JSON.stringify(data.usuario)
+                );
+
+                localStorage.setItem(
+                    "token",
+                    data.token
+                );
+
+                navigate("/cambiar-password");
+                return;
+            }
+
+            // 🟢 LOGIN NORMAL
             localStorage.setItem(
                 "token",
-                res.data.token
+                data.token
             );
 
             localStorage.setItem(
                 "usuario",
-                JSON.stringify(
-                    res.data.usuario
-                )
+                JSON.stringify(data.usuario)
             );
 
-            window.location = "/dashboard";
+            navigate("/dashboard");
 
         }
 

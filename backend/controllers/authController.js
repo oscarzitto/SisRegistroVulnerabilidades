@@ -5,93 +5,70 @@ const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
 
-    let {
-        nombre,
-        password,
-        rol
-    } = req.body;
+    let { nombre, correo, password, rol } = req.body;
 
-    // limpiar espacios extra
-    nombre = nombre.trim();
+    if (!nombre || !correo || !password || !rol) {
+        return res.status(400).json({
+            mensaje: "Faltan campos"
+        });
+    }
 
-    // obtener solo primer nombre
-    let nombreBase =
-        nombre
-            .split(" ")[0]
-            .toLowerCase();
+    try {
 
-    let dominio =
-        `${rol}.cl`;
+        // 🔐 buscar duplicados
+        db.all(
+            `SELECT correo FROM usuarios WHERE correo LIKE ?`,
+            [`${correo.split("@")[0]}%@${rol}.cl`],
+            async (err, rows) => {
 
-    let correo =
-        `${nombreBase}@${dominio}`;
+                if (err) {
+                    return res.status(500).json({
+                        mensaje: "Error"
+                    });
+                }
 
-    // buscar correos repetidos
-    db.all(
+                let finalCorreo = correo;
 
-        `SELECT correo
-        FROM usuarios
-        WHERE correo LIKE ?`,
+                if (rows.length > 0) {
+                    finalCorreo =
+                        `${correo.split("@")[0]}${rows.length}@${rol}.cl`;
+                }
 
-        [`${nombreBase}%@${dominio}`],
+                const bcrypt = require("bcrypt");
+                const hash = await bcrypt.hash(password, 10);
 
-        async (err, rows) => {
+                db.run(
+                    `INSERT INTO usuarios
+                    (nombre, correo, password_hash, rol, must_change_password)
+                    VALUES (?,?,?,?,1)`,
+                    [
+                        nombre,
+                        finalCorreo,
+                        hash,
+                        rol
+                    ],
+                    function (err) {
 
-            if (err) {
-
-                return res.status(500).json({
-                    mensaje: "Error"
-                });
-
-            }
-
-            // si existen correos repetidos
-            if (rows.length > 0) {
-
-                correo =
-                    `${nombreBase}${rows.length}@${dominio}`;
-
-            }
-
-            const hash =
-                await bcrypt.hash(
-                    password,
-                    10
-                );
-
-            db.run(
-                `INSERT INTO usuarios
-                (nombre,correo,password_hash,rol)
-                VALUES(?,?,?,?)`,
-                [nombre, correo, hash, rol],
-
-                function (err) {
-
-                    if (err) {
-
-                        // 👇 ESTE ES EL ERROR DE DUPLICADO
-                        if (err.message.includes("UNIQUE")) {
-                            return res.status(400).json({
-                                mensaje: "El correo ya está en uso"
+                        if (err) {
+                            return res.status(500).json({
+                                mensaje: "Error al registrar"
                             });
                         }
 
-                        return res.status(500).json({
-                            mensaje: "Error al registrar"
+                        res.json({
+                            mensaje: "Usuario creado",
+                            correo: finalCorreo
                         });
                     }
+                );
+            }
+        );
 
-                    res.json({
-                        mensaje: "Usuario creado"
-                    });
-
-                }
-            );
-
-        }
-
-    );
-
+    } catch (error) {
+        res.status(500).json({
+            mensaje: "Error"
+        });
+    }
 };
 
 const login = (req, res) => {
@@ -158,7 +135,7 @@ const login = (req, res) => {
             res.json({
                 mensaje: "Login correcto",
                 token,
-
+                mustChangePassword: usuario.must_change_password === 1,
                 usuario: {
                     nombre: usuario.nombre,
                     rol: usuario.rol

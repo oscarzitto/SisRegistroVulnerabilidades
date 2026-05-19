@@ -14,7 +14,8 @@ const db = new sqlite3.Database("./database/database.db", (err) => {
             nombre TEXT NOT NULL,
             correo TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
-            rol TEXT NOT NULL
+            rol TEXT NOT NULL,
+            must_change_password INTEGER NOT NULL DEFAULT 1
         )
         `);
 
