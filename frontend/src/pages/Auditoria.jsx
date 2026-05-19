@@ -5,14 +5,52 @@ function Auditoria() {
 
     const [logs, setLogs] = useState([]);
 
+    const usuariosUnicos = [
+
+        ...new Set(
+            logs.map(
+                l => l.usuario
+            )
+        )
+
+    ];
+
     const token =
         localStorage.getItem("token");
 
     const navigate =
         useNavigate();
 
-    const [filtro, setFiltro] =
-        useState("");
+    const [filtros, setFiltros] = useState({
+        usuario: "",
+        desde: "",
+        hasta: ""
+    });
+
+    function cambiarFiltro(e) {
+
+        setFiltros({
+
+            ...filtros,
+
+            [e.target.name]:
+                e.target.value
+
+        });
+
+    }
+
+    function limpiarFiltros() {
+
+        setFiltros({
+
+            usuario: "",
+            desde: "",
+            hasta: ""
+
+        });
+
+    }
 
     useEffect(() => {
 
@@ -50,31 +88,101 @@ function Auditoria() {
                 Volver
             </button>
 
-            <input
-                placeholder=
-                "Buscar evento..."
-                onChange={(e) =>
+            <div
+                style={{
+                    marginBottom: "20px"
+                }}
+            >
 
-                    setFiltro(
-                        e.target.value
-                    )
+                <select
+                    name="usuario"
+                    value={filtros.usuario}
+                    onChange={cambiarFiltro}
+                >
 
-                }
-            />
+                    <option value="">
+                        Todos los usuarios
+                    </option>
+
+                    {
+                        usuariosUnicos.map((u, i) => (
+
+                            <option
+                                key={i}
+                                value={u}
+                            >
+                                {u}
+                            </option>
+
+                        ))
+                    }
+
+                </select>
+
+                <input
+                    type="date"
+                    name="desde"
+                    value={filtros.desde}
+                    onChange={cambiarFiltro}
+                />
+
+                <input
+                    type="date"
+                    name="hasta"
+                    value={filtros.hasta}
+                    onChange={cambiarFiltro}
+                />
+
+                <button
+                    onClick={limpiarFiltros}
+                >
+                    Limpiar filtros
+                </button>
+
+            </div>
 
             {
 
                 logs
 
-                    .filter(l =>
+                    .filter(l => {
 
-                        l.evento
-                            .toLowerCase()
-                            .includes(
-                                filtro.toLowerCase()
-                            )
+                        const cumpleUsuario =
 
-                    )
+                            !filtros.usuario ||
+
+                            l.usuario === filtros.usuario;
+
+
+                        const cumpleDesde =
+
+                            !filtros.desde ||
+
+                            l.fecha.substring(0, 10)
+                            >=
+                            filtros.desde;
+
+
+                        const cumpleHasta =
+
+                            !filtros.hasta ||
+
+                            l.fecha.substring(0, 10)
+                            <=
+                            filtros.hasta;
+
+
+                        return (
+
+                            cumpleUsuario
+                            &&
+                            cumpleDesde
+                            &&
+                            cumpleHasta
+
+                        );
+
+                    })
 
                     .map(log => (
 
