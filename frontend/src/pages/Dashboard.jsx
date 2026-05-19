@@ -83,18 +83,6 @@ function Dashboard() {
 
                 <div className="sidebar-actions">
 
-                    <button onClick={() => navigate("/dashboard")}>
-                        🏠 Inicio
-                    </button>
-
-                    <button onClick={() => navigate("/hallazgos")}>
-                        🔎 Hallazgos
-                    </button>
-
-                    <button onClick={() => navigate("/crear-hallazgo")}>
-                        ➕ Crear Hallazgo
-                    </button>
-
                     {usuario?.rol === "admin" && (
                         <>
                             <button onClick={() => navigate("/usuarios")}>

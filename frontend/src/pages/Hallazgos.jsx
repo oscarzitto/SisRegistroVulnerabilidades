@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./hallazgos.css";
 
 function Hallazgos() {
 
@@ -179,18 +180,37 @@ function Hallazgos() {
     }
 
     return (
+        <div className="hallazgos-container">
 
-        <div>
+            {/* HEADER */}
+            <div className="hallazgos-header">
 
-            <h1>Hallazgos</h1>
+                <h1>🛡 Hallazgos de Vulnerabilidades</h1>
 
-            <div style={{ marginBottom: "20px" }}>
+                <div className="hallazgos-actions">
 
-                <select
-                    name="estado"
-                    value={filtros.estado}
-                    onChange={cambiarFiltro}
-                >
+
+
+                    <button onClick={() => navigate("/historial-cambios")}>
+                        📜 Historial
+                    </button>
+
+                    <button onClick={exportar}>
+                        📤 Exportar CSV
+                    </button>
+
+                    <button className="secondary" onClick={() => navigate("/dashboard")}>
+                        ⬅ Volver
+                    </button>
+
+                </div>
+
+            </div>
+
+            {/* FILTROS */}
+            <div className="hallazgos-filters">
+
+                <select name="estado" value={filtros.estado} onChange={cambiarFiltro}>
                     <option value="">Estado</option>
                     <option>Nuevo</option>
                     <option>En análisis</option>
@@ -199,11 +219,7 @@ function Hallazgos() {
                     <option>Cerrado</option>
                 </select>
 
-                <select
-                    name="severidad"
-                    value={filtros.severidad}
-                    onChange={cambiarFiltro}
-                >
+                <select name="severidad" value={filtros.severidad} onChange={cambiarFiltro}>
                     <option value="">Severidad</option>
                     <option>Baja</option>
                     <option>Media</option>
@@ -211,173 +227,92 @@ function Hallazgos() {
                     <option>Crítica</option>
                 </select>
 
-                <select
-                    name="activo"
-                    value={filtros.activo}
-                    onChange={cambiarFiltro}
-                >
-                    <option value="">Todos los activos</option>
-
+                <select name="activo" value={filtros.activo} onChange={cambiarFiltro}>
+                    <option value="">Activo</option>
                     {activosUnicos.map((a, i) => (
-                        <option key={i} value={a}>
-                            {a}
-                        </option>
+                        <option key={i}>{a}</option>
                     ))}
                 </select>
 
-                <select
-                    name="responsable"
-                    value={filtros.responsable}
-                    onChange={cambiarFiltro}
-                >
-                    <option value="">
-                        Todos responsables
-                    </option>
-
+                <select name="responsable" value={filtros.responsable} onChange={cambiarFiltro}>
+                    <option value="">Responsable</option>
                     {responsablesUnicos.map((r, i) => (
-
-                        <option
-                            key={i}
-                            value={r}
-                        >
-                            {r}
-                        </option>
-
+                        <option key={i}>{r}</option>
                     ))}
                 </select>
 
-                <input
-                    type="date"
-                    name="desde"
-                    value={filtros.desde}
-                    onChange={cambiarFiltro}
-                />
+                <input type="date" name="desde" value={filtros.desde} onChange={cambiarFiltro} />
+                <input type="date" name="hasta" value={filtros.hasta} onChange={cambiarFiltro} />
 
-                <input
-                    type="date"
-                    name="hasta"
-                    value={filtros.hasta}
-                    onChange={cambiarFiltro}
-                />
+                <button onClick={limpiarFiltros}>
+                    🧹 Limpiar filtros
+                </button>
+
+                <button onClick={() => navigate("/crear-hallazgo")}>
+                    ➕ Crear
+                </button>
 
             </div>
 
-            <button onClick={limpiarFiltros}>
-                Limpiar filtros
-            </button>
+            {/* LISTA */}
+            <div className="hallazgos-list">
 
+                {hallazgos
+                    .filter(h => {
 
-            <button onClick={() => navigate("/crear-hallazgo")}>
-                Crear Hallazgo
-            </button>
+                        return (
+                            (!filtros.estado || h.estado === filtros.estado) &&
+                            (!filtros.severidad || h.severidad === filtros.severidad) &&
+                            (!filtros.activo || h.activo_afectado.toLowerCase().includes(filtros.activo.toLowerCase())) &&
+                            (!filtros.responsable || h.responsable === filtros.responsable) &&
+                            (!filtros.desde || h.fecha >= filtros.desde) &&
+                            (!filtros.hasta || h.fecha <= filtros.hasta)
+                        );
 
-            <button onClick={() => navigate("/historial-cambios")}>
-                Historial de cambios
-            </button>
+                    })
+                    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+                    .map(h => (
 
-            <button onClick={exportar}>
-                Exportar CSV
-            </button>
+                        <div className="hallazgo-card" key={h.id}>
 
-            <button onClick={() => navigate("/dashboard")} className="secondary">
-                Volver
-            </button>
+                            <div className="hallazgo-top">
 
-            {hallazgos
+                                <div>
+                                    <h3>#{h.id} - {h.activo_afectado}</h3>
+                                    <span className={`badge ${h.severidad}`}>
+                                        {h.severidad}
+                                    </span>
+                                </div>
 
-                .filter(h => {
+                                {usuario?.rol === "admin" && (
+                                    <button className="danger" onClick={() => eliminar(h.id)}>
+                                        🗑
+                                    </button>
+                                )}
 
-                    const cumpleEstado =
-                        !filtros.estado || h.estado === filtros.estado;
+                            </div>
 
-                    const cumpleSeveridad =
-                        !filtros.severidad || h.severidad === filtros.severidad;
+                            <p>{h.descripcion}</p>
 
-                    const cumpleActivo =
-                        !filtros.activo ||
-                        h.activo_afectado.toLowerCase().includes(filtros.activo.toLowerCase());
+                            <div className="hallazgo-meta">
 
-                    const cumpleResponsable =
+                                <span>📌 {h.estado}</span>
+                                <span>👤 {h.responsable}</span>
+                                <span>📅 {h.fecha}</span>
 
-                        !filtros.responsable ||
+                            </div>
 
-                        h.responsable === filtros.responsable;
-
-                    const cumpleFechaDesde =
-                        !filtros.desde || h.fecha >= filtros.desde;
-
-                    const cumpleFechaHasta =
-                        !filtros.hasta || h.fecha <= filtros.hasta;
-
-
-                    return (
-                        cumpleEstado &&
-                        cumpleSeveridad &&
-                        cumpleActivo &&
-                        cumpleResponsable &&
-                        cumpleFechaDesde &&
-                        cumpleFechaHasta
-                    );
-
-                })
-                .sort((a, b) => new Date(b.fecha) - new Date(a.fecha)) // 🔥 NUEVO
-
-                .map(h => (
-
-                    <div
-                        key={h.id}
-                        style={{
-                            border: "1px solid gray",
-                            padding: "10px",
-                            margin: "10px"
-                        }}
-                    >
-
-                        {usuario?.rol === "admin" && (
-
-                            <button className="danger"
-                                onClick={() => eliminar(h.id)}
-                                style={{
-                                    backgroundColor: "red",
-                                    color: "white"
-                                }}
-                            >
-                                Eliminar
+                            <button onClick={() => navigate(`/editar-hallazgo/${h.id}`)}>
+                                ✏️ Editar
                             </button>
 
-                        )}
+                        </div>
 
-                        <p><b>ID:</b> {h.id}</p>
+                    ))}
 
-                        <p><b>Activo:</b> {h.activo_afectado}</p>
-
-                        <p><b>Tipo:</b> {h.tipo}</p>
-
-                        <p><b>Severidad:</b> {h.severidad}</p>
-
-                        <p><b>Descripción:</b> {h.descripcion}</p>
-
-                        <p><b>Evidencia:</b> {h.evidencia}</p>
-
-                        <p><b>Estado:</b> {h.estado}</p>
-
-                        <p><b>Responsable:</b> {h.responsable}</p>
-
-                        <p><b>Fecha de hallazgo:</b> {h.fecha}</p>
-
-                        <button onClick={() => navigate(`/editar-hallazgo/${h.id}`)}>
-                            Editar
-                        </button>
-
-
-                        <hr />
-
-                    </div>
-
-                ))}
+            </div>
 
         </div>
-
     );
 
 }

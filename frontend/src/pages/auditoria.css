@@ -1,0 +1,62 @@
+.auditoria-container {
+    padding: 20px;
+}
+
+/* HEADER */
+.auditoria-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* FILTROS */
+.auditoria-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+/* LISTA */
+.auditoria-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* CARD LOG */
+.audit-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.audit-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.1);
+}
+
+/* TOP */
+.audit-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.audit-event {
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    background: rgba(0, 150, 255, 0.1);
+    color: var(--primary);
+}
+
+/* FECHA */
+.audit-date {
+    margin-top: 8px;
+    font-size: 12px;
+    opacity: 0.6;
+}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./auditoria.css";
 
 function Auditoria() {
 
@@ -75,47 +76,34 @@ function Auditoria() {
     }, []);
 
     return (
+        <div className="auditoria-container">
 
-        <div>
+            {/* HEADER */}
+            <div className="auditoria-header">
 
-            <h1>
-                Auditoría
-            </h1>
+                <h1>📊 Auditoría del Sistema</h1>
 
-            <button className="secondary"
-                onClick={() => navigate(-1)}
-            >
-                Volver
-            </button>
+                <button className="secondary" onClick={() => navigate(-1)}>
+                    ⬅ Volver
+                </button>
 
-            <div
-                style={{
-                    marginBottom: "20px"
-                }}
-            >
+            </div>
+
+            {/* FILTROS */}
+            <div className="auditoria-filters">
 
                 <select
                     name="usuario"
                     value={filtros.usuario}
                     onChange={cambiarFiltro}
                 >
+                    <option value="">Todos los usuarios</option>
 
-                    <option value="">
-                        Todos los usuarios
-                    </option>
-
-                    {
-                        usuariosUnicos.map((u, i) => (
-
-                            <option
-                                key={i}
-                                value={u}
-                            >
-                                {u}
-                            </option>
-
-                        ))
-                    }
+                    {usuariosUnicos.map((u, i) => (
+                        <option key={i} value={u}>
+                            {u}
+                        </option>
+                    ))}
 
                 </select>
 
@@ -133,97 +121,46 @@ function Auditoria() {
                     onChange={cambiarFiltro}
                 />
 
-                <button
-                    onClick={limpiarFiltros}
-                >
-                    Limpiar filtros
+                <button onClick={limpiarFiltros}>
+                    🧹 Limpiar
                 </button>
 
             </div>
 
-            {
+            {/* LISTA LOGS */}
+            <div className="auditoria-list">
 
-                logs
-
-                    .filter(l => {
-
-                        const cumpleUsuario =
-
-                            !filtros.usuario ||
-
-                            l.usuario === filtros.usuario;
-
-
-                        const cumpleDesde =
-
-                            !filtros.desde ||
-
-                            l.fecha.substring(0, 10)
-                            >=
-                            filtros.desde;
-
-
-                        const cumpleHasta =
-
-                            !filtros.hasta ||
-
-                            l.fecha.substring(0, 10)
-                            <=
-                            filtros.hasta;
-
-
-                        return (
-
-                            cumpleUsuario
-                            &&
-                            cumpleDesde
-                            &&
-                            cumpleHasta
-
-                        );
-
-                    })
-
+                {logs
+                    .filter(l => (
+                        (!filtros.usuario || l.usuario === filtros.usuario) &&
+                        (!filtros.desde || l.fecha.substring(0, 10) >= filtros.desde) &&
+                        (!filtros.hasta || l.fecha.substring(0, 10) <= filtros.hasta)
+                    ))
                     .map(log => (
 
-                        <div
-                            key={log.id}
+                        <div className="audit-card" key={log.id}>
 
-                            style={{
+                            <div className="audit-top">
 
-                                border:
-                                    "1px solid gray",
+                                <h3>{log.usuario}</h3>
 
-                                padding: "10px",
+                                <span className="audit-event">
+                                    {log.evento}
+                                </span>
 
-                                margin: "10px"
+                            </div>
 
-                            }}
-                        >
-
-                            <p>
-                                <b>Usuario:</b>
-                                {log.usuario}
-                            </p>
-
-                            <p>
-                                <b>Evento:</b>
-                                {log.evento}
-                            </p>
-
-                            <p>
-                                <b>Fecha:</b>
+                            <div className="audit-date">
                                 {log.fecha}
-                            </p>
+                            </div>
 
                         </div>
 
-                    ))
+                    ))}
 
-            }
+            </div>
 
         </div>
-
     );
 
 }

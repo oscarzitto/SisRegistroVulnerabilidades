@@ -1,0 +1,88 @@
+.usuarios-container {
+    padding: 20px;
+}
+
+/* HEADER */
+.usuarios-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.usuarios-actions-top {
+    display: flex;
+    gap: 10px;
+}
+
+/* WRAPPER */
+.usuarios-table-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 150, 255, 0.05);
+}
+
+/* TABLE */
+.usuarios-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+}
+
+.usuarios-table thead {
+    background: #0b1220;
+}
+
+.usuarios-table th {
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+    color: var(--primary);
+    border-bottom: 1px solid var(--border);
+}
+
+.usuarios-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* HOVER ROW */
+.usuarios-table tbody tr:hover {
+    background: rgba(0, 150, 255, 0.05);
+}
+
+/* NOMBRE */
+.user-name {
+    font-weight: 500;
+}
+
+/* ROLE BADGE */
+.role {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+/* ROLES */
+.role.admin {
+    background: rgba(255, 215, 0, 0.1);
+    color: gold;
+}
+
+.role.analista {
+    background: rgba(0, 150, 255, 0.1);
+    color: var(--primary);
+}
+
+/* BOTÓN ELIMINAR */
+button.danger {
+    background: #e74c3c !important;
+}
+
+button.danger:hover {
+    background: #ff5c4d !important;
+}

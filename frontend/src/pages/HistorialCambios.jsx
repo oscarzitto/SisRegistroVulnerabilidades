@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./historialcambios.css";
 
 function HistorialCambios() {
 
@@ -73,79 +74,43 @@ function HistorialCambios() {
     }, []);
 
     return (
-        <div>
+        <div className="historial-container">
 
-            <h1>Historial de cambios</h1>
+            {/* HEADER */}
+            <div className="historial-header">
 
-            <button onClick={() => navigate(-1)}>
-                Volver
-            </button>
+                <h1>📜 Historial de Auditoría</h1>
 
-            <div
-                style={{
-                    marginBottom: "20px"
-                }}
-            >
+                <button className="secondary" onClick={() => navigate(-1)}>
+                    ⬅ Volver
+                </button>
+
+            </div>
+
+            {/* FILTROS */}
+            <div className="historial-filters">
 
                 <select
                     name="usuario"
                     value={filtros.usuario}
                     onChange={cambiarFiltro}
                 >
-
-                    <option value="">
-                        Todos usuarios
-                    </option>
-
-                    {
-
-                        usuariosUnicos.map((u, i) => (
-
-                            <option
-                                key={i}
-                                value={u}
-                            >
-
-                                {u}
-
-                            </option>
-
-                        ))
-
-                    }
-
+                    <option value="">Todos los usuarios</option>
+                    {usuariosUnicos.map((u, i) => (
+                        <option key={i}>{u}</option>
+                    ))}
                 </select>
-
 
                 <select
                     name="accion"
                     value={filtros.accion}
                     onChange={cambiarFiltro}
                 >
-
-                    <option value="">
-                        Todas acciones
-                    </option>
-
-                    {
-
-                        accionesUnicas.map((a, i) => (
-
-                            <option
-                                key={i}
-                                value={a}
-                            >
-
-                                {a}
-
-                            </option>
-
-                        ))
-
-                    }
-
+                    <option value="">Todas las acciones</option>
+                    {accionesUnicas.map((a, i) => (
+                        <option key={i}>{a}</option>
+                    ))}
                 </select>
-
 
                 <input
                     type="date"
@@ -161,83 +126,58 @@ function HistorialCambios() {
                     onChange={cambiarFiltro}
                 />
 
-                <button
-                    onClick={limpiarFiltros}
-                >
-
-                    Limpiar filtros
-
+                <button onClick={limpiarFiltros}>
+                    🧹 Limpiar
                 </button>
 
             </div>
 
-            {historial
+            {/* LISTA */}
+            <div className="historial-list">
 
-                .filter(h => {
+                {historial
+                    .filter(h => {
 
-                    const cumpleUsuario =
+                        return (
+                            (!filtros.usuario || h.usuario === filtros.usuario) &&
+                            (!filtros.accion || h.accion === filtros.accion) &&
+                            (!filtros.desde || h.fecha.substring(0, 10) >= filtros.desde) &&
+                            (!filtros.hasta || h.fecha.substring(0, 10) <= filtros.hasta)
+                        );
 
-                        !filtros.usuario ||
+                    })
+                    .map(h => (
 
-                        h.usuario === filtros.usuario;
+                        <div className="historial-card" key={h.id}>
 
+                            <div className="historial-top">
 
-                    const cumpleAccion =
+                                <div>
+                                    <h3>{h.usuario}</h3>
+                                    <span className="badge-action">
+                                        {h.accion}
+                                    </span>
+                                </div>
 
-                        !filtros.accion ||
+                                <span className="historial-date">
+                                    {h.fecha}
+                                </span>
 
-                        h.accion === filtros.accion;
+                            </div>
 
+                            <p className="historial-detail">
+                                {h.detalle}
+                            </p>
 
-                    const cumpleDesde =
+                            <div className="historial-footer">
+                                <span>ID Hallazgo: #{h.hallazgo_id}</span>
+                            </div>
 
-                        !filtros.desde ||
+                        </div>
 
-                        h.fecha.substring(0, 10)
-                        >=
-                        filtros.desde;
+                    ))}
 
-
-                    const cumpleHasta =
-
-                        !filtros.hasta ||
-
-                        h.fecha.substring(0, 10)
-                        <=
-                        filtros.hasta;
-
-
-                    return (
-
-                        cumpleUsuario &&
-                        cumpleAccion &&
-                        cumpleDesde &&
-                        cumpleHasta
-
-                    );
-
-                })
-
-                .map(h => (
-
-                    <div
-                        key={h.id}
-                        style={{
-                            border: "1px solid gray",
-                            padding: "10px",
-                            margin: "10px"
-                        }}
-                    >
-
-                        <p><b>Usuario:</b> {h.usuario}</p>
-                        <p><b>Acción:</b> {h.accion}</p>
-                        <p><b>Detalle:</b> {h.detalle}</p>
-                        <p><b>Fecha:</b> {h.fecha}</p>
-                        <p><b>ID Hallazgo:</b> {h.hallazgo_id}</p>
-
-                    </div>
-
-                ))}
+            </div>
 
         </div>
     );

@@ -1,0 +1,70 @@
+.historial-container {
+    padding: 20px;
+}
+
+/* HEADER */
+.historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* FILTROS */
+.historial-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+/* LISTA */
+.historial-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* CARD */
+.historial-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.historial-card:hover {
+    transform: translateY(-2px);
+}
+
+/* TOP */
+.historial-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ACCIÓN BADGE */
+.badge-action {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    background: rgba(0, 150, 255, 0.1);
+    color: var(--primary);
+}
+
+/* DETALLE */
+.historial-detail {
+    margin-top: 10px;
+    opacity: 0.85;
+}
+
+/* FOOTER */
+.historial-footer {
+    margin-top: 10px;
+    font-size: 12px;
+    opacity: 0.6;
+}

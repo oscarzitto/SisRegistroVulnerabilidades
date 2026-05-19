@@ -1,0 +1,73 @@
+.hallazgos-container {
+    padding: 20px;
+}
+
+/* HEADER */
+.hallazgos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.hallazgos-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* FILTROS */
+.hallazgos-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+/* LISTA */
+.hallazgos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* CARD */
+.hallazgo-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 15px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.hallazgo-card:hover {
+    transform: translateY(-2px);
+}
+
+/* TOP */
+.hallazgo-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* BADGES */
+.badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.badge.Alta { background: #ff6b6b33; color: #ff6b6b; }
+.badge.Media { background: #feca5733; color: #feca57; }
+.badge.Baja { background: #48dbfb33; color: #48dbfb; }
+.badge.Crítica { background: #ff475733; color: #ff4757; }
+
+/* META */
+.hallazgo-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 8px 0;
+}

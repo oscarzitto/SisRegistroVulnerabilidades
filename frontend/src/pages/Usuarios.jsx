@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import "./usuarios.css";
 
 function Usuarios() {
 
@@ -67,65 +68,83 @@ function Usuarios() {
     }
 
     return (
+        <div className="usuarios-container">
 
-        <div>
+            {/* HEADER */}
+            <div className="usuarios-header">
 
-            <h1>Gestión de Usuarios</h1>
+                <h1>👥 Gestión de Usuarios</h1>
 
-            <div style={{ marginBottom: "20px" }}>
+                <div className="usuarios-actions-top">
 
-                <button onClick={() => navigate("/dashboard")} className="secondary">
-                    ⬅ Volver al Dashboard
-                </button>
+                    <button
+                        className="secondary"
+                        onClick={() => navigate("/dashboard")}
+                    >
+                        ⬅ Dashboard
+                    </button>
 
-                <button
-                    onClick={() => navigate("/crear-usuario")}
-                    style={{ marginLeft: "10px" }}
-                >
-                    ➕ Agregar usuario
-                </button>
+                    <button
+                        onClick={() => navigate("/crear-usuario")}
+                    >
+                        ➕ Nuevo Usuario
+                    </button>
+
+                </div>
 
             </div>
 
-            <table border="1" cellPadding="8">
+            {/* TABLA */}
+            <div className="usuarios-table-wrapper">
 
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Rol</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
+                <table className="usuarios-table">
 
-                <tbody>
-
-                    {usuarios.map((u) => (
-
-                        <tr key={u.id}>
-
-                            <td>{u.nombre}</td>
-                            <td>{u.rol}</td>
-
-                            <td>
-
-                                <button
-                                    onClick={() => eliminar(u.id)}
-                                >
-                                    Eliminar
-                                </button>
-
-                            </td>
-
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
                         </tr>
+                    </thead>
 
-                    ))}
+                    <tbody>
 
-                </tbody>
+                        {usuarios.map((u) => (
 
-            </table>
+                            <tr key={u.id}>
+
+                                <td className="user-name">
+                                    {u.nombre}
+                                </td>
+
+                                <td>
+                                    <span className={`role ${u.rol}`}>
+                                        {u.rol}
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        className="danger"
+                                        onClick={() => eliminar(u.id)}
+                                    >
+                                        Eliminar
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                        ))}
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
-
     );
 
 }

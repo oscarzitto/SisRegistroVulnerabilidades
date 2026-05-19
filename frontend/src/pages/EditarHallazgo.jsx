@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import "./crearhallazgo.css";
 
 function EditarHallazgo() {
 
@@ -231,120 +232,157 @@ function EditarHallazgo() {
         }`;
 
     return (
+        <div className="hallazgo-container">
 
-        <div>
+            <div className="hallazgo-card">
 
-            <h1>Editar Hallazgo</h1>
+                <h1>✏️ Editar Hallazgo</h1>
 
-            <form onSubmit={enviar}>
+                <p style={{ opacity: 0.6, marginBottom: "15px" }}>
+                    Modificando hallazgo ID: <b>{id}</b>
+                </p>
 
-                <input
-                    name="fecha"
-                    type="date"
-                    value={form.fecha}
-                    onChange={cambiar}
-                    min="2020-01-01"
-                    max={fechaMaxima}
-                />
+                <form onSubmit={enviar} className="hallazgo-form">
 
-                <input
-                    name="activo_afectado"
-                    placeholder="Activo afectado"
-                    value={form.activo_afectado}
-                    onChange={cambiar}
-                />
+                    {/* FECHA */}
+                    <div className="form-group">
+                        <label>Fecha</label>
+                        <input
+                            name="fecha"
+                            type="date"
+                            value={form.fecha}
+                            onChange={cambiar}
+                            min="2020-01-01"
+                            max={fechaMaxima}
+                        />
+                    </div>
 
-                <input
-                    name="tipo"
-                    placeholder="Tipo de vulnerabilidad"
-                    value={form.tipo}
-                    onChange={cambiar}
-                />
+                    {/* ACTIVO / TIPO */}
+                    <div className="form-row">
 
-                <select
-                    name="severidad"
-                    value={form.severidad}
-                    onChange={cambiar}
-                >
-                    <option value="Baja">Baja</option>
-                    <option value="Media">Media</option>
-                    <option value="Alta">Alta</option>
-                    <option value="Crítica">Crítica</option>
-                </select>
+                        <div className="form-group">
+                            <label>Activo afectado</label>
+                            <input
+                                name="activo_afectado"
+                                value={form.activo_afectado}
+                                onChange={cambiar}
+                            />
+                        </div>
 
-                <input
-                    name="descripcion"
-                    placeholder="Descripción"
-                    value={form.descripcion}
-                    onChange={cambiar}
-                />
+                        <div className="form-group">
+                            <label>Tipo</label>
+                            <input
+                                name="tipo"
+                                value={form.tipo}
+                                onChange={cambiar}
+                            />
+                        </div>
 
-                <input
-                    name="evidencia"
-                    placeholder="Evidencia encontrada"
-                    value={form.evidencia}
-                    onChange={cambiar}
-                />
+                    </div>
 
-                <input
-                    name="recomendacion"
-                    placeholder="Recomendación"
-                    value={form.recomendacion}
-                    onChange={cambiar}
-                />
+                    {/* SEVERIDAD / ESTADO */}
+                    <div className="form-row">
 
-                <select
-                    name="estado"
-                    value={form.estado}
-                    onChange={cambiar}
-                >
-                    <option value="Nuevo">Nuevo</option>
-                    <option value="En análisis">En análisis</option>
-                    <option value="En remediación">En remediación</option>
-                    <option value="Mitigado">Mitigado</option>
-                    <option value="Cerrado">Cerrado</option>
-                </select>
+                        <div className="form-group">
+                            <label>Severidad</label>
+                            <select
+                                name="severidad"
+                                value={form.severidad}
+                                onChange={cambiar}
+                            >
+                                <option>Baja</option>
+                                <option>Media</option>
+                                <option>Alta</option>
+                                <option>Crítica</option>
+                            </select>
+                        </div>
 
-                <select
-                    name="responsable"
-                    value={form.responsable}
-                    onChange={cambiar}
-                >
+                        <div className="form-group">
+                            <label>Estado</label>
+                            <select
+                                name="estado"
+                                value={form.estado}
+                                onChange={cambiar}
+                            >
+                                <option>Nuevo</option>
+                                <option>En análisis</option>
+                                <option>En remediación</option>
+                                <option>Mitigado</option>
+                                <option>Cerrado</option>
+                            </select>
+                        </div>
 
-                    <option value="">
-                        Seleccionar responsable
-                    </option>
+                    </div>
 
-                    {usuarios.map(u => (
+                    {/* DESCRIPCIÓN */}
+                    <div className="form-group">
+                        <label>Descripción</label>
+                        <textarea
+                            name="descripcion"
+                            value={form.descripcion}
+                            onChange={cambiar}
+                        />
+                    </div>
 
-                        <option
-                            key={u.id}
-                            value={u.nombre}
+                    {/* EVIDENCIA / RECOMENDACIÓN */}
+                    <div className="form-group">
+                        <label>Evidencia</label>
+                        <input
+                            name="evidencia"
+                            value={form.evidencia}
+                            onChange={cambiar}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Recomendación</label>
+                        <input
+                            name="recomendacion"
+                            value={form.recomendacion}
+                            onChange={cambiar}
+                        />
+                    </div>
+
+                    {/* RESPONSABLE */}
+                    <div className="form-group">
+                        <label>Responsable</label>
+                        <select
+                            name="responsable"
+                            value={form.responsable}
+                            onChange={cambiar}
                         >
+                            <option value="">Sin asignar</option>
 
-                            {u.nombre} ({u.rol})
+                            {usuarios.map(u => (
+                                <option key={u.id} value={u.nombre}>
+                                    {u.nombre} ({u.rol})
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                        </option>
+                    {/* BOTONES */}
+                    <div className="form-actions">
 
-                    ))}
+                        <button type="submit">
+                            💾 Guardar cambios
+                        </button>
 
-                </select>
+                        <button
+                            type="button"
+                            className="secondary"
+                            onClick={() => navigate("/hallazgos")}
+                        >
+                            ↩ Cancelar
+                        </button>
 
-                <button>
-                    Guardar cambios
-                </button>
+                    </div>
 
-                <button className="secondary"
-                    type="button"
-                    onClick={() => navigate(-1)}
-                >
-                    Atrás
-                </button>
+                </form>
 
-            </form>
+            </div>
 
         </div>
-
     );
 
 }
