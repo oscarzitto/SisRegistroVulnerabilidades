@@ -304,7 +304,8 @@ function CrearHallazgo() {
 
                 </select>
 
-                <button type="submit">
+                <button type="submit"
+                        onClick={() => navigate("/hallazgos")}>
                     Guardar
                 </button>
 

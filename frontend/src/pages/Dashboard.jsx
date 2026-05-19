@@ -68,10 +68,6 @@ function Dashboard() {
                 Crear Hallazgo
             </button>
 
-            <button onClick={() => navigate("/historial-cambios")}>
-                Historial de cambios
-            </button>
-
             {usuario?.rol === "admin" && (
                 <button onClick={() => navigate("/usuarios")}>
                     Lista Usuarios
