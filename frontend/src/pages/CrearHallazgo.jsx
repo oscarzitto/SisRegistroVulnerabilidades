@@ -55,23 +55,143 @@ function CrearHallazgo() {
 
         e.preventDefault();
 
-        const res = await fetch(
-            "http://localhost:3000/hallazgos",
-            {
-                method: "POST",
+        // quitar espacios
+        const datos = {
 
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                },
+            ...form,
 
-                body: JSON.stringify(form)
+            activo_afectado:
+                form.activo_afectado.trim(),
 
-            });
+            tipo:
+                form.tipo.trim(),
 
-        const data = await res.json();
+            descripcion:
+                form.descripcion.trim(),
+
+            evidencia:
+                form.evidencia.trim(),
+
+            recomendacion:
+                form.recomendacion.trim()
+
+        };
+
+
+        // campos vacíos
+        if (
+
+            !datos.fecha ||
+            !datos.activo_afectado ||
+            !datos.tipo ||
+            !datos.descripcion ||
+            !datos.evidencia ||
+            !datos.recomendacion ||
+            !datos.responsable
+
+        ) {
+
+            alert(
+                "Completa todos los campos"
+            );
+
+            return;
+        }
+
+
+        // descripción mínima
+
+        if (
+
+            datos.descripcion.length < 10
+
+        ) {
+
+            alert(
+                "La descripción debe tener al menos 10 caracteres"
+            );
+
+            return;
+
+        }
+
+
+        // validar fecha
+
+        const fechaSeleccionada =
+            new Date(datos.fecha);
+
+        const hoy =
+            new Date();
+
+        const año =
+            fechaSeleccionada.getFullYear();
+
+
+        if (
+
+            año < 2020 ||
+            año > 2035
+
+        ) {
+
+            alert(
+                "El año debe estar entre 2020 y 2035"
+            );
+
+            return;
+
+        }
+
+
+        // evitar fechas futuras
+
+        if (
+
+            fechaSeleccionada > hoy
+
+        ) {
+
+            alert(
+                "No puedes registrar fechas futuras"
+            );
+
+            return;
+
+        }
+
+
+        // envío
+
+        const res =
+            await fetch(
+                "http://localhost:3000/hallazgos",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        Authorization:
+                            `Bearer ${token}`
+
+                    },
+
+                    body:
+                        JSON.stringify(datos)
+
+                }
+            );
+
+        const data =
+            await res.json();
 
         alert(data.mensaje);
+
+        navigate("/hallazgos");
 
     }
 
@@ -86,7 +206,10 @@ function CrearHallazgo() {
                 <input
                     name="fecha"
                     type="date"
+                    value={form.fecha}
                     onChange={cambiar}
+                    min="2020-01-01"
+                    max="2035-12-31"
                 />
 
                 <input

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 function EditarHallazgo() {
 
     const token = localStorage.getItem("token");
+    const [usuarios, setUsuarios] = useState([]);
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -22,17 +23,46 @@ function EditarHallazgo() {
     // 🟡 CARGAR DATOS DEL HALLAZGO
     useEffect(() => {
 
-        fetch(`http://localhost:3000/hallazgos`, {
-            headers: {
-                Authorization: `Bearer ${token}`
+        // cargar usuarios
+        fetch(
+            "http://localhost:3000/usuarios",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }
-        })
+        )
             .then(res => res.json())
             .then(data => {
-                const hallazgo = data.find(h => h.id == id);
-                if (hallazgo) {
-                    setForm(hallazgo);
+
+                setUsuarios(data);
+
+            });
+
+
+        // cargar hallazgo actual
+        fetch(
+            "http://localhost:3000/hallazgos",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
+            }
+        )
+            .then(res => res.json())
+            .then(data => {
+
+                const hallazgo =
+                    data.find(
+                        h => h.id == id
+                    );
+
+                if (hallazgo) {
+
+                    setForm(hallazgo);
+
+                }
+
             });
 
     }, []);
@@ -46,25 +76,143 @@ function EditarHallazgo() {
 
     // 🟢 GUARDAR EDICIÓN
     async function enviar(e) {
+
         e.preventDefault();
 
-        const res = await fetch(
-            `http://localhost:3000/hallazgos/${id}`,
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(form)
-            }
+        const datos = {
+
+            ...form,
+
+            activo_afectado:
+                form.activo_afectado.trim(),
+
+            tipo:
+                form.tipo.trim(),
+
+            descripcion:
+                form.descripcion.trim(),
+
+            evidencia:
+                form.evidencia.trim(),
+
+            recomendacion:
+                form.recomendacion.trim()
+
+        };
+
+
+        if (
+
+            !datos.fecha ||
+            !datos.activo_afectado ||
+            !datos.tipo ||
+            !datos.descripcion ||
+            !datos.evidencia ||
+            !datos.recomendacion ||
+            !datos.responsable
+
+        ) {
+
+            alert(
+                "Completa todos los campos"
+            );
+
+            return;
+
+        }
+
+
+        if (
+
+            datos.descripcion.length < 10
+
+        ) {
+
+            alert(
+                "La descripción debe tener mínimo 10 caracteres"
+            );
+
+            return;
+
+        }
+
+
+        const fechaSeleccionada =
+            new Date(datos.fecha);
+
+        const hoy =
+            new Date();
+
+        const año =
+            fechaSeleccionada.getFullYear();
+
+
+        if (
+
+            año < 2020 ||
+            año > 2035
+
+        ) {
+
+            alert(
+                "Año inválido"
+            );
+
+            return;
+
+        }
+
+
+        if (
+
+            fechaSeleccionada > hoy
+
+        ) {
+
+            alert(
+                "La fecha no puede ser futura"
+            );
+
+            return;
+
+        }
+
+
+        const res =
+            await fetch(
+                `http://localhost:3000/hallazgos/${id}`,
+                {
+
+                    method: "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        Authorization:
+                            `Bearer ${token}`
+
+                    },
+
+                    body:
+                        JSON.stringify(datos)
+
+                }
+            );
+
+
+        const data =
+            await res.json();
+
+        alert(
+            data.mensaje
         );
 
-        const data = await res.json();
+        navigate(
+            "/hallazgos"
+        );
 
-        alert(data.mensaje);
-
-        navigate("/hallazgos");
     }
 
     return (
@@ -80,16 +228,20 @@ function EditarHallazgo() {
                     type="date"
                     value={form.fecha}
                     onChange={cambiar}
+                    min="2020-01-01"
+                    max="2035-12-31"
                 />
 
                 <input
                     name="activo_afectado"
+                    placeholder="Activo afectado"
                     value={form.activo_afectado}
                     onChange={cambiar}
                 />
 
                 <input
                     name="tipo"
+                    placeholder="Tipo de vulnerabilidad"
                     value={form.tipo}
                     onChange={cambiar}
                 />
@@ -107,18 +259,21 @@ function EditarHallazgo() {
 
                 <input
                     name="descripcion"
+                    placeholder="Descripción"
                     value={form.descripcion}
                     onChange={cambiar}
                 />
 
                 <input
                     name="evidencia"
+                    placeholder="Evidencia encontrada"
                     value={form.evidencia}
                     onChange={cambiar}
                 />
 
                 <input
                     name="recomendacion"
+                    placeholder="Recomendación"
                     value={form.recomendacion}
                     onChange={cambiar}
                 />
@@ -135,11 +290,30 @@ function EditarHallazgo() {
                     <option value="Cerrado">Cerrado</option>
                 </select>
 
-                <input
+                <select
                     name="responsable"
                     value={form.responsable}
                     onChange={cambiar}
-                />
+                >
+
+                    <option value="">
+                        Seleccionar responsable
+                    </option>
+
+                    {usuarios.map(u => (
+
+                        <option
+                            key={u.id}
+                            value={u.nombre}
+                        >
+
+                            {u.nombre} ({u.rol})
+
+                        </option>
+
+                    ))}
+
+                </select>
 
                 <button>
                     Guardar cambios
