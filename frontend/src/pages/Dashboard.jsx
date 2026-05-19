@@ -122,7 +122,7 @@ function Dashboard() {
                         <h2>🔎 Hallazgos</h2>
                         <p>Gestiona vulnerabilidades detectadas en el sistema.</p>
                         <button onClick={() => navigate("/hallazgos")}>
-                            Ver módulo
+                            Ver hallazgos
                         </button>
                     </div>
 

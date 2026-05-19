@@ -4,6 +4,28 @@
     padding: 30px;
 }
 
+input[type="date"] {
+    background: #7d8797;
+    color: rgb(7, 8, 8);
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 6px;
+
+    /* importante para que el icono no desaparezca */
+    color-scheme: dark;
+}
+
+/* Webkit (Chrome, Edge, Brave) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
 .hallazgo-card {
     width: 700px;
     background: var(--bg-card);

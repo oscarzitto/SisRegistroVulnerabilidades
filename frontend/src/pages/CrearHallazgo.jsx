@@ -231,6 +231,7 @@ function CrearHallazgo() {
                             onChange={cambiar}
                             min="2020-01-01"
                             max={fechaMaxima}
+                            
                         />
                     </div>
 
@@ -350,7 +351,7 @@ function CrearHallazgo() {
                         <button
                             type="button"
                             className="secondary"
-                            onClick={() => navigate(-1)}
+                            onClick={() => navigate("/hallazgos")}
                         >
                             ↩ Cancelar
                         </button>
