@@ -31,7 +31,7 @@ function CrearHallazgo() {
         fecha: "",
         activo_afectado: "",
         tipo: "",
-        severidad: "",
+        severidad: "Baja",
         descripcion: "",
         evidencia: "",
         recomendacion: "",
@@ -106,6 +106,29 @@ function CrearHallazgo() {
         const hoy =
             new Date();
 
+        hoy.setHours(
+            0, 0, 0, 0
+        );
+
+        fechaSeleccionada.setHours(
+            0, 0, 0, 0
+        );
+
+
+        if (
+
+            fechaSeleccionada > hoy
+
+        ) {
+
+            alert(
+                "No puedes registrar fechas futuras"
+            );
+
+            return;
+
+        }
+
         const año =
             fechaSeleccionada.getFullYear();
 
@@ -179,6 +202,15 @@ function CrearHallazgo() {
         }
     }
 
+    const hoyLocal = new Date();
+
+    const fechaMaxima =
+        `${hoyLocal.getFullYear()}-${String(hoyLocal.getMonth() + 1)
+            .padStart(2, "0")
+        }-${String(hoyLocal.getDate())
+            .padStart(2, "0")
+        }`;
+
     return (
 
         <div>
@@ -193,7 +225,7 @@ function CrearHallazgo() {
                     value={form.fecha}
                     onChange={cambiar}
                     min="2020-01-01"
-                    max="2035-12-31"
+                    max={fechaMaxima}
                 />
 
                 <input
