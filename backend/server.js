@@ -27,6 +27,10 @@ app.use(reportesRoutes);
 app.use("/historial", historialRoutes);
 app.use(auditoriaRoutes);
 
+app.use(
+    require("./routes/usuariosRoutes")
+);
+
 
 // Ruta principal
 app.get("/",(req,res)=>{

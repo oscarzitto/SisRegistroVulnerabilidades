@@ -1,10 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function CrearHallazgo() {
 
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+    const [usuarios, setUsuarios] = useState([]);
+
+    useEffect(() => {
+
+        fetch(
+            "http://localhost:3000/usuarios",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
+            .then(res => res.json())
+            .then(data => {
+
+                setUsuarios(data);
+
+            });
+
+    }, []);
 
     const [form, setForm] = useState({
 
@@ -122,13 +142,30 @@ function CrearHallazgo() {
                     <option value="Cerrado">Cerrado</option>
                 </select>
 
-                <input
+                <select
                     name="responsable"
-                    placeholder="Responsable"
+                    value={form.responsable}
                     onChange={cambiar}
-                />
+                >
 
-                <button onClick={() => navigate("/hallazgos")}>
+                    <option value="">
+                        Seleccionar responsable
+                    </option>
+
+                    {usuarios.map(u => (
+
+                        <option
+                            key={u.id}
+                            value={u.nombre}
+                        >
+                            {u.nombre} ({u.rol})
+                        </option>
+
+                    ))}
+
+                </select>
+
+                <button type="submit">
                     Guardar
                 </button>
 
