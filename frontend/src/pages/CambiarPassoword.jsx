@@ -73,49 +73,47 @@ function CambiarPassword() {
     }
 
     return (
+        <div className="login-container">
 
-        <div>
+            <div className="login-glow"></div>
 
-            <h1>Cambiar contraseña</h1>
+            <div className="login-card">
 
-            <form onSubmit={enviar}>
+                <h1>🔐 Cambiar contraseña</h1>
 
-                <input
-                    type="password"
-                    placeholder="Contraseña actual"
-                    onChange={(e) =>
-                        setActual(e.target.value)
-                    }
-                />
+                <form onSubmit={enviar}>
 
-                <input
-                    type="password"
-                    placeholder="Nueva contraseña"
-                    onChange={(e) =>
-                        setNueva(e.target.value)
-                    }
-                />
+                    <input
+                        type="password"
+                        placeholder="Contraseña actual"
+                        onChange={(e) => setActual(e.target.value)}
+                    />
 
-                <input
-                    type="password"
-                    placeholder="Confirmar contraseña"
-                    onChange={(e) =>
-                        setConfirmar(e.target.value)
-                    }
-                />
+                    <input
+                        type="password"
+                        placeholder="Nueva contraseña"
+                        onChange={(e) => setNueva(e.target.value)}
+                    />
 
-                <button type="submit">
-                    Cambiar contraseña
+                    <input
+                        type="password"
+                        placeholder="Confirmar contraseña"
+                        onChange={(e) => setConfirmar(e.target.value)}
+                    />
+
+                    <button type="submit">
+                        Actualizar contraseña
+                    </button>
+
+                </form>
+
+                <button type="submit" onClick={() => navigate(-1)} className="secondary">
+                    Atras
                 </button>
 
-            </form>
-
-            <button type="submit" onClick={() => navigate(-1)} className="secondary">
-                Atras
-            </button>
+            </div>
 
         </div>
-
     );
 
 }

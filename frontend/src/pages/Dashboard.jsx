@@ -40,6 +40,12 @@ function Dashboard() {
     //cierre cesion (vaciar token)
     async function logout() {
 
+        const confirmar = window.confirm(
+            "¿Seguro que quieres cerrar sesión?"
+        );
+
+        if (!confirmar) return;
+
         const token = localStorage.getItem("token");
 
         await fetch("http://localhost:3000/logout", {
@@ -50,7 +56,6 @@ function Dashboard() {
         });
 
         localStorage.clear();
-
         navigate("/");
     }
 
@@ -91,7 +96,7 @@ function Dashboard() {
                     Cambiar contraseña
                 </button>
 
-                <button onClick={logout}>
+                <button onClick={logout} className="secondary">
                     Cerrar sesión
                 </button>
             </div>

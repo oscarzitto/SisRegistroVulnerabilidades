@@ -52,32 +52,32 @@ function Login() {
     };
 
     return (
+        <div className="login-container">
 
-        <div>
+            <div className="login-glow"></div>
 
-            <h1>Login</h1>
+            <div className="login-card">
 
-            <input
-                placeholder="correo"
-                onChange={(e) =>
-                    setCorreo(e.target.value)
-                }
-            />
+                <h1>🔐 Login</h1>
 
-            <input
-                type="password"
-                placeholder="contraseña"
-                onChange={(e) =>
-                    setPassword(e.target.value)
-                }
-            />
+                <input
+                    placeholder="Correo"
+                    onChange={(e) => setCorreo(e.target.value)}
+                />
 
-            <button onClick={enviar}>
-                Entrar
-            </button>
+                <input
+                    type="password"
+                    placeholder="Contraseña"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <button onClick={enviar}>
+                    Entrar
+                </button>
+
+            </div>
 
         </div>
-
     );
 
 }

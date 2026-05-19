@@ -334,7 +334,7 @@ function EditarHallazgo() {
                     Guardar cambios
                 </button>
 
-                <button
+                <button className="secondary"
                     type="button"
                     onClick={() => navigate(-1)}
                 >
