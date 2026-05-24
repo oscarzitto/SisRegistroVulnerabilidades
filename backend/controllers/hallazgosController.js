@@ -291,21 +291,39 @@ const editarHallazgo = (req, res) => {
                     db.run(
 
                         `INSERT INTO historial
-            (
-            hallazgo_id,
-            usuario,
-            accion,
-            datos_anteriores,
-            fecha
-            )
-            VALUES
-            (?,?,?,?,datetime('now'))`,
+                        (
+                        hallazgo_id,
+                        usuario,
+                        accion,
+                        datos_anteriores,
+                        datos_nuevos,
+                        fecha
+                        )
+                        VALUES
+                        (?,?,?,?,?,datetime('now'))`,
 
                         [
                             id,
                             req.usuario.nombre,
                             "UPDATE",
-                            JSON.stringify(hallazgoAnterior)
+
+                            JSON.stringify(
+                                hallazgoAnterior
+                            ),
+                            
+                            JSON.stringify({
+                                
+                            fecha,
+                            activo_afectado,
+                            tipo,
+                            severidad,
+                            descripcion,
+                            evidencia,
+                            imagen,
+                            recomendacion,
+                            estado,
+                            responsable
+                            })
                         ]
 
                     );
@@ -314,20 +332,20 @@ const editarHallazgo = (req, res) => {
                     db.run(
 
                         `UPDATE hallazgos
-            SET
+                        SET
 
-            fecha=?,
-            activo_afectado=?,
-            tipo=?,
-            severidad=?,
-            descripcion=?,
-            evidencia=?,
-            imagen=?,
-            recomendacion=?,
-            estado=?,
-            responsable=?
+                        fecha=?,
+                        activo_afectado=?,
+                        tipo=?,
+                        severidad=?,
+                        descripcion=?,
+                        evidencia=?,
+                        imagen=?,
+                        recomendacion=?,
+                        estado=?,
+                        responsable=?
 
-            WHERE id=?`,
+                        WHERE id=?`,
 
                         [
                             fecha,
@@ -426,7 +444,7 @@ const eliminarHallazgo = (req, res) => {
                     // HISTORIAL
                     db.run(
                         `INSERT INTO historial
-                        (hallazgo_id, usuario, accion, datos_anteriores, fecha)
+                        (hallazgo_id, usuario, accion, datos_anteriores, datos_nuevos, fecha)
                         VALUES (?,?,?,?,datetime('now'))`,
                         [
                             id,

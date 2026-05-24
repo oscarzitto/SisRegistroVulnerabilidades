@@ -73,6 +73,8 @@ function HistorialCambios() {
 
     }, []);
 
+
+
     return (
         <div className="historial-container">
 
@@ -155,6 +157,11 @@ function HistorialCambios() {
                                         JSON.parse(
                                             h.datos_anteriores
                                         );
+
+                                    const datosActuales =
+                                        h.datos_nuevos
+                                            ? JSON.parse(h.datos_nuevos)
+                                            : null;
 
                                     return (
 
@@ -258,6 +265,100 @@ function HistorialCambios() {
                                                     </p>
 
                                                 </div>
+
+                                                {datosActuales && (
+
+                                                    <>
+                                                        <div
+                                                            className="historial-subtitulo"
+                                                            style={{
+                                                                marginTop: "20px",
+                                                                borderTop: "1px solid #333",
+                                                                paddingTop: "15px"
+                                                            }}
+                                                        >
+                                                            ✅ Después del cambio
+                                                        </div>
+
+                                                        <div className="historial-grid">
+
+                                                            <div>
+                                                                <span>Activo</span>
+                                                                <strong>
+                                                                    {datosActuales.activo_afectado}
+                                                                </strong>
+                                                            </div>
+
+                                                            <div>
+                                                                <span>Tipo</span>
+                                                                <strong>
+                                                                    {datosActuales.tipo}
+                                                                </strong>
+                                                            </div>
+
+                                                            <div>
+                                                                <span>Severidad</span>
+                                                                <strong>
+                                                                    {datosActuales.severidad}
+                                                                </strong>
+                                                            </div>
+
+                                                            <div>
+                                                                <span>Estado</span>
+                                                                <strong>
+                                                                    {datosActuales.estado}
+                                                                </strong>
+                                                            </div>
+
+                                                            <div>
+                                                                <span>Responsable</span>
+                                                                <strong>
+                                                                    {datosActuales.responsable}
+                                                                </strong>
+                                                            </div>
+
+                                                            <div>
+                                                                <span>Evidencia</span>
+                                                                <strong>
+                                                                    {datosActuales.evidencia}
+                                                                </strong>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div className="descripcion-box">
+
+                                                            <span>
+                                                                Descripción nueva
+                                                            </span>
+
+                                                            <p>
+                                                                {datosActuales.descripcion}
+                                                            </p>
+
+                                                        </div>
+
+                                                        {datosActuales.imagen && (
+
+                                                            <div>
+
+                                                                <span>
+                                                                    Imagen actual
+                                                                </span>
+
+                                                                <img
+                                                                    src={`http://localhost:3000${datosActuales.imagen}`}
+                                                                    alt="actual"
+                                                                    className="historial-img"
+                                                                />
+
+                                                            </div>
+
+                                                        )}
+
+                                                    </>
+
+                                                )}
 
                                                 {datos.imagen && (
 

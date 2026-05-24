@@ -36,6 +36,8 @@ function Hallazgos() {
         hasta: ""
     });
 
+    const [imagenGrande, setImagenGrande] = useState(null);
+
     function cambiarFiltro(e) {
         setFiltros({
             ...filtros,
@@ -295,7 +297,20 @@ function Hallazgos() {
                                     <img
                                         src={`http://localhost:3000${h.imagen}`}
                                         alt="Evidencia"
+
                                         className="hallazgo-img"
+
+                                        onClick={() =>
+
+                                            setImagenGrande(
+                                                `http://localhost:3000${h.imagen}`
+                                            )
+
+                                        }
+
+                                        style={{
+                                            cursor: "zoom-in"
+                                        }}
                                     />
 
                                 )}
@@ -319,6 +334,63 @@ function Hallazgos() {
                 </div>
 
             </div>
+
+            {imagenGrande && (
+
+                <div
+
+                    onClick={() =>
+                        setImagenGrande(null)
+                    }
+
+                    style={{
+
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+
+                        width: "100%",
+                        height: "100%",
+
+                        background: "rgba(0,0,0,.90)",
+
+                        display: "flex",
+
+                        justifyContent: "center",
+                        alignItems: "center",
+
+                        zIndex: 9999,
+
+                        cursor: "zoom-out"
+
+                    }}
+
+                >
+
+                    <img
+
+                        src={imagenGrande}
+
+                        onClick={(e) =>
+                            e.stopPropagation()
+                        }
+
+                        style={{
+
+                            maxWidth: "95%",
+                            maxHeight: "95%",
+
+                            objectFit: "contain",
+
+                            borderRadius: "10px"
+
+                        }}
+
+                    />
+
+                </div>
+
+            )}
 
         </div>
     );

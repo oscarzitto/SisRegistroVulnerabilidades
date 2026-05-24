@@ -8,6 +8,8 @@ function CrearHallazgo() {
     const navigate = useNavigate();
     const [usuarios, setUsuarios] = useState([]);
     const [imagen, setImagen] = useState(null);
+    const [mostrarImagen, setMostrarImagen] = useState(true);
+    const [imagenGrande, setImagenGrande] = useState(null);
 
     useEffect(() => {
 
@@ -340,17 +342,78 @@ function CrearHallazgo() {
 
                         <label>Evidencia imagen</label>
 
+                        {/* preview */}
+                        {imagen && (
+
+                            <>
+
+                                <img
+                                    src={URL.createObjectURL(imagen)}
+                                    alt="preview"
+
+                                    onClick={() =>
+                                        setImagenGrande(
+                                            URL.createObjectURL(imagen)
+                                        )
+                                    }
+
+                                    style={{
+                                        width: "100%",
+                                        maxHeight: "250px",
+                                        objectFit: "contain",
+                                        borderRadius: "10px",
+                                        background: "#111",
+                                        cursor: "zoom-in"
+                                    }}
+                                />
+
+                                <button
+                                    type="button"
+                                    style={{
+                                        marginBottom: "10px"
+                                    }}
+
+                                    onClick={() => {
+
+                                        const confirmar =
+                                            window.confirm(
+                                                "¿Deseas quitar la imagen?"
+                                            );
+
+                                        if (confirmar) {
+
+                                            setImagen(null);
+
+                                        }
+
+                                    }}
+
+                                >
+
+                                    🗑 Quitar imagen
+
+                                </button>
+
+                            </>
+
+                        )}
+
                         <input
                             type="file"
                             accept=".jpg,.jpeg,.png"
 
-                            onChange={(e) =>
+                            onChange={(e) => {
 
-                                setImagen(
-                                    e.target.files[0]
-                                )
+                                const archivo = e.target.files[0];
 
-                            }
+                                if (archivo) {
+
+                                    setImagen(archivo);
+
+                                }
+
+                            }}
+
                         />
 
                         <small

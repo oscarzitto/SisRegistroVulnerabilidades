@@ -10,6 +10,7 @@ function EditarHallazgo() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [eliminarImagen, setEliminarImagen] = useState(false);
+    const [imagenGrande, setImagenGrande] = useState(null);
 
     const [form, setForm] = useState({
         fecha: "",
@@ -382,12 +383,20 @@ function EditarHallazgo() {
                             <img
                                 src={URL.createObjectURL(imagen)}
                                 alt="preview"
+
+                                onClick={() =>
+                                    setImagenGrande(
+                                        URL.createObjectURL(imagen)
+                                    )
+                                }
+
                                 style={{
                                     width: "100%",
-                                    maxHeight: "200px",
-                                    objectFit: "cover",
+                                    maxHeight: "250px",
+                                    objectFit: "contain",
                                     borderRadius: "10px",
-                                    marginBottom: "10px"
+                                    background: "#111",
+                                    cursor: "zoom-in"
                                 }}
                             />
 
