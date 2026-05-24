@@ -7,6 +7,7 @@ function CrearHallazgo() {
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
     const [usuarios, setUsuarios] = useState([]);
+    const [imagen, setImagen] = useState(null);
 
     useEffect(() => {
 
@@ -167,6 +168,29 @@ function CrearHallazgo() {
         }
 
 
+        // construir FormData
+        const formData = new FormData();
+
+        Object.keys(datos).forEach(key => {
+
+            formData.append(
+                key,
+                datos[key]
+            );
+
+        });
+
+        // agregar imagen si existe
+        if (imagen) {
+
+            formData.append(
+                "imagen",
+                imagen
+            );
+
+        }
+
+
         // envío
 
         const res =
@@ -178,16 +202,12 @@ function CrearHallazgo() {
 
                     headers: {
 
-                        "Content-Type":
-                            "application/json",
-
                         Authorization:
                             `Bearer ${token}`
 
                     },
 
-                    body:
-                        JSON.stringify(datos)
+                    body: formData
 
                 }
             );
@@ -231,7 +251,7 @@ function CrearHallazgo() {
                             onChange={cambiar}
                             min="2020-01-01"
                             max={fechaMaxima}
-                            
+
                         />
                     </div>
 
@@ -304,21 +324,57 @@ function CrearHallazgo() {
 
                     {/* EVIDENCIA / RECOMENDACIÓN */}
                     <div className="form-group">
+
                         <label>Evidencia</label>
+
                         <input
                             name="evidencia"
-                            placeholder="URL, log, screenshot..."
+                            placeholder="URL, log, texto, referencia..."
                             onChange={cambiar}
                         />
+
                     </div>
 
+
                     <div className="form-group">
+
+                        <label>Evidencia imagen</label>
+
+                        <input
+                            type="file"
+                            accept=".jpg,.jpeg,.png"
+
+                            onChange={(e) =>
+
+                                setImagen(
+                                    e.target.files[0]
+                                )
+
+                            }
+                        />
+
+                        <small
+                            style={{
+                                opacity: 0.6,
+                                fontSize: "12px"
+                            }}
+                        >
+                            Formatos permitidos: JPG, JPEG y PNG
+                        </small>
+
+                    </div>
+
+
+                    <div className="form-group">
+
                         <label>Recomendación</label>
+
                         <input
                             name="recomendacion"
                             placeholder="Cómo mitigarlo..."
                             onChange={cambiar}
                         />
+
                     </div>
 
                     {/* RESPONSABLE */}

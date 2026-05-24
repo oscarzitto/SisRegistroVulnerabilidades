@@ -29,6 +29,7 @@ const db = new sqlite3.Database("./database/database.db", (err) => {
             severidad TEXT,
             descripcion TEXT,
             evidencia TEXT,
+            imagen TEXT,
             recomendacion TEXT,
             estado TEXT,
             responsable TEXT

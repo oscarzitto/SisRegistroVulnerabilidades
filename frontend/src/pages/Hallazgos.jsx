@@ -290,6 +290,16 @@ function Hallazgos() {
 
                                 <p>{h.descripcion}</p>
 
+                                {h.imagen && (
+
+                                    <img
+                                        src={`http://localhost:3000${h.imagen}`}
+                                        alt="Evidencia"
+                                        className="hallazgo-img"
+                                    />
+
+                                )}
+
                                 <div className="hallazgo-meta">
 
                                     <span>📌 {h.estado}</span>

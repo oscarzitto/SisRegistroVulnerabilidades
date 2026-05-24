@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
+const path = require("path");
 
 // Base de datos
 const db = require("./database/db");
@@ -49,6 +50,14 @@ const app = express();
 // Middlewares globales
 app.use(cors());
 app.use(express.json());
+
+// hacer pública la carpeta uploads
+app.use(
+    "/uploads",
+    express.static(
+        path.join(__dirname, "uploads")
+    )
+);
 
 // Rutas API
 const authRoutes = require("./routes/authRoutes");

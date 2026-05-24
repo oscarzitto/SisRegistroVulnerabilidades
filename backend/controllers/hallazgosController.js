@@ -1,8 +1,13 @@
 const db = require("../database/db");
+const path = require("path");
 
 const crearHallazgo = (req, res) => {
 
     console.log(req.body);
+
+    const imagen = req.file
+        ? `/uploads/${req.file.filename}`
+        : "";
 
     const {
         fecha,
@@ -10,7 +15,7 @@ const crearHallazgo = (req, res) => {
         tipo,
         severidad,
         descripcion,
-        evidencia,
+        evidencia, // texto: URL, log, descripción, etc.
         recomendacion,
         estado,
         responsable
@@ -20,7 +25,6 @@ const crearHallazgo = (req, res) => {
         !fecha ||
         !activo_afectado?.trim() ||
         !tipo?.trim() ||
-        !evidencia?.trim() ||
         !recomendacion?.trim() ||
         !responsable?.trim()
     ) {
@@ -86,11 +90,12 @@ const crearHallazgo = (req, res) => {
                 severidad,
                 descripcion,
                 evidencia,
+                imagen,
                 recomendacion,
                 estado,
                 responsable
                 )
-                VALUES(?,?,?,?,?,?,?,?,?)`,
+                VALUES(?,?,?,?,?,?,?,?,?,?)`,
 
                 [
                     fecha,
@@ -99,6 +104,7 @@ const crearHallazgo = (req, res) => {
                     severidad,
                     descripcion,
                     evidencia,
+                    imagen,
                     recomendacion,
                     estado,
                     responsable
@@ -172,8 +178,6 @@ const listarHallazgos = (req, res) => {
 
 const editarHallazgo = (req, res) => {
 
-    console.log(req.body);
-
     const { id } = req.params;
 
     const {
@@ -188,42 +192,34 @@ const editarHallazgo = (req, res) => {
         responsable
     } = req.body;
 
-    if (
+    // si llega nueva imagen se reemplaza,
+    // si no, mantiene la anterior
+    const imagen = req.file
+        ? `/uploads/${req.file.filename}`
+        : req.body.imagen;
 
+    if (
         !fecha ||
         !activo_afectado?.trim() ||
         !tipo?.trim() ||
-        !evidencia?.trim() ||
         !recomendacion?.trim() ||
         !responsable?.trim()
-
     ) {
 
         return res.status(400).json({
-
-            mensaje:
-                "Completa todos los campos"
-
+            mensaje: "Completa todos los campos"
         });
 
     }
 
     const regexTipo =
-
         /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s\-_.()]+$/;
 
-
-    if (
-
-        !regexTipo.test(tipo)
-
-    ) {
+    if (!regexTipo.test(tipo)) {
 
         return res.status(400).json({
-
             mensaje:
                 "El tipo contiene caracteres no permitidos"
-
         });
 
     }
@@ -231,11 +227,11 @@ const editarHallazgo = (req, res) => {
     db.get(
 
         `SELECT id
-    FROM hallazgos
-    WHERE activo_afectado=?
-    AND tipo=?
-    AND fecha=?
-    AND id != ?`,
+        FROM hallazgos
+        WHERE activo_afectado=?
+        AND tipo=?
+        AND fecha=?
+        AND id != ?`,
 
         [
             activo_afectado,
@@ -257,10 +253,8 @@ const editarHallazgo = (req, res) => {
             if (row) {
 
                 return res.status(400).json({
-
                     mensaje:
                         "Ya existe un hallazgo similar"
-
                 });
 
             }
@@ -268,19 +262,20 @@ const editarHallazgo = (req, res) => {
             db.run(
 
                 `UPDATE hallazgos
-            SET
+                SET
 
-            fecha=?,
-            activo_afectado=?,
-            tipo=?,
-            severidad=?,
-            descripcion=?,
-            evidencia=?,
-            recomendacion=?,
-            estado=?,
-            responsable=?
+                fecha=?,
+                activo_afectado=?,
+                tipo=?,
+                severidad=?,
+                descripcion=?,
+                evidencia=?,
+                imagen=?,
+                recomendacion=?,
+                estado=?,
+                responsable=?
 
-            WHERE id=?`,
+                WHERE id=?`,
 
                 [
                     fecha,
@@ -289,6 +284,7 @@ const editarHallazgo = (req, res) => {
                     severidad,
                     descripcion,
                     evidencia,
+                    imagen,
                     recomendacion,
                     estado,
                     responsable,
@@ -299,6 +295,8 @@ const editarHallazgo = (req, res) => {
 
                     if (err) {
 
+                        console.log(err);
+
                         return res.status(500).json({
                             mensaje: "Error"
                         });
@@ -307,28 +305,41 @@ const editarHallazgo = (req, res) => {
 
                     db.run(
                         `INSERT INTO historial
-                    (hallazgo_id, usuario, accion, detalle, fecha)
-                    VALUES (?,?,?,?,datetime('now'))`,
+                        (
+                        hallazgo_id,
+                        usuario,
+                        accion,
+                        detalle,
+                        fecha
+                        )
+                        VALUES
+                        (?,?,?,?,datetime('now'))`,
                         [
                             id,
                             req.usuario.nombre,
                             "UPDATE",
-                            `Editó hallazgo "${tipo}" ID ${id} del activo "${activo_afectado}" a → Estado "${estado}"`
+                            `Editó hallazgo "${tipo}" ID ${id}`
                         ]
                     );
 
                     db.run(
                         `INSERT INTO auditoria
-                    (usuario, evento, fecha)
-                    VALUES (?,?,datetime('now'))`,
+                        (
+                        usuario,
+                        evento,
+                        fecha
+                        )
+                        VALUES
+                        (?,?,datetime('now'))`,
                         [
                             req.usuario.nombre,
-                            `Editó hallazgo "${tipo}" ID ${id} del activo "${activo_afectado}" a → Estado "${estado}"`
+                            `Editó hallazgo "${tipo}" ID ${id}`
                         ]
                     );
 
                     res.json({
-                        mensaje: "Hallazgo actualizado"
+                        mensaje:
+                            "Hallazgo actualizado"
                     });
 
                 }
@@ -338,8 +349,6 @@ const editarHallazgo = (req, res) => {
         }
 
     );
-
-
 
 };
 

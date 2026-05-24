@@ -8,6 +8,9 @@ require("../middleware/authMiddleware");
 const verificarRol=
 require("../middleware/rolesMiddleware");
 
+const upload=
+require("../middleware/uploads");
+
 const{
 crearHallazgo,
 listarHallazgos,
@@ -21,6 +24,7 @@ router.post(
 "/hallazgos",
 verificarToken,
 verificarRol("admin","analista"),
+upload.single("imagen"),
 crearHallazgo
 );
 
@@ -35,6 +39,7 @@ router.put(
 "/hallazgos/:id",
 verificarToken,
 verificarRol("admin","analista"),
+upload.single("imagen"),
 editarHallazgo
 );
 

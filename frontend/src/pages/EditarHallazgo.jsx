@@ -6,6 +6,7 @@ function EditarHallazgo() {
 
     const token = localStorage.getItem("token");
     const [usuarios, setUsuarios] = useState([]);
+    const [imagen, setImagen] = useState(null);
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -60,7 +61,14 @@ function EditarHallazgo() {
 
                 if (hallazgo) {
 
-                    setForm(hallazgo);
+                    setForm({
+
+                        ...hallazgo,
+
+                        evidencia_imagen:
+                            hallazgo.imagen
+
+                    });
 
                 }
 
@@ -186,28 +194,52 @@ function EditarHallazgo() {
         }
 
 
+        const formData =
+            new FormData();
+
+        Object.keys(datos)
+            .forEach(key => {
+
+                formData.append(
+                    key,
+                    datos[key]
+                );
+
+            });
+
+        formData.append(
+            "evidencia_imagen",
+            form.imagen || ""
+        );
+
+        if (imagen) {
+
+            formData.append(
+                "imagen",
+                imagen
+            );
+
+        }
+
         const res =
             await fetch(
+
                 `http://localhost:3000/hallazgos/${id}`,
+
                 {
 
                     method: "PUT",
 
                     headers: {
 
-                        "Content-Type":
-                            "application/json",
-
                         Authorization:
                             `Bearer ${token}`
 
                     },
 
-                    body:
-                        JSON.stringify(datos)
+                    body: formData
 
-                }
-            );
+                });
 
 
         const data = await res.json();
@@ -332,6 +364,41 @@ function EditarHallazgo() {
                             value={form.evidencia}
                             onChange={cambiar}
                         />
+                    </div>
+
+                    <div className="form-group">
+
+                        <label>Evidencia imagen</label>
+
+                        {form.imagen && (
+
+                            <img
+                                src={`http://localhost:3000${form.imagen}`}
+                                alt="evidencia"
+                                style={{
+                                    width: "100%",
+                                    maxHeight: "200px",
+                                    objectFit: "cover",
+                                    borderRadius: "10px",
+                                    marginBottom: "10px"
+                                }}
+                            />
+
+                        )}
+
+                        <input
+                            type="file"
+                            accept=".jpg,.jpeg,.png"
+
+                            onChange={(e) =>
+
+                                setImagen(
+                                    e.target.files[0]
+                                )
+
+                            }
+                        />
+
                     </div>
 
                     <div className="form-group">
