@@ -9,6 +9,7 @@ function EditarHallazgo() {
     const [imagen, setImagen] = useState(null);
     const navigate = useNavigate();
     const { id } = useParams();
+    const [eliminarImagen, setEliminarImagen] = useState(false);
 
     const [form, setForm] = useState({
         fecha: "",
@@ -212,6 +213,11 @@ function EditarHallazgo() {
             form.imagen || ""
         );
 
+        formData.append(
+            "eliminarImagen",
+            eliminarImagen
+        );
+
         if (imagen) {
 
             formData.append(
@@ -370,11 +376,12 @@ function EditarHallazgo() {
 
                         <label>Evidencia imagen</label>
 
-                        {form.imagen && (
+                        {/* imagen nueva seleccionada */}
+                        {imagen && (
 
                             <img
-                                src={`http://localhost:3000${form.imagen}`}
-                                alt="evidencia"
+                                src={URL.createObjectURL(imagen)}
+                                alt="preview"
                                 style={{
                                     width: "100%",
                                     maxHeight: "200px",
@@ -386,17 +393,66 @@ function EditarHallazgo() {
 
                         )}
 
+                        {/* imagen guardada */}
+                        {!imagen && form.imagen && !eliminarImagen && (
+
+                            <>
+                                <img
+                                    src={`http://localhost:3000${form.imagen}`}
+                                    alt="evidencia"
+                                    style={{
+                                        width: "100%",
+                                        maxHeight: "200px",
+                                        objectFit: "cover",
+                                        borderRadius: "10px",
+                                        marginBottom: "10px"
+                                    }}
+                                />
+
+                                <button
+                                    type="button"
+                                    style={{
+                                        marginBottom: "10px"
+                                    }}
+
+                                    onClick={() => {
+
+                                        const confirmar =
+                                            window.confirm(
+                                                "¿Eliminar la imagen?"
+                                            );
+
+                                        if (confirmar) {
+
+                                            setEliminarImagen(true);
+
+                                        }
+
+                                    }}
+                                >
+
+                                    🗑 Quitar imagen
+
+                                </button>
+
+                            </>
+
+                        )}
+
                         <input
                             type="file"
                             accept=".jpg,.jpeg,.png"
 
-                            onChange={(e) =>
+                            onChange={(e) => {
+
+                                setEliminarImagen(false);
 
                                 setImagen(
                                     e.target.files[0]
-                                )
+                                );
 
-                            }
+                            }}
+
                         />
 
                     </div>

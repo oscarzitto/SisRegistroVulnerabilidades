@@ -194,9 +194,23 @@ const editarHallazgo = (req, res) => {
 
     // si llega nueva imagen se reemplaza,
     // si no, mantiene la anterior
-    const imagen = req.file
-        ? `/uploads/${req.file.filename}`
-        : req.body.imagen;
+    let imagen;
+
+    if (req.body.eliminarImagen === "true") {
+
+        imagen = "";
+
+    }
+    else if (req.file) {
+
+        imagen = `/uploads/${req.file.filename}`;
+
+    }
+    else {
+
+        imagen = req.body.imagen;
+
+    }
 
     if (
         !fecha ||
