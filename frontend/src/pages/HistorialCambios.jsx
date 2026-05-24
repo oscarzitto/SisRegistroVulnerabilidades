@@ -149,28 +149,150 @@ function HistorialCambios() {
 
                             <div className="historial-card" key={h.id}>
 
-                                <div className="historial-top">
+                                {h.datos_anteriores ? (() => {
 
-                                    <div>
-                                        <h3>{h.usuario}</h3>
+                                    const datos =
+                                        JSON.parse(
+                                            h.datos_anteriores
+                                        );
 
-                                        <span className="badge-action">
-                                            {h.accion}
-                                        </span>
-                                    </div>
+                                    return (
 
-                                    <span className="historial-date">
-                                        {h.fecha}
-                                    </span>
+                                        <>
 
-                                </div>
+                                            <div className="historial-top">
 
-                                <p className="historial-detail">
-                                    {h.detalle}
-                                </p>
+                                                <div>
+
+                                                    <h3>
+                                                        👤 {h.usuario}
+                                                    </h3>
+
+                                                    <span className="badge-action">
+                                                        {h.accion}
+                                                    </span>
+
+                                                </div>
+
+                                                <span className="historial-date">
+                                                    {h.fecha}
+                                                </span>
+
+                                            </div>
+
+                                            <div className="historial-evento">
+
+                                                <b>{h.usuario}</b>
+                                                {" editó el hallazgo "}
+                                                <b>#{h.hallazgo_id}</b>
+
+                                                {" ("}
+                                                <b>{datos.tipo}</b>
+                                                {")"}
+
+                                            </div>
+
+                                            <div className="historial-subtitulo">
+
+                                                📌 Anterior al cambio
+
+                                            </div>
+
+
+                                            <div className="historial-detail">
+
+                                                <div className="historial-grid">
+
+                                                    <div>
+                                                        <span>Activo</span>
+                                                        <strong>
+                                                            {datos.activo_afectado}
+                                                        </strong>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>Tipo</span>
+                                                        <strong>
+                                                            {datos.tipo}
+                                                        </strong>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>Severidad</span>
+                                                        <strong>
+                                                            {datos.severidad}
+                                                        </strong>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>Estado</span>
+                                                        <strong>
+                                                            {datos.estado}
+                                                        </strong>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>Responsable</span>
+                                                        <strong>
+                                                            {datos.responsable}
+                                                        </strong>
+                                                    </div>
+
+                                                    <div>
+                                                        <span>Evidencia</span>
+                                                        <strong>
+                                                            {datos.evidencia}
+                                                        </strong>
+                                                    </div>
+
+                                                </div>
+
+                                                <div className="descripcion-box">
+
+                                                    <span>
+                                                        Descripción
+                                                    </span>
+
+                                                    <p>
+                                                        {datos.descripcion}
+                                                    </p>
+
+                                                </div>
+
+                                                {datos.imagen && (
+
+                                                    <div>
+
+                                                        <span>
+                                                            Imagen de evidencia anterior
+                                                        </span>
+
+                                                        <img
+                                                            src={`http://localhost:3000${datos.imagen}`}
+                                                            alt="anterior"
+                                                            className="historial-img"
+                                                        />
+
+                                                    </div>
+
+                                                )}
+
+                                            </div>
+
+                                        </>
+
+                                    );
+
+                                })() : (
+
+                                    <p>Sin historial disponible</p>
+
+                                )}
 
                                 <div className="historial-footer">
-                                    <span>ID Hallazgo: #{h.hallazgo_id}</span>
+
+                                    <strong>Hallazgo #{h.hallazgo_id}</strong>
+
                                 </div>
 
                             </div>

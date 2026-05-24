@@ -273,88 +273,108 @@ const editarHallazgo = (req, res) => {
 
             }
 
-            db.run(
+            db.get(
 
-                `UPDATE hallazgos
-                SET
+                `SELECT * FROM hallazgos WHERE id=?`,
+                [id],
 
-                fecha=?,
-                activo_afectado=?,
-                tipo=?,
-                severidad=?,
-                descripcion=?,
-                evidencia=?,
-                imagen=?,
-                recomendacion=?,
-                estado=?,
-                responsable=?
+                (err, hallazgoAnterior) => {
 
-                WHERE id=?`,
-
-                [
-                    fecha,
-                    activo_afectado,
-                    tipo,
-                    severidad,
-                    descripcion,
-                    evidencia,
-                    imagen,
-                    recomendacion,
-                    estado,
-                    responsable,
-                    id
-                ],
-
-                function (err) {
-
-                    if (err) {
-
-                        console.log(err);
+                    if (err || !hallazgoAnterior) {
 
                         return res.status(500).json({
-                            mensaje: "Error"
+                            mensaje: "Hallazgo no encontrado"
                         });
 
                     }
 
                     db.run(
+
                         `INSERT INTO historial
-                        (
-                        hallazgo_id,
-                        usuario,
-                        accion,
-                        detalle,
-                        fecha
-                        )
-                        VALUES
-                        (?,?,?,?,datetime('now'))`,
+            (
+            hallazgo_id,
+            usuario,
+            accion,
+            datos_anteriores,
+            fecha
+            )
+            VALUES
+            (?,?,?,?,datetime('now'))`,
+
                         [
                             id,
                             req.usuario.nombre,
                             "UPDATE",
-                            `Editó hallazgo "${tipo}" ID ${id}`
+                            JSON.stringify(hallazgoAnterior)
                         ]
+
                     );
+
 
                     db.run(
-                        `INSERT INTO auditoria
-                        (
-                        usuario,
-                        evento,
-                        fecha
-                        )
-                        VALUES
-                        (?,?,datetime('now'))`,
-                        [
-                            req.usuario.nombre,
-                            `Editó hallazgo "${tipo}" ID ${id}`
-                        ]
-                    );
 
-                    res.json({
-                        mensaje:
-                            "Hallazgo actualizado"
-                    });
+                        `UPDATE hallazgos
+            SET
+
+            fecha=?,
+            activo_afectado=?,
+            tipo=?,
+            severidad=?,
+            descripcion=?,
+            evidencia=?,
+            imagen=?,
+            recomendacion=?,
+            estado=?,
+            responsable=?
+
+            WHERE id=?`,
+
+                        [
+                            fecha,
+                            activo_afectado,
+                            tipo,
+                            severidad,
+                            descripcion,
+                            evidencia,
+                            imagen,
+                            recomendacion,
+                            estado,
+                            responsable,
+                            id
+                        ],
+
+                        function (err) {
+
+                            if (err) {
+
+                                return res.status(500).json({
+                                    mensaje: "Error"
+                                });
+
+                            }
+
+                            db.run(
+                                `INSERT INTO auditoria
+                                (
+                                usuario,
+                                evento,
+                                fecha
+                                )
+                                VALUES
+                                (?,?,datetime('now'))`,
+                                [
+                                    req.usuario.nombre,
+                                    `Editó hallazgo "${tipo}" ID ${id}`
+                                ]
+                            );
+
+                            res.json({
+                                mensaje: "Hallazgo actualizado"
+                            });
+
+                        }
+
+                    );
 
                 }
 
@@ -406,7 +426,7 @@ const eliminarHallazgo = (req, res) => {
                     // HISTORIAL
                     db.run(
                         `INSERT INTO historial
-                        (hallazgo_id, usuario, accion, detalle, fecha)
+                        (hallazgo_id, usuario, accion, datos_anteriores, fecha)
                         VALUES (?,?,?,?,datetime('now'))`,
                         [
                             id,

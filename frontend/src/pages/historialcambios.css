@@ -83,9 +83,19 @@
 
 /* DETALLE */
 .historial-detail {
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    background: #1b1b1b;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
     margin-top: 10px;
-    opacity: 0.85;
-    line-height: 1.4;
+
 }
 
 /* FOOTER */
@@ -93,4 +103,104 @@
     margin-top: 10px;
     font-size: 12px;
     opacity: 0.6;
+}
+
+.historial-evento{
+
+    margin:15px 0;
+
+    padding:12px;
+
+    background:#222;
+
+    border-left:4px solid #4f8cff;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+}
+
+.historial-subtitulo{
+
+    margin-bottom:10px;
+
+    opacity:.7;
+
+    font-size:13px;
+
+    text-transform:uppercase;
+
+}
+
+.historial-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:12px;
+
+}
+
+.historial-grid div{
+
+    background:#1f1f1f;
+
+    padding:10px;
+
+    border-radius:8px;
+
+}
+
+.historial-grid span{
+
+    display:block;
+
+    opacity:.6;
+
+    font-size:12px;
+
+}
+
+.historial-grid strong{
+
+    display:block;
+
+    margin-top:4px;
+
+}
+
+.descripcion-box{
+
+    margin-top:15px;
+
+    padding:10px;
+
+    background:#1f1f1f;
+
+    border-radius:8px;
+
+}
+
+.descripcion-box span{
+
+    opacity:.6;
+
+    font-size:12px;
+
+}
+
+.historial-img{
+
+    width:100%;
+
+    max-height:220px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    margin-top:10px;
+
 }
