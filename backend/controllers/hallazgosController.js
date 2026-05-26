@@ -310,19 +310,19 @@ const editarHallazgo = (req, res) => {
                             JSON.stringify(
                                 hallazgoAnterior
                             ),
-                            
+
                             JSON.stringify({
-                                
-                            fecha,
-                            activo_afectado,
-                            tipo,
-                            severidad,
-                            descripcion,
-                            evidencia,
-                            imagen,
-                            recomendacion,
-                            estado,
-                            responsable
+
+                                fecha,
+                                activo_afectado,
+                                tipo,
+                                severidad,
+                                descripcion,
+                                evidencia,
+                                imagen,
+                                recomendacion,
+                                estado,
+                                responsable
                             })
                         ]
 
@@ -445,12 +445,15 @@ const eliminarHallazgo = (req, res) => {
                     db.run(
                         `INSERT INTO historial
                         (hallazgo_id, usuario, accion, datos_anteriores, datos_nuevos, fecha)
-                        VALUES (?,?,?,?,datetime('now'))`,
+                        VALUES (?,?,?,?,?,datetime('now'))`,
                         [
                             id,
                             req.usuario.nombre,
                             "DELETE",
-                            `Se eliminó hallazgo del activo "${hallazgo.activo_afectado}" (${hallazgo.tipo})`
+
+                            JSON.stringify(hallazgo), // 👈 AQUÍ LO IMPORTANTE
+
+                            null
                         ]
                     );
 

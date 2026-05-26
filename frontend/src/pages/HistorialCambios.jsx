@@ -153,10 +153,13 @@ function HistorialCambios() {
 
                                 {h.datos_anteriores ? (() => {
 
-                                    const datos =
-                                        JSON.parse(
-                                            h.datos_anteriores
-                                        );
+                                    let datos = null;
+
+                                    try {
+                                        datos = JSON.parse(h.datos_anteriores);
+                                    } catch (e) {
+                                        console.error("Error parsing datos_anteriores:", h.datos_anteriores);
+                                    }
 
                                     const datosActuales =
                                         h.datos_nuevos
