@@ -127,19 +127,23 @@ function Hallazgos() {
 
     async function exportar() {
 
-        const token = localStorage.getItem("token");
-
         const res = await fetch(
-
             "http://localhost:3000/exportar",
-
             {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }
-
         );
+
+        // 🧠 si backend dice "no hay datos"
+        if (res.headers.get("Content-Type")?.includes("application/json")) {
+
+            const data = await res.json();
+            alert(data.mensaje);
+            return;
+
+        }
 
         const blob = await res.blob();
 
@@ -148,11 +152,9 @@ function Hallazgos() {
         const a = document.createElement("a");
 
         a.href = url;
-
         a.download = "hallazgos.csv";
 
         a.click();
-
     }
 
     async function eliminar(id) {

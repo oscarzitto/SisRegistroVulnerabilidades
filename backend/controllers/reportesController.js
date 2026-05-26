@@ -15,10 +15,18 @@ const exportarCSV = (req, res) => {
                 });
             }
 
+            // 🧠 FIX: evitar crash si no hay datos
+            if (!rows || rows.length === 0) {
+
+                return res.status(200).json({
+                    mensaje: "No hay datos para exportar"
+                });
+
+            }
+
             const parser = new Parser();
             const csv = parser.parse(rows);
 
-            // 🧠 REGISTRO EN AUDITORÍA
             db.run(
                 `INSERT INTO auditoria
                 (usuario, evento, fecha)
@@ -29,11 +37,7 @@ const exportarCSV = (req, res) => {
                 ]
             );
 
-            res.header(
-                "Content-Type",
-                "text/csv"
-            );
-
+            res.header("Content-Type", "text/csv");
             res.attachment("hallazgos.csv");
 
             return res.send(csv);
