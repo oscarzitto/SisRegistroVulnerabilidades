@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const verificarToken = require("../middleware/authMiddleware");
+const verificarRol =
+require("../middleware/rolesMiddleware");
 
 const {
     listarUsuarios,
@@ -15,7 +17,7 @@ router.get(
     listarUsuarios
 );
 
-// 📌 ELIMINAR USUARIO 👈 AQUÍ VA LO QUE PREGUNTAS
+// 📌 ELIMINAR USUARIO 
 router.delete(
     "/usuarios/:id",
     verificarToken,

@@ -56,24 +56,38 @@ function App() {
 
                 <Route
                     path="/editar-hallazgo/:id"
-                    element={<EditarHallazgo />}
+                    element={
+                        <ProtectedRoute>
+                            <EditarHallazgo />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/historial-cambios"
-                    element={<HistorialCambios />
-
+                    element={
+                        <ProtectedRoute>
+                            <HistorialCambios />
+                        </ProtectedRoute>
                     }
                 />
 
                 <Route
                     path="/auditoria"
-                    element={<Auditoria />}
+                    element={
+                        <ProtectedRoute>
+                            <Auditoria />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/crear-usuario"
-                    element={<CrearUsuario />}
+                    element={
+                        <ProtectedRoute>
+                            <CrearUsuario />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route

@@ -28,7 +28,7 @@ setImmediate(() => {
                 db.run(
                     `INSERT INTO usuarios
                     (nombre, correo, password_hash, rol, must_change_password)
-                    VALUES (?,?,?,?,0)`,
+                    VALUES (?,?,?,?,1)`,
                     [
                         "Admin Sistema",
                         "admin@admin.cl",
