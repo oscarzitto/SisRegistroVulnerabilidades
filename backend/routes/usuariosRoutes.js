@@ -14,6 +14,7 @@ const {
 router.get(
     "/usuarios",
     verificarToken,
+    verificarRol("admin"),
     listarUsuarios
 );
 
@@ -21,6 +22,7 @@ router.get(
 router.delete(
     "/usuarios/:id",
     verificarToken,
+    verificarRol("admin"),
     eliminarUsuario
 );
 

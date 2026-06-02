@@ -5,6 +5,14 @@ const jwt = require("jsonwebtoken");
 // ================= REGISTER =================
 const register = async (req, res) => {
 
+    if (
+        rol !== "admin"
+    ) {
+        return res.status(400).json({
+            mensaje: "Rol inválido"
+        });
+    }
+
     let { nombre, correo, password, rol } = req.body;
 
     if (!nombre || !correo || !password || !rol) {
@@ -140,7 +148,7 @@ const logout = (req, res) => {
 };
 
 
-// ================= CAMBIAR PASSWORD (🔥 NUEVO) =================
+// ================= CAMBIAR PASSWORD =================
 const cambiarPassword = (req, res) => {
 
     const { actual, nueva } = req.body;

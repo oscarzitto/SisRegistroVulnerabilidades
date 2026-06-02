@@ -11,9 +11,13 @@ const {
 =
 require("../controllers/auditoriaController");
 
+const verificarRol = 
+require("../middleware/rolesMiddleware");
+
 router.get(
     "/auditoria",
     verificarToken,
+    verificarRol("admin"),
     listarAuditoria
 );
 

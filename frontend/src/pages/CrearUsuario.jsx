@@ -7,6 +7,19 @@ function CrearUsuario() {
     const token =
         localStorage.getItem("token");
 
+    const usuario =
+        JSON.parse(
+            localStorage.getItem("usuario")
+        );
+
+    if (usuario?.rol !== "admin") {
+
+        return (
+            <h2>Acceso denegado</h2>
+        );
+
+    }
+
     const navigate =
         useNavigate();
 
