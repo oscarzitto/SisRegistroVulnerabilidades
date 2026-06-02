@@ -7,6 +7,7 @@ function HistorialCambios() {
     const [historial, setHistorial] = useState([]);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+    const [imagenGrande, setImagenGrande] = useState(null);
 
     const [filtros, setFiltros] = useState({
 
@@ -353,6 +354,12 @@ function HistorialCambios() {
                                                                     src={`http://localhost:3000${datosActuales.imagen}`}
                                                                     alt="actual"
                                                                     className="historial-img"
+                                                                    style={{ cursor: "zoom-in" }}
+                                                                    onClick={() =>
+                                                                        setImagenGrande(
+                                                                            `http://localhost:3000${datosActuales.imagen}`
+                                                                        )
+                                                                    }
                                                                 />
 
                                                             </div>
@@ -375,6 +382,12 @@ function HistorialCambios() {
                                                             src={`http://localhost:3000${datos.imagen}`}
                                                             alt="anterior"
                                                             className="historial-img"
+                                                            style={{ cursor: "zoom-in" }}
+                                                            onClick={() =>
+                                                                setImagenGrande(
+                                                                    `http://localhost:3000${datos.imagen}`
+                                                                )
+                                                            }
                                                         />
 
                                                     </div>
@@ -406,6 +419,45 @@ function HistorialCambios() {
                 </div>
 
             </div>
+
+            {imagenGrande && (
+
+                <div
+                    onClick={() =>
+                        setImagenGrande(null)
+                    }
+
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "rgba(0,0,0,0.9)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 9999,
+                        cursor: "zoom-out"
+                    }}
+                >
+
+                    <img
+                        src={imagenGrande}
+                        alt="imagen ampliada"
+
+                        onClick={(e) =>
+                            e.stopPropagation()
+                        }
+
+                        style={{
+                            maxWidth: "95%",
+                            maxHeight: "95%",
+                            objectFit: "contain",
+                            borderRadius: "10px"
+                        }}
+                    />
+
+                </div>
+
+            )}
 
         </div>
     );
