@@ -131,7 +131,7 @@ const crearHallazgo = (req, res) => {
                         evento,
                         fecha
                         )
-                        VALUES(?,?,datetime('now'))`,
+                        VALUES(?,?,datetime('now','-4 hours'))`,
 
                         [
                             req.usuario.nombre,
@@ -300,7 +300,7 @@ const editarHallazgo = (req, res) => {
                         fecha
                         )
                         VALUES
-                        (?,?,?,?,?,datetime('now'))`,
+                        (?,?,?,?,?,datetime('now','-4 hours'))`,
 
                         [
                             id,
@@ -379,7 +379,7 @@ const editarHallazgo = (req, res) => {
                                 fecha
                                 )
                                 VALUES
-                                (?,?,datetime('now'))`,
+                                (?,?,datetime('now','-4 hours'))`,
                                 [
                                     req.usuario.nombre,
                                     `Editó hallazgo "${tipo}" ID ${id}`
@@ -434,7 +434,7 @@ const eliminarHallazgo = (req, res) => {
                     db.run(
                         `INSERT INTO auditoria
                         (usuario, evento, fecha)
-                        VALUES (?,?,datetime('now'))`,
+                        VALUES (?,?,datetime('now','-4 hours'))`,
                         [
                             req.usuario.nombre,
                             `DELETE - Activo: ${hallazgo.activo_afectado} | ID: ${id}`
@@ -445,7 +445,7 @@ const eliminarHallazgo = (req, res) => {
                     db.run(
                         `INSERT INTO historial
                         (hallazgo_id, usuario, accion, datos_anteriores, datos_nuevos, fecha)
-                        VALUES (?,?,?,?,?,datetime('now'))`,
+                        VALUES (?,?,?,?,?,datetime('now','-4 hours'))`,
                         [
                             id,
                             req.usuario.nombre,
