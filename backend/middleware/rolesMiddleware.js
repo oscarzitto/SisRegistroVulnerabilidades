@@ -2,6 +2,8 @@ function verificarRol(...rolesPermitidos) {
 
     return (req, res, next) => {
 
+        // Verifica si el rol almacenado en el JWT
+        // tiene permiso para acceder a esta ruta
         if (
             !rolesPermitidos.includes(
                 req.usuario.rol
@@ -16,6 +18,7 @@ function verificarRol(...rolesPermitidos) {
 
         }
 
+        // El usuario tiene el rol requerido
         next();
 
     };
