@@ -4,3 +4,4 @@ database.db
 uploads/*.png
 uploads/*.jpg
 uploads/*.jpeg
+.env
