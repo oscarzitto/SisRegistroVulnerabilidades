@@ -22,7 +22,7 @@ router.get(
 
 verificarToken,
 
-verificarRol("admin"),
+verificarRol("admin","analista"),
 
 exportarCSV
 
