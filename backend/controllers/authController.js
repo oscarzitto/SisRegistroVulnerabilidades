@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 const register = async (req, res) => {
 
     if (
-        rol !== "admin"
+        rol !== "admin" &&
+        rol !== "analista"
     ) {
         return res.status(400).json({
             mensaje: "Rol inválido"

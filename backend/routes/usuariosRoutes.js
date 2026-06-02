@@ -14,7 +14,7 @@ const {
 router.get(
     "/usuarios",
     verificarToken,
-    verificarRol("admin"),
+    verificarRol("admin", "analista"),
     listarUsuarios
 );
 
